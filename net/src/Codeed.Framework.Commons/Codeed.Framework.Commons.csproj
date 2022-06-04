@@ -3,6 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <Authors>Codeed</Authors>
+	  <Company>Codeed</Company>
+	  <Copyright></Copyright>
+	  <PackageProjectUrl>https://github.com/Grupo-IDA/Codeed.Framework</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/Grupo-IDA/Codeed.Framework</RepositoryUrl>
+	  <PackageTags>Codeed Framework</PackageTags>
+	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
+	  <Description>Codeed Framework</Description>
   </PropertyGroup>
 
 </Project>
