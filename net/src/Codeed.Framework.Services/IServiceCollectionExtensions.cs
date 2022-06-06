@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -7,6 +9,20 @@ namespace Codeed.Framework.Services
 {
     public static class IServiceCollectionExtensions
     {
+        public static IEnumerable<Assembly> GetAllProjectsAssemblies(this IServiceCollection services, string assemblyPattern)
+        {
+            return Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, $"{assemblyPattern}*.dll")
+                .Select(file => Assembly.Load(AssemblyName.GetAssemblyName(file)));
+        }
+
+        public static IServiceCollection GetAllProjectsAssemblies(this IServiceCollection services, string assemblyPattern, Action<IEnumerable<Assembly>> action)
+        {
+            var assemblies = services.GetAllProjectsAssemblies(assemblyPattern);
+            action(assemblies);
+
+            return services;
+        }
+
         public static IServiceCollection RegisterClassesThatInherit<T>(this IServiceCollection services, ServiceLifetime serviceLifetime)
         {
             return services.RegisterClassesThatInherit<T>(typeof(T).Assembly, serviceLifetime);
