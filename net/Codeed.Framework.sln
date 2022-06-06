@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framework.Commons.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framework.Services", "src\Codeed.Framework.Services\Codeed.Framework.Services.csproj", "{078986ED-66C9-4CA0-8DA2-CD4BE4C23A44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framewok.Identity", "src\Codeed.Framewok.Identity\Codeed.Framewok.Identity.csproj", "{70B4EB97-ADAE-4594-A7AA-71AB6DE5DAA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framework.Identity", "src\Codeed.Framework.Identity\Codeed.Framework.Identity.csproj", "{70B4EB97-ADAE-4594-A7AA-71AB6DE5DAA2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framework.AspNet", "src\Codeed.Framework.AspNet\Codeed.Framework.AspNet.csproj", "{E9E84877-3739-4885-8777-C17EB347507B}"
 EndProject

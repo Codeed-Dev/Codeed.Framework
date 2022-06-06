@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Codeed.Framewok.Identity
+namespace Codeed.Framework.Identity
 {
-    public static class RegisterServices
+    public static class IServiceCollectionExtensions
     {
         public static IServiceCollection ConfigureFirebaseAuthentication(this IServiceCollection services, string firebaseIdentification)
         {
