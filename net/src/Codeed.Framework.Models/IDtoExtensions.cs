@@ -1,7 +1,6 @@
-﻿using Codeed.Framework.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace System
+namespace Codeed.Framework.Models
 {
     public static class IDtoExtensions
     {

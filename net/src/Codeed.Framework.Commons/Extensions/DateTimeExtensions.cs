@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Codeed.Framework.Commons.Extensions
+namespace System
 {
     public static class DateTimeExtensions
     {

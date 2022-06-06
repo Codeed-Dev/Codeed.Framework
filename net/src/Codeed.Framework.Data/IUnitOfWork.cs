@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Influencer.Core.Data
+namespace Codeed.Framework.Data
 {
     public interface IUnitOfWork
     {

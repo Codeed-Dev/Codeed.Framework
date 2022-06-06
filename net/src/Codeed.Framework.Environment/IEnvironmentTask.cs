@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Influencer.Core.Environment
+namespace Codeed.Framework.Environment
 {
     public interface IEnvironmentTask
     {

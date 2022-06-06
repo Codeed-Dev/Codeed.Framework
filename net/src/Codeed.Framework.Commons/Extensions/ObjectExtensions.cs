@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Codeed.Framework.Commons.Extensions
+namespace System
 {
     public static class ObjectExtensions
     {

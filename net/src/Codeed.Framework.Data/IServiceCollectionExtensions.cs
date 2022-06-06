@@ -1,7 +1,7 @@
 ﻿using Codeed.Framework.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Influencer.Core.Data
+namespace Codeed.Framework.Data
 {
     public static class IServiceCollectionExtensions
     {

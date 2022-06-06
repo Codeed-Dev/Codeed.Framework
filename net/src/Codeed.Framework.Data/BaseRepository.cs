@@ -2,7 +2,7 @@
 using System.Linq;
 using Codeed.Framework.Domain;
 
-namespace Influencer.Core.Data
+namespace Codeed.Framework.Data
 {
     public class BaseRepository<T> : IRepository<T> where T : Entity, IAggregateRoot
     {

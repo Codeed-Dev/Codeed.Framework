@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Influencer.Core.Environment
+namespace Codeed.Framework.Environment
 {
     public interface IEnvironment
     {

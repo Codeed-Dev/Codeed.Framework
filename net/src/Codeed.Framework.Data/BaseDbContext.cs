@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Codeed.Framework.Domain;
 
-namespace Influencer.Core.Data
+namespace Codeed.Framework.Data
 {
     public abstract class BaseDbContext : DbContext, IUnitOfWork
     {

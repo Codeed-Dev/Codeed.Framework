@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Influencer.Core.Environment.Extensions
+namespace Codeed.Framework.Environment.Extensions
 {
     public static class IServiceCollectionExtension
     {

@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace Influencer.Core.Data
+namespace Codeed.Framework.Data
 {
     public interface IRepository<T> : IDisposable where T : Entity, IAggregateRoot
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Codeed.Framework.Commons.Extensions
+namespace System
 {
     public static class ICollectionExtensions
     {

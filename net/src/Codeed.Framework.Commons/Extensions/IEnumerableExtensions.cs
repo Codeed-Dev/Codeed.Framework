@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Codeed.Framework.Commons.Extensions
+namespace System
 {
     public static class IEnumerableExtensions
     {

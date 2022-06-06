@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Influencer.Core.Environment
+namespace Codeed.Framework.Environment
 {
     public interface IEnvironmentRecurringTask : IEnvironmentTask
     {

@@ -1,4 +1,4 @@
-﻿namespace Influencer.Core.Exceptions
+﻿namespace Codeed.Framework.Commons.Exceptions
 {
     public interface IHttpException
     {

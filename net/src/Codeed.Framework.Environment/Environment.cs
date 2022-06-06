@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Influencer.Core.Environment
+namespace Codeed.Framework.Environment
 {
     public class Environment : IEnvironment
     {

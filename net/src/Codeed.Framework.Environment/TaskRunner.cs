@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Influencer.Core.Environment
+namespace Codeed.Framework.Environment
 {
     public class TaskRunner
     {
@@ -40,7 +40,7 @@ namespace Influencer.Core.Environment
                     if (_cancellationTokenSource == null)
                     {
                         _cancellationTokenSource = new CancellationTokenSource();
-                        using (System.Threading.ExecutionContext.SuppressFlow())
+                        using (ExecutionContext.SuppressFlow())
                         {
                             Task.Run(Run);
                         }

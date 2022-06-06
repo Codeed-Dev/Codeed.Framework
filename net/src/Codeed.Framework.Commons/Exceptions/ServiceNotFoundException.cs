@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Influencer.Core.Exceptions
+namespace Codeed.Framework.Commons.Exceptions
 {
     public class ServiceNotFoundException : Exception, IHttpException
     {

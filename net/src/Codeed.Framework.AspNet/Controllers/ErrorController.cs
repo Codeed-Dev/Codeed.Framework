@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Influencer.Core.Exceptions;
 using Codeed.Framework.Commons;
+using Codeed.Framework.Commons.Exceptions;
 
 namespace Codeed.Framework.AspNet.Controllers
 {
