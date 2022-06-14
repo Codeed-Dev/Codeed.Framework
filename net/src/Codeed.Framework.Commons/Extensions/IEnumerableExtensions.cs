@@ -105,7 +105,9 @@ namespace System
                 {
                     var destItem = dest.FirstOrDefault(d => compareLists(sourceItem, d));
                     if (destItem != null)
+                    {
                         existsOnBoth(sourceItem, destItem);
+                    }
                 }
             }
         }

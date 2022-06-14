@@ -10,9 +10,8 @@ namespace Codeed.Framework.Environment
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<TaskRunner> _logger;
-        private CancellationTokenSource _cancellationTokenSource;
         private readonly object _lock = new object();
-        private TimeSpan _lastDurationTime;
+        private CancellationTokenSource _cancellationTokenSource;
         private Action<IEnvironmentTask> _onFinishRunning;
 
         public TaskRunner(IEnvironmentTask task, IServiceProvider serviceProvider, ILogger<TaskRunner> logger)
@@ -93,13 +92,13 @@ namespace Codeed.Framework.Environment
                     _logger.LogError(e, "Falha inesperada ao executar a task.");
                 }
 
-                _lastDurationTime = DateTimeOffset.Now - lastExecution;
+                var lastDurationTime = DateTimeOffset.Now - lastExecution;
 
                 if (EnvironmentTask is IEnvironmentRecurringTask environmentTask)
                 {
                     try
                     {
-                        var waitInterval = environmentTask.Interval - _lastDurationTime;
+                        var waitInterval = environmentTask.Interval - lastDurationTime;
                         if (waitInterval.TotalMilliseconds > 0)
                         {
                             _logger.LogInformation($"Waiting {waitInterval} until next execution.");
@@ -118,7 +117,9 @@ namespace Codeed.Framework.Environment
             }
 
             if (_onFinishRunning != null)
+            {
                 _onFinishRunning(EnvironmentTask);
+            }
         }
     }
 }
