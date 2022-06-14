@@ -23,7 +23,9 @@ namespace Codeed.Framework.AspNet.Controllers
             var context = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
             if (context == null)
+            {
                 return StatusCode(500, new Result().Add("Internal Error"));
+            }
 
             var ex = context.Error;
             var result = new Result().Add(ex);

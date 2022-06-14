@@ -34,9 +34,12 @@ namespace Codeed.Framework.Environment
         {
             var taskRunner = _taskRunners.FirstOrDefault(tr => tr.EnvironmentTask == task);
             if (taskRunner == null)
+            {
                 return;
+            }
 
             taskRunner.Stop();
+            taskRunner.Dispose();
             _taskRunners.Remove(taskRunner);
         }
     }

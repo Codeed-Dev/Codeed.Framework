@@ -23,12 +23,12 @@ namespace Codeed.Framework.Services
         Task<TRet> ExecuteAsync(T1 param1, CancellationToken cancellationToken);
     }
 
-    public interface IService<T1, T2, TRet> : IServiceCore
+    public interface IService<in T1, in T2, TRet> : IServiceCore
     {
         Task<TRet> ExecuteAsync(T1 param1, T2 param2, CancellationToken cancellationToken);
     }
 
-    public interface IService<T1, T2, T3, TRet> : IServiceCore
+    public interface IService<in T1, in T2, in T3, TRet> : IServiceCore
     {
         Task<TRet> ExecuteAsync(T1 param1, T2 param2, T3 param3, CancellationToken cancellationToken);
     }
@@ -38,12 +38,12 @@ namespace Codeed.Framework.Services
         Task ExecuteAsync(T1 param1, CancellationToken cancellationToken);
     }
 
-    public interface IServiceWithoutResponse<T1, T2> : IServiceCore
+    public interface IServiceWithoutResponse<in T1, in T2> : IServiceCore
     {
         Task ExecuteAsync(T1 param1, T2 param2, CancellationToken cancellationToken);
     }
 
-    public interface IServiceWithoutResponse<T1, T2, T3> : IServiceCore
+    public interface IServiceWithoutResponse<in T1, in T2, in T3> : IServiceCore
     {
         Task ExecuteAsync(T1 param1, T2 param2, T3 param3, CancellationToken cancellationToken);
     }

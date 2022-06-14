@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Codeed.Framework.Domain
 {
-    public abstract class Entity : IEntity
+    public abstract class Entity : IEntity, IEquatable<Entity>
     {
         public Guid Id { get; protected set; }
 
@@ -44,19 +44,35 @@ namespace Codeed.Framework.Domain
         {
             var compareTo = obj as Entity;
 
-            if (ReferenceEquals(this, compareTo)) return true;
-            if (ReferenceEquals(null, compareTo)) return false;
+            if (ReferenceEquals(this, compareTo))
+            {
+                return true;
+            }
 
-            return Id.Equals(compareTo.Id);
+            if (ReferenceEquals(null, compareTo))
+            {
+                return false;
+            }
+
+            return Equals(compareTo);
+        }
+
+        public bool Equals(Entity other)
+        {
+            return Id.Equals(other.Id);
         }
 
         public static bool operator ==(Entity a, Entity b)
         {
             if (a is null && b is null)
+            {
                 return true;
+            }
 
             if (a is null || b is null)
+            {
                 return false;
+            }
 
             return a.Equals(b);
         }

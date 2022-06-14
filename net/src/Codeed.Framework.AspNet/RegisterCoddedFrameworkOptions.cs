@@ -25,7 +25,10 @@ namespace Codeed.Framework.AspNet
         {
             var options = new RegisterCoddedFrameworkFirebaseAuthenticationOptions(firebaseProjectId);
             if (configure != null)
+            {
                 configure(options);
+            }
+
             AuthenticationService = options;
         }
 
@@ -33,7 +36,9 @@ namespace Codeed.Framework.AspNet
         {
             var options = new RegisterCoddedFrameworkSwaggerOptions();
             if (configure != null)
+            {
                 configure(options);
+            }
 
             SwaggerOptions = options;
         }

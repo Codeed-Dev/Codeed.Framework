@@ -29,7 +29,7 @@ namespace Codeed.Framework.Data
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             var entitiesWithEvents = ChangeTracker.Entries<Entity>()
                                                   .Select(e => e.Entity)
@@ -38,7 +38,10 @@ namespace Codeed.Framework.Data
 
             int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            if (_mediator == null) return result;
+            if (_mediator == null)
+            {
+                return result;
+            }
 
             foreach (var entity in entitiesWithEvents)
             {
@@ -55,7 +58,7 @@ namespace Codeed.Framework.Data
 
         public override int SaveChanges()
         {
-            return SaveChangesAsync().GetAwaiter().GetResult();
+            return SaveChangesAsync(CancellationToken.None).GetAwaiter().GetResult();
         }
     }
 }

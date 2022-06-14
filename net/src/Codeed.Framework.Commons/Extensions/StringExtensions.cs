@@ -11,9 +11,11 @@ namespace System
         public static T ToEnum<T>(this string value) where T : struct
         {
             if (Enum.TryParse(value, out T result))
+            {
                 return result;
-            else
-                return default;
+            }
+            
+            return default;
         }
 
         public static bool IsValidEnum<T>(this string value) where T : struct
@@ -32,7 +34,9 @@ namespace System
         public static IEnumerable<string> SplitBy(this string str, char split)
         {
             if (string.IsNullOrEmpty(str))
+            {
                 return Enumerable.Empty<string>();
+            }
 
             return str.Split(split).Where(s => !string.IsNullOrEmpty(s));
         }
@@ -44,7 +48,7 @@ namespace System
 
         public static string TrimLeftWords(this string str, Func<string, bool> condition)
         {
-            var words = str.Split(new char[] { ' ', '\n' });
+            var words = str.Split(new [] { ' ', '\n' });
             var firstWord = words.FirstOrDefault(condition);
             var startIndex = Array.IndexOf(words, firstWord);
             var newWords = words.Skip(startIndex);

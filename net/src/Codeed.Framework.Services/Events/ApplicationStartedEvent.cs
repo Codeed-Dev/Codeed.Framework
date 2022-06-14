@@ -4,8 +4,5 @@ namespace Scaffolding.Web
 {
     internal class ApplicationStartedEvent : Event
     {
-        public ApplicationStartedEvent()
-        {
-        }
     }
 }

@@ -27,10 +27,14 @@ namespace Codeed.Framework.AspNet
             configure(options);
 
             if (options.AuthenticationService != null)
+            {
                 options.AuthenticationService.RegisterServices(services);
+            }
 
             if (options.SwaggerOptions != null)
+            {
                 options.SwaggerOptions.RegisterServices(services);
+            }
 
             services.GetAllProjectsAssemblies(options.AssemblyPattern, (assemblies) =>
             {
@@ -96,7 +100,7 @@ namespace Codeed.Framework.AspNet
             foreach (var assembly in assemblies)
             {
                 mvcBuilder.AddApplicationPart(assembly);
-            };
+            }
 
             mvcBuilder.AddJsonOptions(opts =>
             {

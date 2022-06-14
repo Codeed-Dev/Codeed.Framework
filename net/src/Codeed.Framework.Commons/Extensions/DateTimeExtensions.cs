@@ -17,7 +17,9 @@ namespace System
         public static string ToRFC3339(this DateTimeOffset? datetime)
         {
             if (datetime == null)
+            {
                 return null;
+            }
 
             return datetime.Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssK");
         }

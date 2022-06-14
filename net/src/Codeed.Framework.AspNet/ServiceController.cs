@@ -6,9 +6,9 @@ namespace Codeed.Framework.AspNet
 {
     public abstract class ServiceController : BaseController
     {
-        private IServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
-        public ServiceController(IServiceProvider serviceProvider)
+        protected ServiceController(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

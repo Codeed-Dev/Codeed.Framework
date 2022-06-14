@@ -4,18 +4,27 @@ using System.Linq;
 
 namespace Codeed.Framework.Domain
 {
-    public abstract class ValueObject
+    public abstract class ValueObject : IEquatable<ValueObject>
     {
         public override bool Equals(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
 
             if (GetType() != obj.GetType())
+            {
                 return false;
+            }
 
             var other = (ValueObject)obj;
+            return Equals(other);
+        }
 
+
+        public bool Equals(ValueObject other)
+        {
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
@@ -41,7 +50,9 @@ namespace Codeed.Framework.Domain
         protected static bool EqualOperator(ValueObject left, ValueObject right)
         {
             if (left is null ^ right is null)
+            {
                 return false;
+            }
 
             return left is null || left.Equals(right);
         }

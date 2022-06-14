@@ -10,7 +10,9 @@ namespace System
         public static void ChangePropertyValue<T>(this T entidade, Expression<Func<T, object>> expression, object value) where T : class
         {
             if (expression == null)
+            {
                 return;
+            }
 
             var memberSelectorExpression = expression.Body as MemberExpression;
             if (memberSelectorExpression != null)
