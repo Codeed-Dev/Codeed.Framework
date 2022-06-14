@@ -12,7 +12,7 @@ namespace Codeed.Framework.Services
         public static IEnumerable<Assembly> GetAllProjectsAssemblies(this IServiceCollection services, string assemblyPattern)
         {
             return Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, $"{assemblyPattern}*.dll")
-                .Select(file => Assembly.Load(AssemblyName.GetAssemblyName(file)));
+                            .Select(file => Assembly.Load(AssemblyName.GetAssemblyName(file)));
         }
 
         public static IServiceCollection GetAllProjectsAssemblies(this IServiceCollection services, string assemblyPattern, Action<IEnumerable<Assembly>> action)

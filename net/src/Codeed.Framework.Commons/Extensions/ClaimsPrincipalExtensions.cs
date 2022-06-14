@@ -11,5 +11,11 @@ namespace System
                 claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "user_id");
             return claim == null ? string.Empty : claim.Value;
         }
+
+        public static string GetEmail(this ClaimsPrincipal claimsPrincipal)
+        {
+            var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "email");
+            return claim == null ? string.Empty : claim.Value;
+        }
     }
 }

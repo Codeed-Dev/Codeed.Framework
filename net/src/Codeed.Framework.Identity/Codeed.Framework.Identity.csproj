@@ -19,8 +19,15 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Codeed.Framework.AspNet\Codeed.Framework.AspNet.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Commons\Codeed.Framework.Commons.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Data\Codeed.Framework.Data.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Models\Codeed.Framework.Models.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Services\Codeed.Framework.Services.csproj" />
 	</ItemGroup>
 
 </Project>

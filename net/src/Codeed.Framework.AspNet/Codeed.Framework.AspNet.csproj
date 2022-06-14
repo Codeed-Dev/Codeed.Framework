@@ -24,11 +24,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
 		<PackageReference Include="Microsoft.AspNetCore.OData" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
+		<PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+		<PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
+		<PackageReference Include="Serilog.Exceptions" Version="8.2.0" />
+		<PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Codeed.Framework.Commons\Codeed.Framework.Commons.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Environment\Codeed.Framework.Environment.csproj" />
 	  <ProjectReference Include="..\Codeed.Framework.Services\Codeed.Framework.Services.csproj" />
 	</ItemGroup>
 	
