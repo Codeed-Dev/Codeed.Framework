@@ -21,7 +21,12 @@ namespace Codeed.Framework.AspNet
 
         internal Action<DbContextOptionsBuilder> DbContextOptionsBuilder { get; private set; }
 
-        public void ConfigureFirebaseAuthentication(string firebaseProjectId, Action<RegisterCoddedFrameworkFirebaseAuthenticationOptions> configure = null)
+        public void ConfigureFirebaseAuthentication(string firebaseProjectId)
+        {
+            ConfigureFirebaseAuthentication(firebaseProjectId, null);
+        }
+
+        public void ConfigureFirebaseAuthentication(string firebaseProjectId, Action<RegisterCoddedFrameworkFirebaseAuthenticationOptions> configure)
         {
             var options = new RegisterCoddedFrameworkFirebaseAuthenticationOptions(firebaseProjectId);
             if (configure != null)

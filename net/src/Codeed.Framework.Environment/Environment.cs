@@ -9,7 +9,7 @@ namespace Codeed.Framework.Environment
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<TaskRunner> _logger;
-        private List<TaskRunner> _taskRunners = new List<TaskRunner>();
+        private readonly List<TaskRunner> _taskRunners = new List<TaskRunner>();
 
         public Environment(IServiceProvider serviceProvider, ILogger<TaskRunner> logger)
         {
