@@ -1,7 +1,5 @@
 ﻿using Codeed.Framework.AspNet;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Sample.Identity.Models;
 using Sample.Identity.Services;
 using System.Security.Claims;
 

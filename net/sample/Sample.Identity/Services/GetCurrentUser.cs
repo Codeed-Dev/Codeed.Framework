@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Codeed.Framework.Services;
 using Microsoft.EntityFrameworkCore;
-using Sample.Identity.Models;
 using Sample.Identity.Repositories;
 using System.Security.Claims;
 

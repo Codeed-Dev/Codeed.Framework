@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Codeed.Framework.Identity\Codeed.Framework.Identity.csproj" />
+    <ProjectReference Include="..\Sample.Identity.Services\Sample.Identity.Services.csproj" />
   </ItemGroup>
 
 </Project>

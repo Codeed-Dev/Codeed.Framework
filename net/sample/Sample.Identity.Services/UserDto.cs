@@ -1,4 +1,4 @@
-﻿namespace Sample.Identity.Models
+﻿namespace Sample.Identity.Services
 {
     public class UserDto
     {
