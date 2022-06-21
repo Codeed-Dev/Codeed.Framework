@@ -22,7 +22,7 @@ namespace Codeed.Framework.Identity.Domain
 
         public string Uid { get; private set; }
 
-        public string ImageUrl { get; private set; }
+        public string? ImageUrl { get; private set; }
 
         public void ChangeName(string name)
         {

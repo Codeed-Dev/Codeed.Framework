@@ -2,6 +2,7 @@ using Codeed.Framework.AspNet;
 using Codeed.Framework.AspNet.Serilog;
 using Microsoft.EntityFrameworkCore;
 using Sample.Identity;
+using Sample.Identity.Middleware;
 using Serilog;
 using System.Reflection;
 
@@ -41,6 +42,7 @@ app.UseCors(corsPolicyBuilder =>
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
+app.UseMiddleware<IdentityMiddleware>();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>

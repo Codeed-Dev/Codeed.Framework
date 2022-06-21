@@ -27,19 +27,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framework.Models", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{9670C030-11EC-4F60-9F6C-C6B4A10FC184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "sample\Sample.Web\Sample.Web.csproj", "{CED823AB-F3AE-447E-B41D-21E78914F333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Web", "sample\Sample.Web\Sample.Web.csproj", "{CED823AB-F3AE-447E-B41D-21E78914F333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Domain", "sample\Sample.Domain\Sample.Domain.csproj", "{B79D3B0E-F1EC-46A1-9CCF-34D38E81657C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Domain", "sample\Sample.Domain\Sample.Domain.csproj", "{B79D3B0E-F1EC-46A1-9CCF-34D38E81657C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.WebApi", "sample\Sample.WebApi\Sample.WebApi.csproj", "{E26421D5-2DB6-401B-A76D-84277B78BAD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.WebApi", "sample\Sample.WebApi\Sample.WebApi.csproj", "{E26421D5-2DB6-401B-A76D-84277B78BAD0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contexts", "contexts", "{B709196C-D75A-4BFF-A81A-2472896977B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Application", "sample\Sample.Application\Sample.Application.csproj", "{F4731693-8143-4FFF-9F76-27B32DBEE34B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Application", "sample\Sample.Application\Sample.Application.csproj", "{F4731693-8143-4FFF-9F76-27B32DBEE34B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Data", "sample\Sample.Data\Sample.Data.csproj", "{5389F34B-F524-43B6-9CEE-69EE94E72D0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Data", "sample\Sample.Data\Sample.Data.csproj", "{5389F34B-F524-43B6-9CEE-69EE94E72D0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Identity", "sample\Sample.Identity\Sample.Identity.csproj", "{01945D97-4C33-44A3-AA8B-C61E4C73ADAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Identity", "sample\Sample.Identity\Sample.Identity.csproj", "{01945D97-4C33-44A3-AA8B-C61E4C73ADAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Identity.Services", "sample\Sample.Identity.Services\Sample.Identity.Services.csproj", "{BBCC80EB-B6F7-4747-BEB1-98F6CFE9274B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +109,10 @@ Global
 		{01945D97-4C33-44A3-AA8B-C61E4C73ADAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01945D97-4C33-44A3-AA8B-C61E4C73ADAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01945D97-4C33-44A3-AA8B-C61E4C73ADAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBCC80EB-B6F7-4747-BEB1-98F6CFE9274B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCC80EB-B6F7-4747-BEB1-98F6CFE9274B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBCC80EB-B6F7-4747-BEB1-98F6CFE9274B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBCC80EB-B6F7-4747-BEB1-98F6CFE9274B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{F4731693-8143-4FFF-9F76-27B32DBEE34B} = {B709196C-D75A-4BFF-A81A-2472896977B6}
 		{5389F34B-F524-43B6-9CEE-69EE94E72D0E} = {B709196C-D75A-4BFF-A81A-2472896977B6}
 		{01945D97-4C33-44A3-AA8B-C61E4C73ADAC} = {9670C030-11EC-4F60-9F6C-C6B4A10FC184}
+		{BBCC80EB-B6F7-4747-BEB1-98F6CFE9274B} = {9670C030-11EC-4F60-9F6C-C6B4A10FC184}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E043ACAF-DFFF-45CA-89A4-ACD97B70355B}
