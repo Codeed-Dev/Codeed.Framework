@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\sample\Sample.Application\Sample.Application.csproj" />
     <ProjectReference Include="..\..\sample\Sample.Data\Sample.Data.csproj" />
-    <ProjectReference Include="..\..\sample\Sample.Domain\Sample.Domain.csproj" />
     <ProjectReference Include="..\Codeed.Framework.AspNet\Codeed.Framework.AspNet.csproj" />
     <ProjectReference Include="..\Codeed.Framework.Data\Codeed.Framework.Data.csproj" />
   </ItemGroup>

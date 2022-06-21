@@ -23,6 +23,7 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Codeed.Framework.AspNet\Codeed.Framework.AspNet.csproj" />
     <ProjectReference Include="..\Codeed.Framework.Services\Codeed.Framework.Services.csproj" />
   </ItemGroup>
 
