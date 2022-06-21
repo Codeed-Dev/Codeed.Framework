@@ -13,10 +13,11 @@ builder.Host.UseSerilog(Log.Logger);
 builder.Services.RegisterCoddedFrameworkDependencies("Sample", "Sample", (opt) =>
 {
     opt.ConfigureFirebaseAuthentication("sample-81d61");
-    opt.ConfigureSwagger(swagger =>
+    opt.ConfigureSwagger(c =>
     {
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        swagger.XmlFile = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.Version = "v1";
+        c.Title = "Sample";
+        c.Description = "Sample Application";
     });
     opt.ConfigureDatabase((options) =>
     {
@@ -27,6 +28,7 @@ builder.Services.RegisterCoddedFrameworkDependencies("Sample", "Sample", (opt) =
 var app = builder.Build();
 
 app.UseExceptionHandler("/error");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

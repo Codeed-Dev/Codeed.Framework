@@ -31,13 +31,13 @@ namespace Codeed.Framework.AspNet
                 options.AuthenticationService.RegisterServices(services);
             }
 
-            if (options.SwaggerOptions != null)
-            {
-                options.SwaggerOptions.RegisterServices(services);
-            }
-
             services.GetAllProjectsAssemblies(options.AssemblyPattern, (assemblies) =>
             {
+                if (options.SwaggerOptions != null)
+                {
+                    options.SwaggerOptions.RegisterServices(services, assemblies);
+                }
+
                 services.AddMediatR(assemblies.ToArray());
                 services.RegisterServicesFromAssemblies(assemblies);
                 services.AddAutoMapper(assemblies.ToArray());

@@ -37,6 +37,11 @@ namespace Codeed.Framework.AspNet
             AuthenticationService = options;
         }
 
+        public void ConfigureSwagger()
+        {
+            ConfigureSwagger(null);
+        }
+
         public void ConfigureSwagger(Action<RegisterCoddedFrameworkSwaggerOptions> configure)
         {
             var options = new RegisterCoddedFrameworkSwaggerOptions();
