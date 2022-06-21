@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Codeed.Framework.Data\Codeed.Framework.Data.csproj" />
     <ProjectReference Include="..\..\src\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
   </ItemGroup>
 
