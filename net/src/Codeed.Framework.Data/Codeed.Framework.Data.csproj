@@ -21,10 +21,12 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Tenant\Codeed.Framework.Tenant.csproj" />
 	</ItemGroup>
 </Project>

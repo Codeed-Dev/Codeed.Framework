@@ -17,5 +17,11 @@ namespace System
             var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "email");
             return claim == null ? string.Empty : claim.Value;
         }
+
+        public static bool EmailIsVerified(this ClaimsPrincipal claimsPrincipal)
+        {
+            var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "email_verified");
+            return claim == null ? true : claim.Value == "true";
+        }
     }
 }
