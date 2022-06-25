@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Codeed.Framework.Data
 {
     [Serializable]
-    internal class TenantException : Exception
+    public class TenantException : Exception
     {
         public TenantException()
         {

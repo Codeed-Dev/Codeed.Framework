@@ -10,7 +10,7 @@ namespace Codeed.Framework.AspNet.Tenant
     {
         private readonly ClaimsPrincipal _user;
 
-        public UserTenantService(ClaimsPrincipal user)
+        protected UserTenantService(ClaimsPrincipal user)
         {
             _user = user;
         }

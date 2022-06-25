@@ -25,7 +25,6 @@ namespace Codeed.Framework.AspNet.Attributes
                 {
                     StatusCode = 401
                 };
-                return;
             }
         }
     }
