@@ -8,7 +8,7 @@ namespace Codeed.Framework.AspNet
 {
     public class RegisterCodeedFrameworkOptions
     {
-        private ICollection<ICodeedServiceConfiguration> _servicesConfigurations = new List<ICodeedServiceConfiguration>();
+        private readonly ICollection<ICodeedServiceConfiguration> _servicesConfigurations = new List<ICodeedServiceConfiguration>();
         public RegisterCodeedFrameworkOptions(string name, string assemblyPattern)
         {
             Name = name;
