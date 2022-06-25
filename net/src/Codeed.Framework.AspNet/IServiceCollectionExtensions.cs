@@ -3,17 +3,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Codeed.Framework.Services;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Codeed.Framework.AspNet.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,21 +17,17 @@ namespace Codeed.Framework.AspNet
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection RegisterCoddedFrameworkDependencies(this IServiceCollection services, string name, string assemblyPattern, Action<RegisterCoddedFrameworkOptions> configure)
+        public static IServiceCollection RegisterCodeedFrameworkDependencies(this IServiceCollection services, string name, string assemblyPattern, Action<RegisterCodeedFrameworkOptions> configure)
         {
-            var options = new RegisterCoddedFrameworkOptions(name, assemblyPattern);
+            var options = new RegisterCodeedFrameworkOptions(name, assemblyPattern);
             configure(options);
 
-            if (options.AuthenticationService != null)
-            {
-                options.AuthenticationService.RegisterServices(services);
-            }
 
             services.GetAllProjectsAssemblies(options.AssemblyPattern, (assemblies) =>
             {
-                if (options.SwaggerOptions != null)
+                foreach (var serviceConfiguration in options.ServicesConfigurations)
                 {
-                    options.SwaggerOptions.RegisterServices(services, assemblies);
+                    serviceConfiguration.RegisterServices(services, assemblies);
                 }
 
                 services.AddMediatR(assemblies.ToArray());

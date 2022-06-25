@@ -1,4 +1,5 @@
 using Codeed.Framework.AspNet;
+using Codeed.Framework.AspNet.RegisterServicesConfigurations;
 using Codeed.Framework.AspNet.Serilog;
 using Codeed.Framework.AspNet.Tenant;
 using Codeed.Framework.Tenant;
@@ -9,9 +10,9 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddSerilogApi("Sample");
 builder.Host.UseSerilog(Log.Logger);
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.RegisterCoddedFrameworkDependencies("Sample", "Sample", (opt) =>
+builder.Services.RegisterCodeedFrameworkDependencies("Sample", "Sample", (opt) =>
 {
+    opt.ConfigureTenant<TenantService>();
     opt.ConfigureFirebaseAuthentication("codeedint");
     opt.ConfigureSwagger(c =>
     {
