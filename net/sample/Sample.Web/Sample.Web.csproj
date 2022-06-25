@@ -26,7 +26,6 @@
     <ProjectReference Include="..\..\src\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
     <ProjectReference Include="..\..\src\Codeed.Framework.Services\Codeed.Framework.Services.csproj" />
     <ProjectReference Include="..\..\src\Sample.CrossCutting\Sample.CrossCutting.csproj" />
-    <ProjectReference Include="..\Sample.Identity\Sample.Identity.csproj" />
   </ItemGroup>
 
 </Project>

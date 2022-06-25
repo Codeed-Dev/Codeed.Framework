@@ -1,18 +1,18 @@
 using Codeed.Framework.AspNet;
 using Codeed.Framework.AspNet.Serilog;
+using Codeed.Framework.AspNet.Tenant;
+using Codeed.Framework.Tenant;
 using Microsoft.EntityFrameworkCore;
-using Sample.Identity;
-using Sample.Identity.Middleware;
+using Sample.Web;
 using Serilog;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddSerilogApi("Sample");
 builder.Host.UseSerilog(Log.Logger);
-
+builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.RegisterCoddedFrameworkDependencies("Sample", "Sample", (opt) =>
 {
-    opt.ConfigureFirebaseAuthentication("sample-81d61");
+    opt.ConfigureFirebaseAuthentication("codeedint");
     opt.ConfigureSwagger(c =>
     {
         c.Version = "v1";
@@ -44,7 +44,6 @@ app.UseCors(corsPolicyBuilder =>
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
-app.UseMiddleware<IdentityMiddleware>();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
@@ -53,5 +52,3 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
-
-app.Services.GetRequiredService<IdentityDbContext>().Database.Migrate();

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sample.Data.TablesConfigurations
+namespace Sample.Data.Tables
 {
     internal class CustomerTable : IEntityTypeConfiguration<Customer>
     {

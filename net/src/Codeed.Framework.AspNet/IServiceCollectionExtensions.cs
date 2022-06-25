@@ -117,24 +117,5 @@ namespace Codeed.Framework.AspNet
 
             return services;
         }
-
-        public static IServiceCollection ConfigureFirebaseAuthentication(this IServiceCollection services, string firebaseProjectId)
-        {
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.Authority = $"https://securetoken.google.com/{firebaseProjectId}";
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidIssuer = $"https://securetoken.google.com/{firebaseProjectId}",
-                            ValidateIssuer = true,
-                            ValidateAudience = true,
-                            ValidAudience = firebaseProjectId,
-                            ValidateLifetime = true
-                        };
-                    });
-
-            return services;
-        }
     }
 }
