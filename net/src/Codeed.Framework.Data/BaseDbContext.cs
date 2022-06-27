@@ -8,6 +8,7 @@ using Codeed.Framework.Domain;
 using System.Linq.Expressions;
 using Codeed.Framework.Tenant;
 using Codeed.Framework.Data.Extensions;
+using Codeed.Framework.Domain.Exceptions;
 
 namespace Codeed.Framework.Data
 {
