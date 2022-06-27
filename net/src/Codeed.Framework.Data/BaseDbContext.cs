@@ -43,7 +43,9 @@ namespace Codeed.Framework.Data
         {
             foreach (var entityType in modelBuilder.GetEntities<EntityWithoutTenant>())
             {
-                modelBuilder.Entity(entityType.ClrType).HasIndex(nameof(EntityWithoutTenant.CreatedDate));
+                modelBuilder.Entity(entityType.ClrType).Property(nameof(EntityWithoutTenant.CreatedDate)).HasColumnName("CREATED_DATE");
+                modelBuilder.Entity(entityType.ClrType).HasIndex(nameof(EntityWithoutTenant.CreatedDate)).HasDatabaseName("CREATED_DATE_I");
+                modelBuilder.Entity(entityType.ClrType).Property(nameof(EntityWithoutTenant.Id)).HasColumnName("ID");
             }
 
             foreach (var entityType in modelBuilder.GetEntities<Entity>())
