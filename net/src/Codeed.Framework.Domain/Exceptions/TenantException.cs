@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Codeed.Framework.Data
+namespace Codeed.Framework.Domain.Exceptions
 {
     [Serializable]
     public class TenantException : Exception

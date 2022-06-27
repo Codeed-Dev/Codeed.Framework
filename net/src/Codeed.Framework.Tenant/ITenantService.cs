@@ -11,5 +11,7 @@
         IEnumerable<object> GetPermissions();
 
         string GetRootUserUid();
+
+        void SetTenant(string tenant);
     }
 }
