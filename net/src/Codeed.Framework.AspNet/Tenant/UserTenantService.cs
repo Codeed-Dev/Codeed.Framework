@@ -30,5 +30,6 @@ namespace Codeed.Framework.AspNet.Tenant
         public abstract IEnumerable<object> GetPermissions();
 
         public string GetRootUserUid() => _user.GetUserId();
+
     }
 }
