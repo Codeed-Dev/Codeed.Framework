@@ -1,11 +1,11 @@
 using Codeed.Framework.AspNet;
 using Codeed.Framework.AspNet.RegisterServicesConfigurations;
 using Codeed.Framework.AspNet.Serilog;
-using Codeed.Framework.AspNet.Tenant;
-using Codeed.Framework.Tenant;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Sample.Web;
 using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddSerilogApi("Sample");
@@ -13,7 +13,25 @@ builder.Host.UseSerilog(Log.Logger);
 builder.Services.RegisterCodeedFrameworkDependencies("Sample", "Sample", (opt) =>
 {
     opt.ConfigureTenant<TenantService>();
-    opt.ConfigureFirebaseAuthentication("codeedint");
+    opt.ConfigureFirebaseAuthentication("codeedint", opt =>
+    {
+        opt.ConfigureCustomsAuthentications(auth =>
+        {
+            auth.AddJwtBearer("Custom", options =>
+            {
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("72969c9f-ac13-4bb9-ac69-0307673b2c84")),
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+        });
+    });
+
     opt.ConfigureSwagger(c =>
     {
         c.Version = "v1";

@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Codeed.Framework.Services;
 using Codeed.Framework.Services.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Application.Services.Customers.Models;
 using Sample.Domain.Repositories;
