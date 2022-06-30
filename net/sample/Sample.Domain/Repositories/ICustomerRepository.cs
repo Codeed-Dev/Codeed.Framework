@@ -1,4 +1,4 @@
-﻿using Codeed.Framework.Data;
+﻿using Codeed.Framework.Domain;
 
 namespace Sample.Domain.Repositories
 {

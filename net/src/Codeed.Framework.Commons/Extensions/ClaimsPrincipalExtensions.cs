@@ -8,13 +8,23 @@ namespace System
         public static string GetUserId(this ClaimsPrincipal claimsPrincipal)
         {
             var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "uid") ??
-                claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "user_id");
+                        claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "user_id") ??
+                        claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
             return claim == null ? string.Empty : claim.Value;
         }
 
         public static string GetEmail(this ClaimsPrincipal claimsPrincipal)
         {
-            var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "email");
+            var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "email") ??
+                        claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+            return claim == null ? string.Empty : claim.Value;
+        }
+
+        public static string GetName(this ClaimsPrincipal claimsPrincipal)
+        {
+            var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "name") ??
+                        claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+
             return claim == null ? string.Empty : claim.Value;
         }
 

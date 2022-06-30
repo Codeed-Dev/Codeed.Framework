@@ -4,6 +4,11 @@ namespace Codeed.Framework.Commons.Exceptions
 {
     public class ServiceNotFoundException : Exception, IHttpException
     {
+        public ServiceNotFoundException()
+        {
+
+        }
+
         public ServiceNotFoundException(string errorMessage) : base(errorMessage)
         {
 

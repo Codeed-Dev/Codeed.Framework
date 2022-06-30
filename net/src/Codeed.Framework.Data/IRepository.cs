@@ -10,6 +10,8 @@ namespace Codeed.Framework.Data
 
         IQueryable<T> QueryAll();
 
+        IQueryable<T> QueryById(Guid id);
+
         void Add(T entity);
 
         void Update(T entity);

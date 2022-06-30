@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,12 +11,13 @@ using Codeed.Framework.Domain.Exceptions;
 
 namespace Codeed.Framework.Data
 {
-    public abstract class BaseDbContext : DbContext, IUnitOfWork
+    public abstract class BaseDbContext<T> : DbContext, IUnitOfWork
+        where T : BaseDbContext<T>
     {
         private readonly IMediator _mediator;
         private readonly ITenantService _tenantService;
 
-        protected BaseDbContext(DbContextOptions options, IMediator mediator, ITenantService tenantService) : base(options)
+        protected BaseDbContext(DbContextOptions<T> options, IMediator mediator, ITenantService tenantService) : base(options)
         {
             _mediator = mediator;
             _tenantService = tenantService;
@@ -51,6 +51,7 @@ namespace Codeed.Framework.Data
 
             foreach (var entityType in modelBuilder.GetEntities<Entity>())
             {
+                modelBuilder.Entity(entityType.ClrType).Property(nameof(Entity.Tenant)).HasColumnName("TENANT");
                 modelBuilder.Entity(entityType.ClrType).HasIndex(nameof(Entity.Tenant));
                 modelBuilder.Entity(entityType.ClrType).Property(nameof(Entity.Tenant)).IsRequired();
             }

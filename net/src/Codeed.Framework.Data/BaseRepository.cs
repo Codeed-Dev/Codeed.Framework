@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Codeed.Framework.Domain;
+using System;
 
 namespace Codeed.Framework.Data
 {
@@ -21,6 +22,11 @@ namespace Codeed.Framework.Data
         public virtual IQueryable<T> QueryAll()
         {
             return DbSet;
+        }
+
+        public virtual IQueryable<T> QueryById(Guid id)
+        {
+            return DbSet.Where(a => a.Id == id);
         }
 
         public virtual void Add(T entity)
