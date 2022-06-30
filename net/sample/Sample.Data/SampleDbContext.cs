@@ -6,9 +6,9 @@ using Sample.Domain;
 
 namespace Sample.Data
 {
-    public class SampleDbContext : BaseDbContext
+    public class SampleDbContext : BaseDbContext<SampleDbContext>
     {
-        public SampleDbContext(DbContextOptions options, IMediator mediator, ITenantService tenantService) : base(options, mediator, tenantService)
+        public SampleDbContext(DbContextOptions<SampleDbContext> options, IMediator mediator, ITenantService tenantService) : base(options, mediator, tenantService)
         {
         }
     }
