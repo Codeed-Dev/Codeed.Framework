@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -8,6 +9,11 @@ namespace Codeed.Framework.AspNet.Serilog
 {
     public static class SerilogConfigurationExtensions
     {
+        public static void AddSerilog(this IHostBuilder hostBuilder)
+        {
+
+        }
+
         public static void AddSerilogApi(this IConfiguration configuration, string applicationName)
         {
             Log.Logger = new LoggerConfiguration()

@@ -16,18 +16,12 @@ namespace Codeed.Framework.Data
     {
         private readonly IMediator _mediator;
         private readonly ITenantService _tenantService;
+        private Transaction _currentTransaction;
 
         protected BaseDbContext(DbContextOptions<T> options, IMediator mediator, ITenantService tenantService) : base(options)
         {
             _mediator = mediator;
             _tenantService = tenantService;
-        }
-
-        public async Task<bool> Commit(CancellationToken cancellationToken)
-        {
-            var success = await SaveChangesAsync(cancellationToken) > 0;
-
-            return success;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,6 +63,40 @@ namespace Codeed.Framework.Data
             }
         }
 
+        public Task<bool> Commit(CancellationToken cancellationToken)
+        {
+            return Commit(null, cancellationToken);
+        }
+
+        public async Task<bool> Commit(Transaction transaction, CancellationToken cancellationToken)
+        {
+            if (!IsCurrentTransaction(transaction))
+                return true;
+
+            var success = await SaveChangesAsync(cancellationToken) > 0;
+            return success;
+        }
+
+        public Transaction BeginTransaction()
+        {
+            var transaction = new Transaction(this);
+
+            if (_currentTransaction == null)
+            {
+                _currentTransaction = transaction;
+            }
+            
+            return transaction;
+        }
+
+        public void EndTransaction(Transaction transaction)
+        {
+            if (IsCurrentTransaction(transaction))
+            {
+                _currentTransaction = null;
+            }
+        }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             ValidateTenant();
@@ -87,7 +115,7 @@ namespace Codeed.Framework.Data
 
             foreach (var entity in entitiesWithEvents)
             {
-                var events = entity.Events.ToArray();
+                var events = entity.Events.Distinct().ToArray();
                 entity.ClearDomainEvents();
                 foreach (var domainEvent in events)
                 {
@@ -122,9 +150,10 @@ namespace Codeed.Framework.Data
             }
         }
 
-        public override int SaveChanges()
+        private bool IsCurrentTransaction(Transaction transaction)
         {
-            return SaveChangesAsync(CancellationToken.None).GetAwaiter().GetResult();
+            return _currentTransaction == null ||
+                _currentTransaction == transaction;
         }
     }
 }

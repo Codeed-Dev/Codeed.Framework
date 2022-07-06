@@ -43,6 +43,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framework.Services.H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Codeed.Framework.Tenant", "src\Codeed.Framework.Tenant\Codeed.Framework.Tenant.csproj", "{15D5EE30-EF57-4AA6-BC09-3BF34829D245}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codeed.Framework.Domain.Tests", "tests\Codeed.Framework.Domain.Tests\Codeed.Framework.Domain.Tests.csproj", "{21DA9191-CBA0-4A67-BA24-0046872F68A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +115,10 @@ Global
 		{15D5EE30-EF57-4AA6-BC09-3BF34829D245}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15D5EE30-EF57-4AA6-BC09-3BF34829D245}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15D5EE30-EF57-4AA6-BC09-3BF34829D245}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21DA9191-CBA0-4A67-BA24-0046872F68A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21DA9191-CBA0-4A67-BA24-0046872F68A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21DA9191-CBA0-4A67-BA24-0046872F68A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21DA9191-CBA0-4A67-BA24-0046872F68A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,6 +141,7 @@ Global
 		{A76EFDD5-FCEA-4BC2-ABB9-F04629A5671D} = {B709196C-D75A-4BFF-A81A-2472896977B6}
 		{CD57D9C4-0238-4F6D-A43B-4A6F80DD0A71} = {F9FDAAA9-45F8-43FC-BC11-76864372E09A}
 		{15D5EE30-EF57-4AA6-BC09-3BF34829D245} = {F9FDAAA9-45F8-43FC-BC11-76864372E09A}
+		{21DA9191-CBA0-4A67-BA24-0046872F68A7} = {33B00FFD-1CDE-44F5-9DA9-19E2F1BB0EC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E043ACAF-DFFF-45CA-89A4-ACD97B70355B}
