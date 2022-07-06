@@ -15,7 +15,7 @@ namespace Codeed.Framework.Data
 
         public Task<bool> Commit(CancellationToken cancellationToken)
         {
-            return _unitOfWork.Commit(cancellationToken);
+            return _unitOfWork.Commit(this, cancellationToken);
         }
 
         public void Dispose()
