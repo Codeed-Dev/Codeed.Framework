@@ -38,3 +38,9 @@ jobs:
       
     - name: Publish
       run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
+      
+    - name: Create Tag
+      uses: rickstaa/action-create-tag@v1
+      with:
+       tag: ${{ github.event.inputs.version }}
+       message: "Version ${{ github.event.inputs.version }}"      
