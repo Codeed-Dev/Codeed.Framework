@@ -101,7 +101,7 @@ namespace Codeed.Framework.Data
         {
             ValidateTenant();
 
-            var entitiesWithEvents = ChangeTracker.Entries<Entity>()
+            var entitiesWithEvents = ChangeTracker.Entries<EntityWithoutTenant>()
                                                   .Select(e => e.Entity)
                                                   .Where(e => e.Events.Any())
                                                   .ToArray();
