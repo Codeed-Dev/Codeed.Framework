@@ -4,12 +4,8 @@
     {
         string Tenant { get; }
 
-        IEnumerable<string> GetTenants();
-
         bool Authorize(object permission);
 
         IEnumerable<object> GetPermissions();
-
-        string GetRootUserUid();
     }
 }
