@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -23,6 +24,18 @@ namespace System
                     property.SetValue(entidade, value);
                 }
             }
+        }
+
+        public static Dictionary<string, TValue> ToDictionary<TValue>(this object obj)
+        {
+            if (obj == null)
+            {
+                return new Dictionary<string, TValue>();
+            }
+
+            var json = JsonConvert.SerializeObject(obj);
+            var dictionary = JsonConvert.DeserializeObject<Dictionary<string, TValue>>(json);
+            return dictionary;
         }
 
         public static IList<T> ObjectToList<T>(this T obj)

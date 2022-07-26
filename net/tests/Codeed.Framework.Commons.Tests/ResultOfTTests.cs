@@ -235,6 +235,48 @@ namespace Codeed.Framework.Commons.Tests
                 // Act & Assert
                 Assert.Throws<ArgumentNullException>(() => result.AddError(error));
             }
+
+
+            [Fact]
+            public void should_add_error_with_code_and_parameters()
+            {
+                // Arrange
+                var result = new Result<string>();
+
+                // Act
+                result.AddError("Error message", "error/code", new { param1 = "parameter 1" });
+
+                // Assert
+                Assert.Collection(result.ErrorCodes,
+                    (first) =>
+                    {
+                        Assert.Equal("error/code", first.ErrorCode);
+                        Assert.Collection(first.Parameters,
+                            (firstParameters) =>
+                            {
+                                Assert.Equal("param1", firstParameters.Key);
+                                Assert.Equal("parameter 1", firstParameters.Value);
+                            });
+                    });
+            }
+
+            [Fact]
+            public void should_add_error_with_code()
+            {
+                // Arrange
+                var result = new Result<string>();
+
+                // Act
+                result.AddError("Error message", "error/code");
+
+                // Assert
+                Assert.Collection(result.ErrorCodes,
+                    (first) =>
+                    {
+                        Assert.Equal("error/code", first.ErrorCode);
+                        Assert.Empty(first.Parameters);
+                    });
+            }
         }
 
         public class Cast
