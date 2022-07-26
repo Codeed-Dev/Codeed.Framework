@@ -2,9 +2,9 @@
 
 namespace Codeed.Framework.Commons.Exceptions
 {
-    public class ServiceNotFoundException : Exception, IHttpException
+    public class ServiceNotFoundException : BaseServiceException
     {
-        public ServiceNotFoundException()
+        public ServiceNotFoundException() : base()
         {
 
         }
@@ -14,6 +14,14 @@ namespace Codeed.Framework.Commons.Exceptions
 
         }
 
-        public int HttpCode => 404;
+        public ServiceNotFoundException(string errorMessage, string code) : base(errorMessage, code)
+        {
+        }
+
+        public ServiceNotFoundException(string errorMessage, string code, object parameters) : base(errorMessage, code, parameters)
+        {
+        }
+
+        public override int HttpCode => 404;
     }
 }

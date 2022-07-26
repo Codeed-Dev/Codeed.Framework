@@ -2,7 +2,10 @@
 {
     public interface IHttpException
     {
-        int HttpCode { get; }
+        string Code { get; }
 
+        object Parameters { get; }
+
+        int HttpCode { get; }
     }
 }

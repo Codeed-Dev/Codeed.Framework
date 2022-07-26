@@ -28,14 +28,16 @@ namespace Codeed.Framework.AspNet.Controllers
             }
 
             var ex = context.Error;
-            var result = new Result().Add(ex);
+            var result = new Result();
 
             if (ex is IHttpException httpException)
             {
+                result.AddError(ex, httpException.Code, httpException.Parameters);
                 _logger.LogWarning(ex, ex.Message, context.Path);
                 return StatusCode(httpException.HttpCode, result);
             }
 
+            result.Add(ex);
             _logger.LogError(ex, $"Falha na requisição {context.Path}");
             return StatusCode(500, result);
         }
