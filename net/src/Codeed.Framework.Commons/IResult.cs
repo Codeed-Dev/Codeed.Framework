@@ -2,15 +2,8 @@
 
 namespace Codeed.Framework.Commons
 {
-    public interface IResult<T>
+    public interface IResult<T> : IResult
     {
         T Value { get; }
-        IEnumerable<string> Errors { get; }
-
-        IEnumerable<ResultErrorCode> ErrorCodes { get; }
-
-        bool Succeeded { get; }
-
-        bool Failed { get; }
     }
 }
