@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
@@ -58,6 +59,23 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
                     Title = Title,
                     Description = Description,
                 });
+
+                c.TagActionsBy(api =>
+                {
+                    if (api.GroupName != null)
+                    {
+                        return new[] { api.GroupName };
+                    }
+
+                    var controllerActionDescriptor = api.ActionDescriptor as ControllerActionDescriptor;
+                    if (controllerActionDescriptor != null)
+                    {
+                        return new[] { controllerActionDescriptor.ControllerName };
+                    }
+
+                    throw new InvalidOperationException("Unable to determine tag for endpoint.");
+                });
+                c.DocInclusionPredicate((name, api) => true);
 
                 foreach (var assembly in assemblies)
                 {

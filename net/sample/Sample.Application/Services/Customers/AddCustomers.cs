@@ -12,6 +12,7 @@ namespace Sample.Application.Services.Customers
 {
     [Route("api/customers")]
     [TenantAuthorize("enterprise")]
+    [ApiExplorerSettings(GroupName = "Custom Group Name")]
     public class AddCustomers : HttpService
         .WithParameters<CustomerDto>
         .WithResponse<CustomerDto>
