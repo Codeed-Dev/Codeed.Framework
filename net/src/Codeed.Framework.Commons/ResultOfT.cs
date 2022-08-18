@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Codeed.Framework.Commons
 {
-    public class Result<T> : IResult<T>
+    public class Result<T> : IResultOfT<T>
     {
         public static implicit operator bool(Result<T> result)
         {

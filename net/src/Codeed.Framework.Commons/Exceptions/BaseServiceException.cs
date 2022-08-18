@@ -4,22 +4,22 @@ namespace Codeed.Framework.Commons.Exceptions
 {
     public abstract class BaseServiceException : Exception, IHttpException
     {
-        public BaseServiceException() : base()
+        protected BaseServiceException()
         {
 
         }
 
-        public BaseServiceException(string errorMessage) : base(errorMessage)
+        protected BaseServiceException(string errorMessage) : base(errorMessage)
         {
 
         }
 
-        public BaseServiceException(string errorMessage, string code) : base(errorMessage)
+        protected BaseServiceException(string errorMessage, string code) : base(errorMessage)
         {
             Code= code;
         }
 
-        public BaseServiceException(string errorMessage, string code, object parameters) : base(errorMessage)
+        protected BaseServiceException(string errorMessage, string code, object parameters) : base(errorMessage)
         {
             Code = code;
             Parameters = parameters;

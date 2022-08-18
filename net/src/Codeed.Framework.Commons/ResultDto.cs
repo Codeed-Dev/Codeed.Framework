@@ -2,7 +2,7 @@
 
 namespace Codeed.Framework.Commons
 {
-    public class ResultDto<T> : IResult<T>
+    public class ResultDto<T> : IResultOfT<T>
     {
         public T Value { get; set; }
 

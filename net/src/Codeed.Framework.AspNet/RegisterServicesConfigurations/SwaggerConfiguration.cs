@@ -75,14 +75,16 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
                     throw new InvalidOperationException("Unable to determine tag for endpoint.");
                 });
-                c.DocInclusionPredicate((name, api) => true);
+                c.DocInclusionPredicate((_, _) => true);
 
                 foreach (var assembly in assemblies)
                 {
                     var xmlFile = $"{assembly.GetName().Name}.xml";
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     if (File.Exists(xmlPath))
+                    {
                         c.IncludeXmlComments(xmlPath);
+                    }
                 }
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

@@ -4,7 +4,7 @@ namespace Codeed.Framework.Commons.Exceptions
 {
     public class ServiceNotFoundException : BaseServiceException
     {
-        public ServiceNotFoundException() : base()
+        public ServiceNotFoundException()
         {
 
         }

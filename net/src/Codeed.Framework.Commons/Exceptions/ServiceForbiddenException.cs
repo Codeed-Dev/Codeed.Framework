@@ -4,7 +4,7 @@ namespace Codeed.Framework.Commons.Exceptions
 {
     public class ServiceForbiddenException : BaseServiceException
     {
-        public ServiceForbiddenException() : base()
+        public ServiceForbiddenException()
         {
 
         }

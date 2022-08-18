@@ -75,7 +75,9 @@ namespace Codeed.Framework.Data
         public async Task<bool> Commit(Transaction transaction, CancellationToken cancellationToken)
         {
             if (!IsCurrentTransaction(transaction))
+            {
                 return true;
+            }
 
             var success = await SaveChangesAsync(cancellationToken) > 0;
             return success;

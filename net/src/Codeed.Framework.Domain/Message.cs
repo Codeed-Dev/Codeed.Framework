@@ -9,7 +9,7 @@ namespace Codeed.Framework.Domain
     {
         public string MessageType { get; protected set; }
 
-        protected virtual bool Equatable { get; } = false;
+        protected virtual bool Equatable { get; }
 
         protected Message()
         {

@@ -60,7 +60,7 @@ namespace Codeed.Framework.Domain.Tests
             var equatableEvent1 = new EquatableEventWithoutProperties();
             var equatableEvent2 = new EquatableEventWithoutProperties();
 
-            var events = new List<Event>()
+            var events = new List<Event>
             {
                 notEquatableEvent1,
                 notEquatableEvent2,

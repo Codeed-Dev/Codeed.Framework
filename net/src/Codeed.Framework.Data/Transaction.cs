@@ -6,7 +6,7 @@ namespace Codeed.Framework.Data
 {
     public class Transaction : IDisposable
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         internal Transaction(IUnitOfWork unitOfWork)
         {
