@@ -24,6 +24,8 @@ namespace Codeed.Framework.Data
             _tenantService = tenantService;
         }
 
+        public string Tenant => _tenantService.Tenant;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<Event>();
@@ -53,12 +55,14 @@ namespace Codeed.Framework.Data
 
         private void ApplyTenantFilter(ModelBuilder modelBuilder)
         {
+            var currentTenantIdMemberInfo = GetType().GetMember(nameof(Tenant)).FirstOrDefault();
+
             foreach (var entityType in modelBuilder.GetEntities<IEntityWithTenant>())
             {
                 var tenantProperty = entityType.FindProperty(nameof(IEntityWithTenant.Tenant));
                 var parameter = Expression.Parameter(entityType.ClrType, "tenant");
                 var filter = Expression.Lambda(Expression.Equal(
-                    Expression.Property(parameter, tenantProperty.PropertyInfo), Expression.Constant(_tenantService.Tenant)), parameter);
+                    Expression.Property(parameter, tenantProperty.PropertyInfo), Expression.MakeMemberAccess(Expression.Constant(this), currentTenantIdMemberInfo)), parameter);
                 entityType.SetQueryFilter(filter);
             }
         }
