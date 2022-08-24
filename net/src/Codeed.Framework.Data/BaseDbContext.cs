@@ -119,6 +119,11 @@ namespace Codeed.Framework.Data
                 return result;
             }
 
+            // Limpa a transaction atual para que os eventos sejam executados independente de uma transaction.
+            // após a execução dos eventos, volta com a transaction atual para controle dela
+            var currentTransaction = _currentTransaction;
+            _currentTransaction = null;
+
             foreach (var entity in entitiesWithEvents)
             {
                 var events = entity.Events.Distinct().ToArray();
@@ -128,6 +133,8 @@ namespace Codeed.Framework.Data
                     await _mediator.Publish(domainEvent).ConfigureAwait(false);
                 }
             }
+
+            _currentTransaction = currentTransaction;
 
             return result;
         }
