@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -8,6 +9,6 @@ namespace Codeed.Framework.AspNet.Context
     {
         string Name { get; }
 
-        void RegisterServices(IServiceCollection services, Action<DbContextOptionsBuilder> dbContextOptionsBuilder);
+        void RegisterServices(IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder> dbContextOptionsBuilder);
     }
 }

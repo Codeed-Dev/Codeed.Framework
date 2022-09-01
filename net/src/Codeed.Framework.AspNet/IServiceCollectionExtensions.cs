@@ -12,12 +12,13 @@ using Codeed.Framework.Services;
 using MediatR;
 using Codeed.Framework.AspNet.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Codeed.Framework.AspNet
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection RegisterCodeedFrameworkDependencies(this IServiceCollection services, string name, string assemblyPattern, Action<RegisterCodeedFrameworkOptions> configure)
+        public static IServiceCollection RegisterCodeedFrameworkDependencies(this IServiceCollection services, IConfiguration configuration, string name, string assemblyPattern, Action<RegisterCodeedFrameworkOptions> configure)
         {
             var options = new RegisterCodeedFrameworkOptions(name, assemblyPattern);
             configure(options);
@@ -34,7 +35,7 @@ namespace Codeed.Framework.AspNet
                 services.RegisterServicesFromAssemblies(assemblies);
                 services.AddAutoMapper(assemblies.ToArray());
                 services.RegisterEnvironment();
-                services.RegisterContexts(assemblies, options.DbContextOptionsBuilder);
+                services.RegisterContexts(configuration, assemblies, options.DbContextOptionsBuilder);
 
                 services.RegisterCors();
                 services.RegisterApiControllers(assemblies);
@@ -44,22 +45,22 @@ namespace Codeed.Framework.AspNet
             return services;
         }
 
-        public static IServiceCollection RegisterContexts(this IServiceCollection services, IEnumerable<Assembly> assemblies, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
+        public static IServiceCollection RegisterContexts(this IServiceCollection services, IConfiguration configuration, IEnumerable<Assembly> assemblies, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
         {
             foreach (var assembly in assemblies)
             {
-                services.RegisterContexts(assembly, dbContextOptionsBuilder);
+                services.RegisterContexts(configuration, assembly, dbContextOptionsBuilder);
             }
             return services;
         }
 
-        public static IServiceCollection RegisterContexts(this IServiceCollection services, Assembly assembly, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
+        public static IServiceCollection RegisterContexts(this IServiceCollection services, IConfiguration configuration, Assembly assembly, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
         {
             var contexts = assembly.GetTypes().Where(t => typeof(IContext).IsAssignableFrom(t) && !t.IsAbstract);
             foreach (var contextType in contexts)
             {
                 var context = (IContext)Activator.CreateInstance(contextType);
-                context.RegisterServices(services, dbContextOptionsBuilder);
+                context.RegisterServices(services, configuration, dbContextOptionsBuilder);
             }
 
             return services;

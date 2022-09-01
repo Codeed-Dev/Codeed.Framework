@@ -1,6 +1,7 @@
 ﻿using Codeed.Framework.AspNet.Context;
 using Codeed.Framework.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sample.Data;
 using Sample.Domain;
@@ -12,7 +13,7 @@ namespace Sample.CrossCutting
     {
         public string Name => "Sample";
 
-        public void RegisterServices(IServiceCollection services, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
+        public void RegisterServices(IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
         {
             services.RegisterRepository<ICustomerRepository, CustomerRepository, Customer>();
             services.AddDbContext<SampleDbContext>(dbContextOptionsBuilder);

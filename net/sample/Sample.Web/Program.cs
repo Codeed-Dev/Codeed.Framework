@@ -10,7 +10,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddSerilogApi("Sample");
 builder.Host.UseSerilog(Log.Logger);
-builder.Services.RegisterCodeedFrameworkDependencies("Sample", "Sample", (opt) =>
+builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sample", "Sample", (opt) =>
 {
     opt.ConfigureTenant<TenantService>();
     opt.ConfigureFirebaseAuthentication("codeedint", opt =>
