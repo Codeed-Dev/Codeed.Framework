@@ -8,6 +8,8 @@ using System.Linq.Expressions;
 using Codeed.Framework.Tenant;
 using Codeed.Framework.Data.Extensions;
 using Codeed.Framework.Domain.Exceptions;
+using System.Collections.Generic;
+using System;
 
 namespace Codeed.Framework.Data
 {
@@ -119,25 +121,45 @@ namespace Codeed.Framework.Data
                 return result;
             }
 
-            // Limpa a transaction atual para que os eventos sejam executados independente de uma transaction.
-            // após a execução dos eventos, volta com a transaction atual para controle dela
-            var currentTransaction = _currentTransaction;
-            _currentTransaction = null;
+            var events = Events.ToList();
 
             foreach (var entity in entitiesWithEvents)
             {
-                var events = entity.Events.Distinct().ToArray();
                 entity.ClearDomainEvents();
-                foreach (var domainEvent in events)
+            }
+
+            var publishEventErrors = new List<Exception>();
+            foreach (var domainEvent in events)
+            {
+                try
                 {
                     await _mediator.Publish(domainEvent).ConfigureAwait(false);
                 }
+                catch (Exception e)
+                {
+                    publishEventErrors.Add(e);
+                }
             }
 
-            _currentTransaction = currentTransaction;
+            var firstError = publishEventErrors.FirstOrDefault();
+            if (firstError != null)
+            {
+                throw firstError;
+            }
+
+            // Caso tenha uma transaction e tenha executado eventos, então faz um novo commit após a execução dos eventos
+            // para salvar os possívels handlers
+            if (_currentTransaction != null && events.Any())
+            {
+                await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            }
 
             return result;
         }
+
+        public IEnumerable<Event> Events => ChangeTracker.Entries<EntityWithoutTenant>()
+                                                         .Select(e => e.Entity)
+                                                         .SelectMany(e => e.Events.Distinct());
 
         private void ValidateTenant()
         {
