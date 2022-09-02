@@ -3,6 +3,7 @@ using Codeed.Framework.AspNet.Attributes;
 
 namespace Codeed.Framework.AspNet
 {
+    [Route("api/[controller]")]
     [ApiController]
     [ResultResponse]
     [ValidateModelState]
