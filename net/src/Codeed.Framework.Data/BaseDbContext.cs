@@ -151,7 +151,7 @@ namespace Codeed.Framework.Data
             // para salvar os possívels handlers
             if (_currentTransaction != null && events.Any())
             {
-                await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                await SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             }
 
             return result;
@@ -162,15 +162,15 @@ namespace Codeed.Framework.Data
                                                          .SelectMany(e => e.Events)
                                                          .Distinct();
 
-        private void ValidateTenant()
+        protected virtual void ValidateTenant()
         {
-            var entitiesWithoutTenant = ChangeTracker.Entries<IEntityWithTenant>()
-                                                     .Where(e => e.State == EntityState.Added)
-                                                     .Select(e => e.Entity)
-                                                     .Where(e => string.IsNullOrEmpty(e.Tenant));
+            var entitiesWithTenant = ChangeTracker.Entries<IEntityWithTenant>()
+                                                  .Where(e => e.State == EntityState.Added)
+                                                  .Select(e => e.Entity)
+                                                  .Where(e => string.IsNullOrEmpty(e.Tenant));
 
 
-            foreach (var entity in entitiesWithoutTenant)
+            foreach (var entity in entitiesWithTenant)
             {
                 var tenantProperty = entity.GetType().GetProperty(nameof(IEntityWithTenant.Tenant));
                 tenantProperty.SetValue(entity, _tenantService.Tenant, null);
