@@ -159,7 +159,8 @@ namespace Codeed.Framework.Data
 
         public IEnumerable<Event> Events => ChangeTracker.Entries<EntityWithoutTenant>()
                                                          .Select(e => e.Entity)
-                                                         .SelectMany(e => e.Events.Distinct());
+                                                         .SelectMany(e => e.Events)
+                                                         .Distinct();
 
         private void ValidateTenant()
         {
