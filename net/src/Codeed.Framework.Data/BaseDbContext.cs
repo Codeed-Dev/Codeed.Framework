@@ -27,6 +27,7 @@ namespace Codeed.Framework.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             ApplyTenantFilter(modelBuilder);
         }
 
