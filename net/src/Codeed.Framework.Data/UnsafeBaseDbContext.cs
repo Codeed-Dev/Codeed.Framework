@@ -14,7 +14,7 @@ using System;
 namespace Codeed.Framework.Data
 {
     public abstract class UnsafeBaseDbContext<T> : DbContext, IUnitOfWork
-        where T : BaseDbContext<T>
+        where T : UnsafeBaseDbContext<T>
     {
         private readonly IMediator _mediator;
         private Transaction _currentTransaction;
