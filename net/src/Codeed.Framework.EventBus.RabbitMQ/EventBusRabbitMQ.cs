@@ -12,7 +12,7 @@ using System;
 using System.Net.Sockets;
 using System.Text;
 
-namespace EventBusRabbitMQ
+namespace Codeed.Framework.EventBus.RabbitMQ
 {
     public class EventBusRabbitMQ : IEventBus, IDisposable
     {
@@ -26,12 +26,12 @@ namespace EventBusRabbitMQ
         private string _queueName;
 
         public EventBusRabbitMQ(
-            IRabbitMQPersistentConnection persistentConnection, 
+            IRabbitMQPersistentConnection persistentConnection,
             ILogger<EventBusRabbitMQ> logger,
-            IServiceCollection serviceCollection, 
-            IEventBusSubscriptionsManager subsManager, 
+            IServiceCollection serviceCollection,
+            IEventBusSubscriptionsManager subsManager,
             string brokerName,
-            string queueName = null, 
+            string queueName = null,
             int retryCount = 5)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
@@ -74,7 +74,7 @@ namespace EventBusRabbitMQ
                 _persistentConnection.TryConnect();
             }
 
-            var policy = RetryPolicy.Handle<BrokerUnreachableException>()
+            var policy = Policy.Handle<BrokerUnreachableException>()
                 .Or<SocketException>()
                 .WaitAndRetry(_retryCount, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, time) =>
                 {
