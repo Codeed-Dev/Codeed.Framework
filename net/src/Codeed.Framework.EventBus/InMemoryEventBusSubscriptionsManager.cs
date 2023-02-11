@@ -1,4 +1,6 @@
 ﻿using Codeed.Framework.Domain;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Codeed.Framework.EventBus
 {
@@ -132,6 +134,12 @@ namespace Codeed.Framework.EventBus
         public string GetEventKey<T>()
         {
             return typeof(T).Name;
+        }
+
+        public string GetEventKey<T>(T @event)
+            where T : Event
+        {
+            return @event.GetType().Name;
         }
     }
 }

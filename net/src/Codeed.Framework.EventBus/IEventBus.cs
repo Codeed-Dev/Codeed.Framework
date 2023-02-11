@@ -4,7 +4,7 @@ namespace Codeed.Framework.EventBus
 {
     public interface IEventBus
     {
-        void Publish<TEvent>(TEvent @event)
+        Task Publish<TEvent>(TEvent @event)
              where TEvent : Event;
 
         void Subscribe<TEvent, TEventHandler>()

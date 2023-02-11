@@ -8,6 +8,7 @@ using Polly.Retry;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
+using System;
 using System.Net.Sockets;
 using System.Text;
 
@@ -66,7 +67,7 @@ namespace EventBusRabbitMQ
         }
 
 
-        public void Publish<TEvent>(TEvent @event) where TEvent : Event
+        public Task Publish<TEvent>(TEvent @event) where TEvent : Event
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -80,7 +81,7 @@ namespace EventBusRabbitMQ
                     _logger.LogWarning(ex, "Could not publish event: {EventId} after {Timeout}s ({ExceptionMessage})", @event.Id, $"{time.TotalSeconds:n1}", ex.Message);
                 });
 
-            var eventName = @event.GetType().Name;
+            var eventName = _subsManager.GetEventKey(@event);
 
             _logger.LogTrace("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id, eventName);
 
@@ -108,6 +109,8 @@ namespace EventBusRabbitMQ
                         body: body);
                 });
             }
+
+            return Task.CompletedTask;
         }
 
         public void Subscribe<T, TH>()
@@ -216,28 +219,26 @@ namespace EventBusRabbitMQ
         {
             _logger.LogTrace("Processing RabbitMQ event: {EventName}", eventName);
 
-            if (_subsManager.HasSubscriptionsForEvent(eventName))
+            if (!_subsManager.HasSubscriptionsForEvent(eventName))
             {
-                var subscriptions = _subsManager.GetHandlersForEvent(eventName);
-                foreach (var subscription in subscriptions)
-                {
-                    var serviceProvider = _serviceCollection.BuildServiceProvider();
-                    using (var serviceScope = serviceProvider.CreateScope())
-                    {
-                        var handler = serviceScope.ServiceProvider.GetService(subscription.HandlerType);
-                        if (handler == null) continue;
-                        var eventType = _subsManager.GetEventTypeByName(eventName);
-                        var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-                        var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
-
-                        await Task.Yield();
-                        await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
-                    }
-                }
+                return;
             }
-            else
+
+            var subscriptions = _subsManager.GetHandlersForEvent(eventName);
+            foreach (var subscription in subscriptions)
             {
-                _logger.LogWarning("No subscription for RabbitMQ event: {EventName}", eventName);
+                var serviceProvider = _serviceCollection.BuildServiceProvider();
+                using (var serviceScope = serviceProvider.CreateScope())
+                {
+                    var handler = ActivatorUtilities.CreateInstance(serviceProvider, subscription.HandlerType);
+                    if (handler == null) continue;
+                    var eventType = _subsManager.GetEventTypeByName(eventName);
+                    var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                    var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
+
+                    await Task.Yield();
+                    await (Task)concreteType.GetMethod(nameof(IEventHandler<Event>.Handle)).Invoke(handler, new object[] { integrationEvent });
+                }
             }
         }
 

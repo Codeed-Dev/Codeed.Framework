@@ -1,42 +1,51 @@
 ﻿using Codeed.Framework.Domain;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Codeed.Framework.EventBus
 {
     public class InMemoryEventBus : IEventBus
     {
+        private readonly IEventBusSubscriptionsManager _eventBusSubscriptionsManager;
         private readonly IServiceCollection _serviceCollection;
-        private readonly IServiceScope _serviceScope;
 
-        public InMemoryEventBus(IServiceCollection serviceCollection, IServiceScope serviceScope)
+        public InMemoryEventBus(IServiceCollection serviceCollection, IEventBusSubscriptionsManager eventBusSubscriptionsManager)
         {
+            _eventBusSubscriptionsManager = eventBusSubscriptionsManager;
             _serviceCollection = serviceCollection;
-            _serviceScope = serviceScope;
         }
 
-        public void Publish<TEvent>(TEvent @event)
+        public async Task Publish<TEvent>(TEvent @event)
             where TEvent : Event
         {
-            var handlers = _serviceScope.ServiceProvider.GetServices<IEventHandler<TEvent>>();
-
-            var tasks = new List<Task>();
-            foreach (var handler in handlers)
+            var eventName = _eventBusSubscriptionsManager.GetEventKey(@event);
+            if (!_eventBusSubscriptionsManager.HasSubscriptionsForEvent(eventName))
             {
-                tasks.Add(handler.Handle(@event));
+                return;
             }
 
-            Task.WhenAll(tasks);
+            var handlers = _eventBusSubscriptionsManager.GetHandlersForEvent(eventName);
+
+            foreach (var subscription in handlers)
+            {
+                var serviceProvider = _serviceCollection.BuildServiceProvider();
+                using (var serviceScope = serviceProvider.CreateScope())
+                {
+                    var handler = ActivatorUtilities.CreateInstance(serviceProvider, subscription.HandlerType);
+                    if (handler == null) continue;
+                    var eventType = _eventBusSubscriptionsManager.GetEventTypeByName(eventName);
+                    var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
+
+                    await Task.Yield();
+                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { @event });
+                }
+            }
         }
 
-        public void Subscribe<Tevent, TEventHandler>()
-            where Tevent : Event
-            where TEventHandler : IEventHandler<Tevent>
+        public void Subscribe<TEvent, TEventHandler>()
+            where TEvent : Event
+            where TEventHandler : IEventHandler<TEvent>
         {
-            _serviceCollection.AddScoped(typeof(TEventHandler));
+            _eventBusSubscriptionsManager.AddSubscription<TEvent, TEventHandler>();
         }
     }
 }
