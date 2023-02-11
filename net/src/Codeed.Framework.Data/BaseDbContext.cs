@@ -1,5 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,8 +7,7 @@ using System.Linq.Expressions;
 using Codeed.Framework.Tenant;
 using Codeed.Framework.Data.Extensions;
 using Codeed.Framework.Domain.Exceptions;
-using System.Collections.Generic;
-using System;
+using Codeed.Framework.EventBus;
 
 namespace Codeed.Framework.Data
 {
@@ -18,7 +16,7 @@ namespace Codeed.Framework.Data
     {
         private readonly ITenantService _tenantService;
 
-        protected BaseDbContext(DbContextOptions<T> options, IMediator mediator, ITenantService tenantService) : base(options, mediator)
+        protected BaseDbContext(DbContextOptions<T> options, IEventBus eventBus, ITenantService tenantService) : base(options, eventBus)
         {
             _tenantService = tenantService;
         }

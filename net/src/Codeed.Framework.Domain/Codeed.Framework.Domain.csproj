@@ -21,10 +21,6 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Codeed.Framework.Commons\Codeed.Framework.Commons.csproj" />
   </ItemGroup>
 

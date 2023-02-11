@@ -13,6 +13,7 @@ using MediatR;
 using Codeed.Framework.AspNet.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Codeed.Framework.EventBus;
 
 namespace Codeed.Framework.AspNet
 {
@@ -23,14 +24,16 @@ namespace Codeed.Framework.AspNet
             var options = new RegisterCodeedFrameworkOptions(name, assemblyPattern);
             configure(options);
 
-
             services.GetAllProjectsAssemblies(options.AssemblyPattern, (assemblies) =>
             {
+                services.AddSingleton<IEnumerable<Assembly>>(assemblies);
+
                 foreach (var serviceConfiguration in options.ServicesConfigurations)
                 {
                     serviceConfiguration.RegisterServices(services, assemblies);
                 }
 
+                services.AddSingleton<IEnumerable<Assembly>>(assemblies);
                 services.AddMediatR(assemblies.ToArray());
                 services.RegisterServicesFromAssemblies(assemblies);
                 services.AddAutoMapper(assemblies.ToArray());

@@ -1,4 +1,5 @@
 using Codeed.Framework.AspNet;
+using Codeed.Framework.AspNet.EventBus;
 using Codeed.Framework.AspNet.RegisterServicesConfigurations;
 using Codeed.Framework.AspNet.Serilog;
 using Microsoft.EntityFrameworkCore;
@@ -42,9 +43,11 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sam
     {
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
+    opt.ConfigureEventBus();
 });
 
 var app = builder.Build();
+app.SubscribeEventHandlers();
 
 app.UseExceptionHandler("/error");
 

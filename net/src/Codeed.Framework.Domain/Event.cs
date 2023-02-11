@@ -1,10 +1,9 @@
-﻿using MediatR;
-using System;
+﻿using System;
 using System.Text.Json.Serialization;
 
 namespace Codeed.Framework.Domain
 {
-    public abstract class Event : Message, INotification
+    public abstract class Event : Message
     {
         public DateTime Timestamp { get; private set; }
 

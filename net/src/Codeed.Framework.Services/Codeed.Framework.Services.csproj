@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
+    <ProjectReference Include="..\Codeed.Framework.EventBus\Codeed.Framework.EventBus.csproj" />
   </ItemGroup>
 
 </Project>

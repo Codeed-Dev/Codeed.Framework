@@ -1,27 +1,24 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Codeed.Framework.Domain;
-using System.Linq.Expressions;
-using Codeed.Framework.Tenant;
 using Codeed.Framework.Data.Extensions;
-using Codeed.Framework.Domain.Exceptions;
 using System.Collections.Generic;
 using System;
+using Codeed.Framework.EventBus;
 
 namespace Codeed.Framework.Data
 {
     public abstract class UnsafeBaseDbContext<T> : DbContext, IUnitOfWork
         where T : UnsafeBaseDbContext<T>
     {
-        private readonly IMediator _mediator;
+        private readonly IEventBus _eventBus;
         private Transaction _currentTransaction;
 
-        protected UnsafeBaseDbContext(DbContextOptions<T> options, IMediator mediator) : base(options)
+        protected UnsafeBaseDbContext(DbContextOptions<T> options, IEventBus eventBus) : base(options)
         {
-            _mediator = mediator;
+            _eventBus = eventBus;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -95,7 +92,7 @@ namespace Codeed.Framework.Data
 
             int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            if (_mediator == null)
+            if (_eventBus == null)
             {
                 return result;
             }
@@ -112,7 +109,7 @@ namespace Codeed.Framework.Data
             {
                 try
                 {
-                    await _mediator.Publish(domainEvent).ConfigureAwait(false);
+                    await _eventBus.Publish(domainEvent).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {

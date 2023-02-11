@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Codeed.Framework.EventBus;
+using Codeed.Framework.EventBus.RabbitMQ;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -7,17 +9,16 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 {
     public static class RegisterCodeedFrameworkEventBusConfigurationExtensions
     {
-        public static void ConfigureFirebaseAuthentication(this RegisterCodeedFrameworkOptions codeedOptions, string firebaseProjectId)
+        public static void ConfigureEventBus(this RegisterCodeedFrameworkOptions codeedOptions)
         {
-            codeedOptions.ConfigureEventBus(firebaseProjectId, null);
+            codeedOptions.ConfigureEventBus(null);
         }
 
         public static void ConfigureEventBus(
             this RegisterCodeedFrameworkOptions codeedOptions, 
-            string firebaseProjectId, 
-            Action<RegisterCodeedFrameworkFirebaseAuthenticationOptions> configure)
+            Action<RegisterEventBusConfiguration> configure)
         {
-            var options = new RegisterCodeedFrameworkFirebaseAuthenticationOptions(firebaseProjectId);
+            var options = new RegisterEventBusConfiguration();
             if (configure != null)
             {
                 configure(options);
@@ -27,16 +28,30 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
         }
     }
 
-    public class RegisterCodeedFrameworkEventBusConfiguration : ICodeedServiceConfiguration
+    public class RegisterEventBusConfiguration : ICodeedServiceConfiguration
     {
-        public RegisterCodeedFrameworkEventBusConfiguration()
+        private RabbitMQConfiguration _rabbitMQConfiguration;
+
+        public RegisterEventBusConfiguration()
         {
 
         }
 
+        public void ConfigureRabbitMQ(RabbitMQConfiguration rabbitMQConfiguration)
+        {
+            _rabbitMQConfiguration = rabbitMQConfiguration;
+        }
+
         public void RegisterServices(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            
+            if (_rabbitMQConfiguration != null)
+            {
+                services.RegisterRabbitMqEventBus(_rabbitMQConfiguration);
+            }
+            else
+            {
+                services.RegisterInMemoryEventBus();
+            }
         }
     }
 }

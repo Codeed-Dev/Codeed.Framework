@@ -1,4 +1,4 @@
-﻿using MediatR;
+﻿using Codeed.Framework.EventBus;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Scaffolding.Web;
@@ -21,8 +21,8 @@ namespace Codeed.Framework.Services
         {
             using (var scope = _serviceProvider.CreateScope())
             {
-                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                await mediator.Publish(new ApplicationStartedEvent());
+                var eventBus = scope.ServiceProvider.GetRequiredService<IEventBus>();
+                await eventBus.Publish(new ApplicationStartedEvent());
             }
         }
 

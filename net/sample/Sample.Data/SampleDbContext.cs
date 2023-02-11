@@ -1,14 +1,13 @@
 ﻿using Codeed.Framework.Data;
+using Codeed.Framework.EventBus;
 using Codeed.Framework.Tenant;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Sample.Domain;
 
 namespace Sample.Data
 {
     public class SampleDbContext : BaseDbContext<SampleDbContext>
     {
-        public SampleDbContext(DbContextOptions<SampleDbContext> options, IMediator mediator, ITenantService tenantService) : base(options, mediator, tenantService)
+        public SampleDbContext(DbContextOptions<SampleDbContext> options, IEventBus eventBus, ITenantService tenantService) : base(options, eventBus, tenantService)
         {
         }
     }
