@@ -14,6 +14,9 @@ using Codeed.Framework.AspNet.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Codeed.Framework.EventBus;
+using Codeed.Framework.Concurrency;
+using Codeed.Framework.Domain.Validations;
+using CodeedMeta.Core.Application.Maps;
 
 namespace Codeed.Framework.AspNet
 {
@@ -33,19 +36,38 @@ namespace Codeed.Framework.AspNet
                     serviceConfiguration.RegisterServices(services, assemblies);
                 }
 
-                services.AddSingleton<IEnumerable<Assembly>>(assemblies);
+                services.RegisterLocker();
                 services.AddMediatR(assemblies.ToArray());
                 services.RegisterServicesFromAssemblies(assemblies);
                 services.AddAutoMapper(assemblies.ToArray());
+                services.AddAutoMapper(typeof(DateTimeMaps).Assembly);
                 services.RegisterEnvironment();
                 services.RegisterContexts(configuration, assemblies, options.DbContextOptionsBuilder);
-
+                services.RegisterValidations(assemblies);
                 services.RegisterCors();
                 services.RegisterApiControllers(assemblies);
             });
 
-
             return services;
+        }
+
+        private static void RegisterLocker(this IServiceCollection services)
+        {
+            services.AddScoped<ITenantLocker, TenantLocker>();
+            services.AddScoped<ILocker, Locker>();
+        }
+
+        private static void RegisterValidations(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+        {
+            services.Scan(scan =>
+            {
+                scan.FromAssemblies(assemblies)
+                    .AddClasses(classes => classes.AssignableTo(typeof(IUpdateValidation<>)))
+                    .AddClasses(classes => classes.AssignableTo(typeof(IDeleteValidation<>)))
+                    .AddClasses(classes => classes.AssignableTo(typeof(ICreateValidation<>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime();
+            });
         }
 
         public static IServiceCollection RegisterContexts(this IServiceCollection services, IConfiguration configuration, IEnumerable<Assembly> assemblies, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)

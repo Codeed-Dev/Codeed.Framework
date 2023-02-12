@@ -39,6 +39,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Codeed.Framework.Commons\Codeed.Framework.Commons.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Concurrency\Codeed.Framework.Concurrency.csproj" />
 	  <ProjectReference Include="..\Codeed.Framework.Data\Codeed.Framework.Data.csproj" />
 	  <ProjectReference Include="..\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
 	  <ProjectReference Include="..\Codeed.Framework.Environment\Codeed.Framework.Environment.csproj" />

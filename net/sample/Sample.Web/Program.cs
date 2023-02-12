@@ -45,6 +45,7 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sam
     });
     opt.ConfigureEventBus();
     opt.ConfigureMongoDb(builder.Configuration.GetSection("MongoDb"));
+    opt.ConfigureBackgroundTasks();
 });
 
 var app = builder.Build();

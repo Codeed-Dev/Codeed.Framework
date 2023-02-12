@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net6.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Codeed</Authors>
@@ -13,19 +13,16 @@
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<Description>Codeed Framework</Description>
 	</PropertyGroup>
+
 	<ItemGroup>
-		<None Include="..\..\LICENSE">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
+	  <None Include="..\..\LICENSE" Link="LICENSE">
+	    <PackagePath></PackagePath>
+	    <Pack>True</Pack>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	  <ProjectReference Include="..\Codeed.Framework.Tenant\Codeed.Framework.Tenant.csproj" />
 	</ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Codeed.Framework.AspNet\Codeed.Framework.AspNet.csproj" />
-    <ProjectReference Include="..\Codeed.Framework.Services\Codeed.Framework.Services.csproj" />
-  </ItemGroup>
 
 </Project>
