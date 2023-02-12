@@ -22,7 +22,7 @@ namespace CodeedMeta.Core.Application.Services
                     private readonly IMapper _mapper;
                     private readonly IEnumerable<ICreateValidation<TEntity>> _validations;
 
-                    public Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<ICreateValidation<TEntity>> validations)
+                    protected Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<ICreateValidation<TEntity>> validations)
                     {
                         _repository = repository;
                         _mapper = mapper;
@@ -33,7 +33,9 @@ namespace CodeedMeta.Core.Application.Services
                     public override async Task<TDtoResponse> ExecuteAsync(TDtoRequest request, CancellationToken cancellationToken)
                     {
                         if (request == null)
+                        {
                             throw new ArgumentNullException(nameof(request));
+                        }
 
                         request.Validate();
                         var entity = await CreateEntity(request, cancellationToken);

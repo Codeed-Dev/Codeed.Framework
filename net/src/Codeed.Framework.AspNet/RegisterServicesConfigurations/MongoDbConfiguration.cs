@@ -14,9 +14,16 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
     public static class RegisterCodeedFrameworkMongoDbConfigurationExtensions
     {
         public static void ConfigureMongoDb(
-            this RegisterCodeedFrameworkOptions codeedOptions, 
+            this RegisterCodeedFrameworkOptions codeedOptions,
+            IConfigurationSection section)
+        {
+            codeedOptions.ConfigureMongoDb(section, null);
+        }
+
+        public static void ConfigureMongoDb(
+            this RegisterCodeedFrameworkOptions codeedOptions,
             IConfigurationSection section,
-            Action<RegisterMongoDbConfiguration> configure = null)
+            Action<RegisterMongoDbConfiguration> configure)
         {
             var options = new RegisterMongoDbConfiguration(section);
             if (configure != null)
@@ -29,7 +36,7 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
     public class RegisterMongoDbConfiguration : ICodeedServiceConfiguration
     {
-        private IConfigurationSection _section;
+        private readonly IConfigurationSection _section;
 
         public RegisterMongoDbConfiguration(IConfigurationSection section)
         {

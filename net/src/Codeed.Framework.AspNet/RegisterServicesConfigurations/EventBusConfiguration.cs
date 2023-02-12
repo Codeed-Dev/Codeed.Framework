@@ -32,11 +32,6 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
     {
         private RabbitMQConfiguration _rabbitMQConfiguration;
 
-        public RegisterEventBusConfiguration()
-        {
-
-        }
-
         public void ConfigureRabbitMQ(RabbitMQConfiguration rabbitMQConfiguration)
         {
             _rabbitMQConfiguration = rabbitMQConfiguration;

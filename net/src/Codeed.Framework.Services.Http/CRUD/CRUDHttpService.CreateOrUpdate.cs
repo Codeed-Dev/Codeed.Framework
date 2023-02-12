@@ -24,7 +24,7 @@ namespace CodeedMeta.Core.Application.Services
                     private readonly IMapper _mapper;
                     private readonly IEnumerable<ICreateValidation<TEntity>> _validations;
 
-                    public Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<ICreateValidation<TEntity>> validations)
+                    protected Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<ICreateValidation<TEntity>> validations)
                     {
                         _repository = repository;
                         _mapper = mapper;

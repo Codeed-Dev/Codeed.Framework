@@ -31,7 +31,11 @@ namespace Codeed.Framework.EventBus
                 using (var serviceScope = serviceProvider.CreateScope())
                 {
                     var handler = ActivatorUtilities.CreateInstance(serviceProvider, subscription.HandlerType);
-                    if (handler == null) continue;
+                    if (handler == null)
+                    {
+                        continue;
+                    }
+
                     var eventType = _eventBusSubscriptionsManager.GetEventTypeByName(eventName);
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
 

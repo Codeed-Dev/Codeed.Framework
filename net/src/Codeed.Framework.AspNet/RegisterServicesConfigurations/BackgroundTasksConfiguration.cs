@@ -30,11 +30,6 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
     public class RegisterBackgroundTasksConfiguration : ICodeedServiceConfiguration
     {
-        public RegisterBackgroundTasksConfiguration()
-        {
-
-        }
-
         public void RegisterServices(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();

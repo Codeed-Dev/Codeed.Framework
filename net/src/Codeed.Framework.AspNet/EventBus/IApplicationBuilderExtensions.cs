@@ -38,7 +38,9 @@ namespace Codeed.Framework.AspNet.EventBus
         private static bool HasEventHandler(System.Type type)
         {
             if (type.IsAbstract)
+            {
                 return false;
+            }
 
             return type.GetInterfaces()
                        .ToList()

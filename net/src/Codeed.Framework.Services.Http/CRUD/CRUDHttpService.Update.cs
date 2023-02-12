@@ -24,7 +24,7 @@ namespace CodeedMeta.Core.Application.Services
                     private readonly IMapper _mapper;
                     private readonly IEnumerable<IUpdateValidation<TEntity>> _validations;
 
-                    public Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<IUpdateValidation<TEntity>> validations)
+                    protected Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<IUpdateValidation<TEntity>> validations)
                     {
                         _repository = repository;
                         _mapper = mapper;
@@ -35,13 +35,17 @@ namespace CodeedMeta.Core.Application.Services
                     public override async Task<TDtoResponse> ExecuteAsync(Guid id, TDtoRequest request, CancellationToken cancellationToken)
                     {
                         if (request == null)
+                        {
                             throw new ArgumentNullException(nameof(request));
+                        }
 
                         request.Validate();
                         var entity = await FindEntity(id, cancellationToken);
 
                         if (entity == null)
+                        {
                             throw new ServiceNotFoundException("The record was not found");
+                        }
 
                         await UpdateEntity(request, entity, cancellationToken);
                         await Validate(entity, cancellationToken);

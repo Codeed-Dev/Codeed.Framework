@@ -41,10 +41,10 @@ namespace System
             return DateOnly.FromDateTime(datetime);
         }
 
-        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        public static DateTime StartOfWeek(this DateTime dt, DayOfWeek dayOfWeek)
         {
             var sunday = dt.StartOfWeek();
-            return sunday.AddDays((int)startOfWeek).Date;
+            return sunday.AddDays((int)dayOfWeek).Date;
         }
 
         public static DateTime StartOfWeek(this DateTime dt)

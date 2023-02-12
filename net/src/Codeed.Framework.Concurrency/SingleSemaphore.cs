@@ -12,7 +12,7 @@ namespace Codeed.Framework.Concurrency
 
         public SingleSemaphore(string name)
         {
-            _semaphore = _semaphores.GetOrAdd(name, (n) => new SemaphoreSlim(1, 1));
+            _semaphore = _semaphores.GetOrAdd(name, (_) => new SemaphoreSlim(1, 1));
         }
 
         public void Dispose()

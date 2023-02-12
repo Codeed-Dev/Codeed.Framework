@@ -1,6 +1,6 @@
 ﻿namespace Codeed.Framework.Domain.Validations
 {
-    public interface IValidationOfT<T>
+    public interface IValidationOfT<in T>
     {
         int Priority { get; }
 

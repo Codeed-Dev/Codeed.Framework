@@ -11,7 +11,9 @@ namespace CodeedMeta.SharedContext.BackgroundTasks
         public void EnqueueTask(Func<IServiceScopeFactory, CancellationToken, Task> task)
         {
             if (task == null)
+            {
                 return;
+            }
 
             _items.Enqueue(task);
             _signal.Release();

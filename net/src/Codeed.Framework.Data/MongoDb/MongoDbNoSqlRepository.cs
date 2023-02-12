@@ -37,16 +37,14 @@ namespace Codeed.Framework.Data.MongoDb
 
         public Task Update(string uid, T userWorkspaceDto, CancellationToken cancellationToken)
         {
-            var replaceOptions = new ReplaceOptions()
-            {
-            };
+            var replaceOptions = new ReplaceOptions();
 
             return _modelCollection.ReplaceOneAsync(u => u.Id == uid, userWorkspaceDto, replaceOptions, cancellationToken);
         }
 
         public Task AddOrUpdate(string uid, T userWorkspaceDto, CancellationToken cancellationToken)
         {
-            var replaceOptions = new ReplaceOptions()
+            var replaceOptions = new ReplaceOptions 
             {
                 IsUpsert = true
             };

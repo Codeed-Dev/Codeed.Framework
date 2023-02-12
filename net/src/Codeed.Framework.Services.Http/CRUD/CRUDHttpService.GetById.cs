@@ -18,7 +18,7 @@ namespace CodeedMeta.Core.Application.Services
                 private readonly IRepository<TEntity> _repository;
                 private readonly IMapper _mapper;
 
-                public Returning(IRepository<TEntity> repository, IMapper mapper)
+                protected Returning(IRepository<TEntity> repository, IMapper mapper)
                 {
                     _repository = repository;
                     _mapper = mapper;

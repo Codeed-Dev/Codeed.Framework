@@ -16,7 +16,7 @@ namespace Codeed.Framework.Domain
         }
 
         [JsonConstructor]
-        public Event(Guid id, DateTime timestamp)
+        protected Event(Guid id, DateTime timestamp)
         {
             Id = id;
             Timestamp = timestamp;

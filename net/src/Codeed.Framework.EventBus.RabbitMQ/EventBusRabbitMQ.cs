@@ -31,7 +31,17 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             IServiceCollection serviceCollection,
             IEventBusSubscriptionsManager subsManager,
             string brokerName,
-            string queueName = null,
+            string queueName) : this(persistentConnection, logger, serviceCollection, subsManager, brokerName, queueName, 5)
+        {
+        }
+
+        public EventBusRabbitMQ(
+            IRabbitMQPersistentConnection persistentConnection,
+            ILogger<EventBusRabbitMQ> logger,
+            IServiceCollection serviceCollection,
+            IEventBusSubscriptionsManager subsManager,
+            string brokerName,
+            string queueName,
             int retryCount = 5)
         {
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
@@ -203,7 +213,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                                  autoDelete: false,
                                  arguments: null);
 
-            channel.CallbackException += (sender, ea) =>
+            channel.CallbackException += (_, ea) =>
             {
                 _logger.LogWarning(ea.Exception, "Recreating RabbitMQ consumer channel");
 
@@ -231,7 +241,11 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                 using (var serviceScope = serviceProvider.CreateScope())
                 {
                     var handler = ActivatorUtilities.CreateInstance(serviceProvider, subscription.HandlerType);
-                    if (handler == null) continue;
+                    if (handler == null)
+                    {
+                        continue;
+                    }
+
                     var eventType = _subsManager.GetEventTypeByName(eventName);
                     var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);

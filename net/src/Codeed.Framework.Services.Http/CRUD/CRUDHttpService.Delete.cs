@@ -20,7 +20,7 @@ namespace CodeedMeta.Core.Application.Services
             private readonly ILogger<Delete<TEntity>> _logger;
             private readonly IEnumerable<IDeleteValidation<TEntity>> _validations;
 
-            public Delete(IRepository<TEntity> repository, ILogger<Delete<TEntity>> logger, IEnumerable<IDeleteValidation<TEntity>> validations)
+            protected Delete(IRepository<TEntity> repository, ILogger<Delete<TEntity>> logger, IEnumerable<IDeleteValidation<TEntity>> validations)
             {
                 _repository = repository;
                 _logger = logger;
