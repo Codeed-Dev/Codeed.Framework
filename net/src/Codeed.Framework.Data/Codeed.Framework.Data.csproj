@@ -23,11 +23,13 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
+		<PackageReference Include="MongoDB.Driver" Version="2.19.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
 	  <ProjectReference Include="..\Codeed.Framework.EventBus\Codeed.Framework.EventBus.csproj" />
+	  <ProjectReference Include="..\Codeed.Framework.Models\Codeed.Framework.Models.csproj" />
 	  <ProjectReference Include="..\Codeed.Framework.Tenant\Codeed.Framework.Tenant.csproj" />
 	</ItemGroup>
 </Project>

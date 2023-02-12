@@ -44,6 +44,7 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sam
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
     opt.ConfigureEventBus();
+    opt.ConfigureMongoDb(builder.Configuration.GetSection("MongoDb"));
 });
 
 var app = builder.Build();
