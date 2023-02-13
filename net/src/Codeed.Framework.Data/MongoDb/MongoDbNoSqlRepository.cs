@@ -12,7 +12,7 @@ namespace Codeed.Framework.Data.MongoDb
 
         public MongoDbNoSqlRepository(IMongoDatabase mongoDatabase)
         {
-            _modelCollection = mongoDatabase.GetCollection<T>(nameof(T));
+            _modelCollection = mongoDatabase.GetCollection<T>(typeof(T).Name);
         }
 
         public Task<T> GetAsync(string id, CancellationToken cancellationToken)
