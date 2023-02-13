@@ -22,6 +22,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="AsyncKeyedLock" Version="6.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\Codeed.Framework.Tenant\Codeed.Framework.Tenant.csproj" />
 	</ItemGroup>
 

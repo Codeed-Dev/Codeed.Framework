@@ -17,6 +17,7 @@ using Codeed.Framework.EventBus;
 using Codeed.Framework.Concurrency;
 using Codeed.Framework.Domain.Validations;
 using Codeed.Framework.AspNet.Maps;
+using AsyncKeyedLock;
 
 namespace Codeed.Framework.AspNet
 {
@@ -53,6 +54,11 @@ namespace Codeed.Framework.AspNet
 
         private static void RegisterLocker(this IServiceCollection services)
         {
+            services.AddSingleton(new AsyncKeyedLocker<string>(o =>
+            {
+                o.PoolSize = 20;
+                o.PoolInitialFill = 1;
+            }));
             services.AddScoped<ITenantLocker, TenantLocker>();
             services.AddScoped<ILocker, Locker>();
         }

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using AsyncKeyedLock;
 
 namespace Codeed.Framework.Concurrency
 {
     public interface ILocker
     {
-        ISemaphore CreateAndWaitSemaphore(string name, TimeSpan timeout, CancellationToken cancellationToken);
+        ValueTask<AsyncKeyedLockTimeoutReleaser<string>> CreateAndWaitSemaphore(string name, TimeSpan timeout, CancellationToken cancellationToken);
     }
 }

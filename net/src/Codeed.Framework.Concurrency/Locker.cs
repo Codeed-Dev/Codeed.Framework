@@ -1,17 +1,21 @@
-﻿using Codeed.Framework.Tenant;
-using System;
-using System.Threading;
+﻿using AsyncKeyedLock;
+using System.Runtime.CompilerServices;
 
 namespace Codeed.Framework.Concurrency
 {
     public class Locker : ILocker
     {
-        public ISemaphore CreateAndWaitSemaphore(string name, TimeSpan timeout, CancellationToken cancellationToken)
-        {
-            var semaphore = new SingleSemaphore(name);
-            semaphore.Wait(timeout, cancellationToken);
+        private readonly AsyncKeyedLocker<string> _asyncKeyedLocker;
 
-            return semaphore;
+        public Locker(AsyncKeyedLocker<string> asyncKeyedLocker)
+        {
+            _asyncKeyedLocker = asyncKeyedLocker;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ValueTask<AsyncKeyedLockTimeoutReleaser<string>> CreateAndWaitSemaphore(string name, TimeSpan timeout, CancellationToken cancellationToken)
+        {
+            return _asyncKeyedLocker.LockAsync(name, timeout, cancellationToken);
         }
     }
 }
