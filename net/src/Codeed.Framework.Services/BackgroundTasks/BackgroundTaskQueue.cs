@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
 
-namespace CodeedMeta.SharedContext.BackgroundTasks
+namespace Codeed.Framework.Services.BackgroundTasks
 {
     public class BackgroundTaskQueue : IBackgroundTaskQueue
     {
@@ -26,6 +26,6 @@ namespace CodeedMeta.SharedContext.BackgroundTasks
             return task;
         }
 
-        
+
     }
 }

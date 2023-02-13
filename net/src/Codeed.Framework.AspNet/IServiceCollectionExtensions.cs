@@ -16,7 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Codeed.Framework.EventBus;
 using Codeed.Framework.Concurrency;
 using Codeed.Framework.Domain.Validations;
-using CodeedMeta.Core.Application.Maps;
+using Codeed.Framework.AspNet.Maps;
 
 namespace Codeed.Framework.AspNet
 {

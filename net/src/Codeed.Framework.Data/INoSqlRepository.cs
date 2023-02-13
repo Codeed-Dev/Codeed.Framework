@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeedMeta.SharedContext.Data
+namespace Codeed.Framework.Data
 {
-    public interface INoSqlRepository<T> 
+    public interface INoSqlRepository<T>
         where T : INoSqlDocument
     {
         Task<T> GetAsync(string uid, CancellationToken cancellationToken);

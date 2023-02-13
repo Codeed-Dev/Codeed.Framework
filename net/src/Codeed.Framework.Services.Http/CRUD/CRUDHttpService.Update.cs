@@ -8,7 +8,7 @@ using Codeed.Framework.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodeedMeta.Core.Application.Services
+namespace Codeed.Framework.Services.CRUD
 {
     public static partial class CRUDHttpService
     {

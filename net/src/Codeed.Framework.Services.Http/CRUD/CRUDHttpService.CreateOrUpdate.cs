@@ -2,12 +2,10 @@
 using Codeed.Framework.Data;
 using Codeed.Framework.Domain;
 using Codeed.Framework.Models;
-using Codeed.Framework.Services;
 using Microsoft.AspNetCore.Mvc;
-using Codeed.Framework.Commons;
 using Codeed.Framework.Domain.Validations;
 
-namespace CodeedMeta.Core.Application.Services
+namespace Codeed.Framework.Services.CRUD
 {
     public static partial class CRUDHttpService
     {

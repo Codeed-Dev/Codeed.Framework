@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace CodeedMeta.SharedContext.BackgroundTasks
+namespace Codeed.Framework.Services.BackgroundTasks
 {
     public interface IBackgroundTaskQueue
     {

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace CodeedMeta.Core.Application.Services
+namespace Codeed.Framework.Services.CRUD
 {
     public static partial class CRUDHttpService
     {

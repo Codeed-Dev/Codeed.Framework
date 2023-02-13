@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 
-namespace CodeedMeta.Core.Application.Services
+namespace Codeed.Framework.Services.CRUD
 {
     public static partial class CRUDHttpService
     {
