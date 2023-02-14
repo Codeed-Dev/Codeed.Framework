@@ -251,7 +251,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
 
                     if (integrationEvent is ITenantEvent tenantEvent)
                     {
-                        var tenantServiceScope = serviceScope.ServiceProvider.GetRequiredService<ITenantService>();
+                        var tenantServiceScope = serviceProvider.GetRequiredService<ITenantService>();
                         tenantServiceScope.SetTenant(tenantEvent.Tenant);
                     }
 

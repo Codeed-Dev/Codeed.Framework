@@ -35,7 +35,7 @@ namespace Codeed.Framework.EventBus
                 {
                     if (@event is ITenantEvent tenantEvent)
                     {
-                        var tenantServiceScope = serviceScope.ServiceProvider.GetRequiredService<ITenantService>();
+                        var tenantServiceScope = serviceProvider.GetRequiredService<ITenantService>();
                         tenantServiceScope.SetTenant(tenantEvent.Tenant);
                     }
 
