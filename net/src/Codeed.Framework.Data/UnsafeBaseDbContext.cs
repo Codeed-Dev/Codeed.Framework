@@ -100,7 +100,9 @@ namespace Codeed.Framework.Data
                 return result;
             }
 
-            var events = Events.ToList();
+            var events = entitiesWithEvents.SelectMany(e => e.Events)
+                                           .Distinct()
+                                           .ToList();
 
             foreach (var entity in entitiesWithEvents)
             {
@@ -142,12 +144,6 @@ namespace Codeed.Framework.Data
 
             return result;
         }
-
-        public IEnumerable<Event> Events => ChangeTracker.Entries<EntityWithoutTenant>()
-                                                         .Select(e => e.Entity)
-                                                         .SelectMany(e => e.Events)
-                                                         .Distinct();
-
 
         private bool IsCurrentTransaction(Transaction transaction)
         {
