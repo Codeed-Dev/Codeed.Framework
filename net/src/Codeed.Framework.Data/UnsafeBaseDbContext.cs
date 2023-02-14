@@ -112,7 +112,7 @@ namespace Codeed.Framework.Data
             {
                 try
                 {
-                    if (_eventBus is ITenantEvent tenantEvent)
+                    if (domainEvent is ITenantEvent tenantEvent)
                     {
                         await _eventBus.Publish(tenantEvent, _tenantService).ConfigureAwait(false);
                     }
