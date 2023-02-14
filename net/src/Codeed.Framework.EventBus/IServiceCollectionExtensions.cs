@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Codeed.Framework.Tenant;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Codeed.Framework.EventBus
 {
@@ -8,7 +9,8 @@ namespace Codeed.Framework.EventBus
         {
             services.AddSingleton<IEventBus, InMemoryEventBus>(sp =>
             {
-                return new InMemoryEventBus(services, new InMemoryEventBusSubscriptionsManager());
+                var tenantService = sp.GetRequiredService<ITenantService>();
+                return new InMemoryEventBus(services, new InMemoryEventBusSubscriptionsManager(), tenantService);
             });
 
             return services;

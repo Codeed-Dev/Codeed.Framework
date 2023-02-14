@@ -7,5 +7,7 @@
         bool Authorize(object permission);
 
         IEnumerable<object> GetPermissions();
+
+        void SetTenant(string tenant);
     }
 }

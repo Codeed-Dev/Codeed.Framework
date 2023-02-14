@@ -1,4 +1,5 @@
 ﻿using Codeed.Framework.Domain;
+using Codeed.Framework.Tenant;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Codeed.Framework.EventBus
@@ -7,11 +8,16 @@ namespace Codeed.Framework.EventBus
     {
         private readonly IEventBusSubscriptionsManager _eventBusSubscriptionsManager;
         private readonly IServiceCollection _serviceCollection;
+        private readonly ITenantService _tenantService;
 
-        public InMemoryEventBus(IServiceCollection serviceCollection, IEventBusSubscriptionsManager eventBusSubscriptionsManager)
+        public InMemoryEventBus(
+            IServiceCollection serviceCollection, 
+            IEventBusSubscriptionsManager eventBusSubscriptionsManager,
+            ITenantService tenantService)
         {
             _eventBusSubscriptionsManager = eventBusSubscriptionsManager;
             _serviceCollection = serviceCollection;
+            _tenantService = tenantService;
         }
 
         public async Task Publish<TEvent>(TEvent @event)
@@ -24,12 +30,20 @@ namespace Codeed.Framework.EventBus
             }
 
             var handlers = _eventBusSubscriptionsManager.GetHandlersForEvent(eventName);
+            var tenant = _tenantService.Tenant;
 
             foreach (var subscription in handlers)
             {
                 var serviceProvider = _serviceCollection.BuildServiceProvider();
                 using (var serviceScope = serviceProvider.CreateScope())
                 {
+                    if (@event is ITenantEvent tenantEvent)
+                    {
+                        tenantEvent.Tenant = tenant;
+                        var tenantServiceScope = serviceScope.ServiceProvider.GetRequiredService<ITenantService>();
+                        tenantServiceScope.SetTenant(tenant);
+                    }
+
                     var handler = ActivatorUtilities.CreateInstance(serviceProvider, subscription.HandlerType);
                     if (handler == null)
                     {

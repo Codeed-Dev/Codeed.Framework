@@ -1,5 +1,6 @@
 ﻿using Codeed.Framework.Domain;
 using Codeed.Framework.EventBus;
+using Codeed.Framework.Tenant;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -19,6 +20,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
+        private readonly ITenantService _tenantService;
         private readonly string _brokerName;
         private readonly int _retryCount;
         private readonly IServiceCollection _serviceCollection;
@@ -30,8 +32,9 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             ILogger<EventBusRabbitMQ> logger,
             IServiceCollection serviceCollection,
             IEventBusSubscriptionsManager subsManager,
+            ITenantService tenantService,
             string brokerName,
-            string queueName) : this(persistentConnection, logger, serviceCollection, subsManager, brokerName, queueName, 5)
+            string queueName) : this(persistentConnection, logger, serviceCollection, subsManager, tenantService, brokerName, queueName, 5)
         {
         }
 
@@ -40,6 +43,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             ILogger<EventBusRabbitMQ> logger,
             IServiceCollection serviceCollection,
             IEventBusSubscriptionsManager subsManager,
+            ITenantService tenantService,
             string brokerName,
             string queueName,
             int retryCount = 5)
@@ -47,6 +51,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
+            _tenantService = tenantService;
             _brokerName = brokerName;
             _queueName = queueName;
             _consumerChannel = CreateConsumerChannel();
@@ -92,6 +97,11 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                 });
 
             var eventName = _subsManager.GetEventKey(@event);
+
+            if (@event is ITenantEvent tenantEvent)
+            {
+                tenantEvent.Tenant = _tenantService.Tenant;
+            }
 
             _logger.LogTrace("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id, eventName);
 
@@ -249,6 +259,12 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                     var eventType = _subsManager.GetEventTypeByName(eventName);
                     var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
+
+                    if (integrationEvent is ITenantEvent tenantEvent)
+                    {
+                        var tenantServiceScope = serviceScope.ServiceProvider.GetRequiredService<ITenantService>();
+                        tenantServiceScope.SetTenant(tenantEvent.Tenant);
+                    }
 
                     await Task.Yield();
                     await (Task)concreteType.GetMethod(nameof(IEventHandler<Event>.Handle)).Invoke(handler, new object[] { integrationEvent });
