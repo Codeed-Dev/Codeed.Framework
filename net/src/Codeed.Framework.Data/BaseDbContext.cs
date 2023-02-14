@@ -16,7 +16,7 @@ namespace Codeed.Framework.Data
     {
         private readonly ITenantService _tenantService;
 
-        protected BaseDbContext(DbContextOptions<T> options, IEventBus eventBus, ITenantService tenantService) : base(options, eventBus)
+        protected BaseDbContext(DbContextOptions<T> options, IEventBus eventBus, ITenantService tenantService) : base(options, eventBus, tenantService)
         {
             _tenantService = tenantService;
         }

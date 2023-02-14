@@ -1,6 +1,6 @@
 ﻿namespace Codeed.Framework.Domain
 {
-    public interface ITenantEvent
+    public interface ITenantEvent : IEvent
     {
         string Tenant { get; set; }
     }

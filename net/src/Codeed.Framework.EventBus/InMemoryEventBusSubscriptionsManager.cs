@@ -23,7 +23,7 @@ namespace Codeed.Framework.EventBus
 
 
         public void AddSubscription<T, TH>()
-            where T : Event
+            where T : IEvent
             where TH : IEventHandler<T>
         {
             var eventName = GetEventKey<T>();
@@ -61,7 +61,7 @@ namespace Codeed.Framework.EventBus
 
 
         public void RemoveSubscription<T, TH>()
-             where T : Event
+             where T : IEvent
              where TH : IEventHandler<T>
         {
             var handlerToRemove = FindSubscriptionToRemove<T, TH>();
@@ -88,7 +88,7 @@ namespace Codeed.Framework.EventBus
             }
         }
 
-        public IEnumerable<SubscriptionInfo> GetHandlersForEvent<T>() where T : Event
+        public IEnumerable<SubscriptionInfo> GetHandlersForEvent<T>() where T : IEvent
         {
             var key = GetEventKey<T>();
             return GetHandlersForEvent(key);
@@ -103,7 +103,7 @@ namespace Codeed.Framework.EventBus
         }
 
         private SubscriptionInfo FindSubscriptionToRemove<T, TH>()
-             where T : Event
+             where T : IEvent
              where TH : IEventHandler<T>
         {
             var eventName = GetEventKey<T>();
@@ -121,7 +121,7 @@ namespace Codeed.Framework.EventBus
 
         }
 
-        public bool HasSubscriptionsForEvent<T>() where T : Event
+        public bool HasSubscriptionsForEvent<T>() where T : IEvent
         {
             var key = GetEventKey<T>();
             return HasSubscriptionsForEvent(key);
@@ -137,7 +137,7 @@ namespace Codeed.Framework.EventBus
         }
 
         public string GetEventKey<T>(T @event)
-            where T : Event
+            where T : IEvent
         {
             return @event.GetType().Name;
         }

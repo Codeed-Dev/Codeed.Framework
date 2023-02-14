@@ -26,7 +26,6 @@ namespace Codeed.Framework.EventBus.RabbitMQ
 
             services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
             {
-                var tenantService = sp.GetRequiredService<ITenantService>();
                 var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
                 var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
                 var eventBusSubscription = new InMemoryEventBusSubscriptionsManager();
@@ -34,7 +33,6 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                                             logger,
                                             services,
                                             new InMemoryEventBusSubscriptionsManager(),
-                                            tenantService,
                                             rabbitMQConfiguration.BrokerName,
                                             rabbitMQConfiguration.QueueName,
                                             5);

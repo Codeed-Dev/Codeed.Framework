@@ -9,8 +9,7 @@ namespace Codeed.Framework.EventBus
         {
             services.AddSingleton<IEventBus, InMemoryEventBus>(sp =>
             {
-                var tenantService = sp.GetRequiredService<ITenantService>();
-                return new InMemoryEventBus(services, new InMemoryEventBusSubscriptionsManager(), tenantService);
+                return new InMemoryEventBus(services, new InMemoryEventBusSubscriptionsManager());
             });
 
             return services;

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Codeed.Framework.Domain
 {
-    public abstract class Event : Message
+    public abstract class Event : Message, IEvent
     {
         public DateTime Timestamp { get; private set; }
 

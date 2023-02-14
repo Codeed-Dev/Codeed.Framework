@@ -9,14 +9,14 @@ namespace Codeed.Framework.EventBus
         event EventHandler<string> OnEventRemoved;
 
         void AddSubscription<T, TH>()
-           where T : Event
+           where T : IEvent
            where TH : IEventHandler<T>;
 
         void RemoveSubscription<T, TH>()
-            where T : Event
+            where T : IEvent
             where TH : IEventHandler<T>;
 
-        bool HasSubscriptionsForEvent<T>() where T : Event;
+        bool HasSubscriptionsForEvent<T>() where T : IEvent;
 
         bool HasSubscriptionsForEvent(string eventName);
 
@@ -25,13 +25,13 @@ namespace Codeed.Framework.EventBus
         void Clear();
 
         IEnumerable<SubscriptionInfo> GetHandlersForEvent<T>() 
-            where T : Event;
+            where T : IEvent;
 
         IEnumerable<SubscriptionInfo> GetHandlersForEvent(string eventName);
 
         string GetEventKey<T>();
 
         string GetEventKey<T>(T @event)
-            where T : Event;
+            where T : IEvent;
     }
 }

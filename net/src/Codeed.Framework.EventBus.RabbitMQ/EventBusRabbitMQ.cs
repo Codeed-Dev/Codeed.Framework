@@ -15,12 +15,11 @@ using System.Text;
 
 namespace Codeed.Framework.EventBus.RabbitMQ
 {
-    public class EventBusRabbitMQ : IEventBus, IDisposable
+    public class EventBusRabbitMQ : BaseEventBus, IDisposable
     {
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger<EventBusRabbitMQ> _logger;
         private readonly IEventBusSubscriptionsManager _subsManager;
-        private readonly ITenantService _tenantService;
         private readonly string _brokerName;
         private readonly int _retryCount;
         private readonly IServiceCollection _serviceCollection;
@@ -32,9 +31,8 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             ILogger<EventBusRabbitMQ> logger,
             IServiceCollection serviceCollection,
             IEventBusSubscriptionsManager subsManager,
-            ITenantService tenantService,
             string brokerName,
-            string queueName) : this(persistentConnection, logger, serviceCollection, subsManager, tenantService, brokerName, queueName, 5)
+            string queueName) : this(persistentConnection, logger, serviceCollection, subsManager, brokerName, queueName, 5)
         {
         }
 
@@ -43,7 +41,6 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             ILogger<EventBusRabbitMQ> logger,
             IServiceCollection serviceCollection,
             IEventBusSubscriptionsManager subsManager,
-            ITenantService tenantService,
             string brokerName,
             string queueName,
             int retryCount = 5)
@@ -51,7 +48,6 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             _persistentConnection = persistentConnection ?? throw new ArgumentNullException(nameof(persistentConnection));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subsManager = subsManager ?? new InMemoryEventBusSubscriptionsManager();
-            _tenantService = tenantService;
             _brokerName = brokerName;
             _queueName = queueName;
             _consumerChannel = CreateConsumerChannel();
@@ -82,7 +78,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
         }
 
 
-        public Task Publish<TEvent>(TEvent @event) where TEvent : Event
+        public override Task Publish<TEvent>(TEvent @event)
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -97,11 +93,6 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                 });
 
             var eventName = _subsManager.GetEventKey(@event);
-
-            if (@event is ITenantEvent tenantEvent)
-            {
-                tenantEvent.Tenant = _tenantService.Tenant;
-            }
 
             _logger.LogTrace("Creating RabbitMQ channel to publish event: {EventId} ({EventName})", @event.Id, eventName);
 
@@ -133,9 +124,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             return Task.CompletedTask;
         }
 
-        public void Subscribe<T, TH>()
-            where T : Event
-            where TH : IEventHandler<T>
+        public override void Subscribe<T, TH>()
         {
             var eventName = _subsManager.GetEventKey<T>();
             DoInternalSubscription(eventName);
