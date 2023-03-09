@@ -25,7 +25,14 @@ namespace System
             var claim = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == "name") ??
                         claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
 
-            return claim == null ? string.Empty : claim.Value;
+            var name = claim == null ? string.Empty : claim.Value;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                name = claimsPrincipal.GetEmail().Split("@")[0];
+            }
+
+            return name;
         }
 
         public static bool EmailIsVerified(this ClaimsPrincipal claimsPrincipal)
