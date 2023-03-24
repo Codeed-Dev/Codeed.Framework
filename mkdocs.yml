@@ -27,6 +27,7 @@ theme:
     - search.highlight       # faz um highlight no texto quando clicado após a pesquisa
     - search.share           # coloca um botão para compartilhar a busca
     - navigation.indexes     # permite a navegação para o index do menu
+    - navigation.sections   
 plugins:
   - search       
 markdown_extensions:
@@ -68,6 +69,10 @@ markdown_extensions:
 # Definition List
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown/#definition-lists
   - def_list
+#https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#tasklist  
+  - pymdownx.tasklist:
+      custom_checkbox: true  
+      clickable_checkbox: true
 extra:
   # remove o "Made with Material for MkDocs"
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/?h=generator#generator-notice
@@ -85,3 +90,15 @@ extra:
   # analytics: 
     # provider: google
     # property: CHAVE
+
+nav:
+  - Home: index.md    
+  - Learn: 
+    - Getting Started:
+      - Getting Started: learn/getting_started/introduction.md
+      - Creating Project: learn/getting_started/creating_project.md
+      - Configuring Project: learn/getting_started/configuring_project.md
+    - Create your first service:
+      - Create Entity: learn/first_service/entity.md
+  - Concepts:
+    - Entity: concepts/entity.md

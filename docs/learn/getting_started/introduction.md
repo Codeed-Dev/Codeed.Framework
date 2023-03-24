@@ -1,4 +1,4 @@
-# Getting Started
+# Introduction
 
 Welcome to the documentation of Codeed.Framework. This is a software development framework for .NET that aims to facilitate the creation of scalable and high-quality applications. Codeed.Framework uses concepts of Domain-Driven Design (DDD) and hexagonal architecture to allow developers to create robust and well-structured systems.
 
