@@ -3,7 +3,7 @@ site_url: https://github.com/Codeed-Dev/Codeed.Framework
 docs_dir: docs
 repo_name: Codeed-Dev/Codeed.Framework
 repo_url: https://github.com/Codeed-Dev/Codeed.Framework
-edit_uri: ""
+edit_uri: "edit/main/docs/"
 extra_css:
   - stylesheets/extra.css
 theme:
@@ -22,6 +22,8 @@ theme:
     - instant
     - content.code.annotate
     - content.tabs.link
+    - content.action.edit
+    - content.action.view
     - navigation.tabs        # TAB Superior
     - navigation.top         # Botão para voltar ao topo quando rolar para cima
     - search.highlight       # faz um highlight no texto quando clicado após a pesquisa
@@ -61,7 +63,7 @@ markdown_extensions:
   - pymdownx.smartsymbols
 # Scrollspy da página
   - toc:
-      title: Conteúdo da Página
+      title: Page Content
       permalink: true
 # Atributos para: Adding buttons, Adding icons with colors, Image alignment, Image lazy-loading
 # https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown/#attribute-lists
@@ -79,7 +81,7 @@ extra:
   generator: false
   # Copyright
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/?h=copyright#copyright-notice
-  copyright: Copyright &copy; 2022 IDA 
+  copyright: Copyright &copy; 2022 Codeed
   # links do rodapé da página
   # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/?h=generator#social-links
   social:
@@ -97,6 +99,7 @@ nav:
     - Getting Started:
       - Getting Started: learn/getting_started/introduction.md
       - Creating Project: learn/getting_started/creating_project.md
+      - Creating the Environment: learn/getting_started/environment.md
       - Configuring Project: learn/getting_started/configuring_project.md
     - Create your first service:
       - Create Entity: learn/first_service/entity.md

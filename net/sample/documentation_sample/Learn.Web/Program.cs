@@ -1,25 +1,44 @@
+using Codeed.Framework.AspNet;
+using Codeed.Framework.AspNet.EventBus;
+using Codeed.Framework.AspNet.RegisterServicesConfigurations;
+using Codeed.Framework.AspNet.Serilog;
+using Codeed.Framework.Tenant;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddSerilogApi("Godia");
+builder.Host.UseSerilog(Log.Logger);
 
-// Add services to the container.
+builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Godia", "Godia", (opt) =>
+{
+    opt.ConfigureTenant<FixedTenantService>();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    opt.ConfigureFirebaseAuthentication("codeedmeta");
+
+    opt.ConfigureSwagger(c =>
+    {
+        c.Version = "v1";
+        c.Title = "Godia";
+        c.Description = "Godia API's";
+    });
+    opt.ConfigureDatabase((options) =>
+    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"));
+    });
+    opt.ConfigureEventBus();
+    opt.ConfigureMongoDb(builder.Configuration.GetSection("MongoDb"));
+    opt.ConfigureBackgroundTasks();
+});
+
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.SubscribeEventHandlers();
+app.UseExceptionHandler("/error");
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseCors("__allOrigins");
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
