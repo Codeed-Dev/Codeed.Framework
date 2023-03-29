@@ -4,6 +4,6 @@
     {
         Guid Id { get; }
 
-        DateTime Timestamp { get; }
+        DateTimeOffset Timestamp { get; }
     }
 }

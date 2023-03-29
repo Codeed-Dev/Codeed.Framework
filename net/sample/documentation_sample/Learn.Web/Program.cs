@@ -3,6 +3,7 @@ using Codeed.Framework.AspNet.EventBus;
 using Codeed.Framework.AspNet.RegisterServicesConfigurations;
 using Codeed.Framework.AspNet.Serilog;
 using Codeed.Framework.Tenant;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

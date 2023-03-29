@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Codeed.Framework.AspNet\Codeed.Framework.AspNet.csproj" />
+    <ProjectReference Include="..\..\..\src\Codeed.Framework.Tenant\Codeed.Framework.Tenant.csproj" />
   </ItemGroup>
 
 </Project>
