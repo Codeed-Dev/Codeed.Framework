@@ -7,7 +7,7 @@ namespace Codeed.Framework.Services.Http.Attributes
 {
     public class TenantAuthorizeAttribute : TypeFilterAttribute
     {
-        public TenantAuthorizeAttribute(string permission) : base(typeof(AuthorizationTenantFilter))
+        public TenantAuthorizeAttribute(object permission) : base(typeof(AuthorizationTenantFilter))
         {
             Arguments = new object[] { permission };
         }
@@ -15,10 +15,10 @@ namespace Codeed.Framework.Services.Http.Attributes
 
     public class AuthorizationTenantFilter : IAuthorizationFilter
     {
-        private readonly string _permission;
+        private readonly object _permission;
         private readonly ITenantService _tenantService;
 
-        public AuthorizationTenantFilter(string permission, ITenantService tenantService)
+        public AuthorizationTenantFilter(object permission, ITenantService tenantService)
         {
             _permission = permission;
             _tenantService = tenantService;
