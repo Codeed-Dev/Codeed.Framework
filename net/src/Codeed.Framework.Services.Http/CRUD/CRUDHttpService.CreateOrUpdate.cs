@@ -20,13 +20,19 @@ namespace Codeed.Framework.Services.CRUD
                 {
                     private readonly IRepository<TEntity> _repository;
                     private readonly IMapper _mapper;
-                    private readonly IEnumerable<ICreateValidation<TEntity>> _validations;
+                    private readonly IEnumerable<ICreateValidation<TEntity>> _createValidations;
+                    private readonly IEnumerable<IUpdateValidation<TEntity>> _updateValidations;
 
-                    protected Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<ICreateValidation<TEntity>> validations)
+                    protected Returning(
+                        IRepository<TEntity> repository, 
+                        IMapper mapper, 
+                        IEnumerable<ICreateValidation<TEntity>> createValidations, 
+                        IEnumerable<IUpdateValidation<TEntity>> updateValidations)
                     {
                         _repository = repository;
                         _mapper = mapper;
-                        _validations = validations;
+                        _createValidations = createValidations;
+                        _updateValidations = updateValidations;
                     }
 
                     [HttpPost]
@@ -51,13 +57,13 @@ namespace Codeed.Framework.Services.CRUD
                         if (isNew)
                         {
                             entity = await CreateEntity(request, cancellationToken);
+                            await Validate(entity, _createValidations, cancellationToken);
                         }
                         else
                         {
                             await UpdateEntity(request, entity, cancellationToken);
+                            await Validate(entity, _updateValidations, cancellationToken);
                         }
-
-                        await Validate(entity, cancellationToken);
 
                         Action<TEntity> modifyRepository = isNew ? _repository.Add : _repository.Update;
                         modifyRepository(entity);
@@ -72,9 +78,9 @@ namespace Codeed.Framework.Services.CRUD
                         return Task.CompletedTask;
                     }
 
-                    protected virtual async Task Validate(TEntity entity, CancellationToken cancellationToken)
+                    protected virtual async Task Validate(TEntity entity, IEnumerable<IValidationOfT<TEntity>> validations, CancellationToken cancellationToken)
                     {
-                        foreach (var validation in _validations.OrderBy(v => v.Priority))
+                        foreach (var validation in validations.OrderBy(v => v.Priority))
                         {
                             await validation.ValidateAsync(entity, cancellationToken);
                         }
