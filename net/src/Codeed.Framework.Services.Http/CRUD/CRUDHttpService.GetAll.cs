@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using Codeed.Framework.Data;
 using Codeed.Framework.Domain;
-using Codeed.Framework.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
@@ -17,21 +16,29 @@ namespace Codeed.Framework.Services.CRUD
                 .WithoutParameters
                 .WithResponse<IQueryable<TDto>>
             {
-                private readonly IRepository<TEntity> _repository;
-                private readonly IMapper _mapper;
+                protected readonly IRepository<TEntity> Repository;
+                protected readonly IMapper Mapper;
 
                 protected Returning(IRepository<TEntity> repository, IMapper mapper)
                 {
-                    _repository = repository;
-                    _mapper = mapper;
+                    Repository = repository;
+                    Mapper = mapper;
                 }
 
                 [ODataAttributeRouting]
-                [EnableQuery(PageSize = 100)]
+                [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
                 [HttpGet]
                 public override Task<IQueryable<TDto>> ExecuteAsync(CancellationToken cancellationToken)
                 {
-                    return Task.FromResult(_repository.QueryAll().ProjectTo<TDto>(_mapper.ConfigurationProvider));
+                    var query = Repository.QueryAll();
+                    query = ConfigureQuery(query);
+
+                    return Task.FromResult(query.ProjectTo<TDto>(Mapper.ConfigurationProvider));
+                }
+
+                protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)
+                {
+                    return query;
                 }
             }
 
