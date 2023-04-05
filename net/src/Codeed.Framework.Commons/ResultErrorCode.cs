@@ -7,10 +7,10 @@ namespace Codeed.Framework.Commons
         public ResultErrorCode(string errorCode, Dictionary<string, object>? parameters)
         {
             ErrorCode = errorCode;
-            Parameters = parameters;
+            Parameters = parameters ?? new Dictionary<string, object>();
         }
         public string ErrorCode { get;  }
 
-        public Dictionary<string, object>? Parameters { get;  }
+        public Dictionary<string, object> Parameters { get;  }
     }
 }
