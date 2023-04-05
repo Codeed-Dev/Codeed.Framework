@@ -34,9 +34,17 @@ namespace Codeed.Framework.Data
         {
             var currentTenantIdMemberInfo = GetType().GetMember(nameof(Tenant)).FirstOrDefault();
 
+            if (currentTenantIdMemberInfo is null)
+            {
+                throw new NullReferenceException($"{nameof(currentTenantIdMemberInfo)} is null. Check if Tenant exists in {this.GetType().Name}");
+            }
+
             foreach (var entityType in modelBuilder.GetEntities<IEntityWithTenant>())
             {
                 var tenantProperty = entityType.FindProperty(nameof(IEntityWithTenant.Tenant));
+                if (tenantProperty is null || tenantProperty.PropertyInfo is null)
+                    continue;
+
                 var parameter = Expression.Parameter(entityType.ClrType, "tenant");
                 var filter = Expression.Lambda(Expression.Equal(
                     Expression.Property(parameter, tenantProperty.PropertyInfo), Expression.MakeMemberAccess(Expression.Constant(this), currentTenantIdMemberInfo)), parameter);
@@ -63,6 +71,10 @@ namespace Codeed.Framework.Data
             foreach (var entity in entitiesWithTenant)
             {
                 var tenantProperty = entity.GetType().GetProperty(nameof(IEntityWithTenant.Tenant));
+                if (tenantProperty is null)
+                {
+                    throw new ArgumentNullException($"{nameof(tenantProperty)} is null in a {nameof(IEntityWithTenant)} entity: {entity.GetType().FullName}");
+                }
                 tenantProperty.SetValue(entity, _tenantService.Tenant, null);
             }
 

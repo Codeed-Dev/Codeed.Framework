@@ -40,16 +40,24 @@ namespace Codeed.Framework.EventBus
                     }
 
                     var handler = ActivatorUtilities.CreateInstance(serviceProvider, subscription.HandlerType);
-                    if (handler == null)
+                    if (handler is null)
                     {
                         continue;
                     }
 
                     var eventType = _eventBusSubscriptionsManager.GetEventTypeByName(eventName);
+                    if (eventType is null)
+                    {
+                        continue;
+                    }
+
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
                     await Task.Yield();
-                    await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { @event });
+                    var handleResult = concreteType.GetMethod("Handle")?.Invoke(handler, new object[] { @event });
+
+                    if (handleResult is Task task)
+                        await task;
                 }
             }
         }

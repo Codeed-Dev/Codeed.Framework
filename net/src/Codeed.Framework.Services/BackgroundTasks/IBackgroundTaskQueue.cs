@@ -6,6 +6,6 @@ namespace Codeed.Framework.Services.BackgroundTasks
     {
         void EnqueueTask(Func<IServiceScopeFactory, CancellationToken, Task> task);
 
-        Task<Func<IServiceScopeFactory, CancellationToken, Task>> DequeueTask(CancellationToken cancellationToken);
+        Task<Func<IServiceScopeFactory, CancellationToken, Task>?> DequeueTask(CancellationToken cancellationToken);
     }
 }

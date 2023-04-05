@@ -26,13 +26,20 @@ namespace Codeed.Framework.Services.BackgroundTasks
             {
                 var task = await _backgroundTaskQueue.DequeueTask(cancellationToken);
 
-                try
+                if (task is null)
                 {
-                    await task(_serviceScopeFactory, cancellationToken);
+                    await Task.Delay(1000);
                 }
-                catch (Exception ex)
+                else
                 {
-                    _logger.LogError(ex, "An error occured during execution of a background task");
+                    try
+                    {
+                        await task(_serviceScopeFactory, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "An error occured during execution of a background task");
+                    }
                 }
             }
         }

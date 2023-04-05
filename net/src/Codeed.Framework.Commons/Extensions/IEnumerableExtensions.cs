@@ -61,10 +61,10 @@ namespace System
         public static void CompareList<TSource, TDest>(
             this IEnumerable<TSource> source,
             IEnumerable<TDest> dest,
-            Func<TSource, TDest, bool> compareLists,
-            Action<TDest> existsOnlyInDestination,
-            Action<TSource> existsOnlyInSource,
-            Action<TSource, TDest> existsOnBoth)
+            Func<TSource, TDest, bool>? compareLists,
+            Action<TDest>? existsOnlyInDestination,
+            Action<TSource>? existsOnlyInSource,
+            Action<TSource, TDest>? existsOnBoth)
         {
             if (source is null)
             {

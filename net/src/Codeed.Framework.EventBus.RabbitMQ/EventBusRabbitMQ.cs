@@ -56,7 +56,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             _serviceCollection = serviceCollection;
         }
 
-        private void SubsManager_OnEventRemoved(object sender, string eventName)
+        private void SubsManager_OnEventRemoved(object? sender, string eventName)
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -246,7 +246,17 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                     }
 
                     var eventType = _subsManager.GetEventTypeByName(eventName);
+                    if (eventType is null)
+                    {
+                        continue;
+                    }
+
                     var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                    if (integrationEvent is null)
+                    {
+                        throw new EventBusException($"the message cannot be serialized to type {eventType.FullName}");
+                    }
+
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
                     if (integrationEvent is ITenantEvent tenantEvent)
@@ -256,7 +266,11 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                     }
 
                     await Task.Yield();
-                    await (Task)concreteType.GetMethod(nameof(IEventHandler<Event>.Handle)).Invoke(handler, new object[] { integrationEvent });
+
+                    var handleResult = concreteType.GetMethod(nameof(IEventHandler<Event>.Handle))?.Invoke(handler, new object[] { integrationEvent });
+
+                    if (handleResult is Task task)
+                        await task;
                 }
             }
         }

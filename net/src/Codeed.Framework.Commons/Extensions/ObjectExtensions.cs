@@ -26,7 +26,7 @@ namespace System
             }
         }
 
-        public static Dictionary<string, TValue> ToDictionary<TValue>(this object obj)
+        public static Dictionary<string, TValue>? ToDictionary<TValue>(this object obj)
         {
             if (obj == null)
             {

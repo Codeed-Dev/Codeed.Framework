@@ -15,7 +15,7 @@ namespace Codeed.Framework.AspNet.Serilog
             configuration.AddSerilogApi(applicationName, null);
         }
 
-        public static void AddSerilogApi(this IConfiguration configuration, string applicationName, Func<LoggerConfiguration, LoggerConfiguration> configureLogger)
+        public static void AddSerilogApi(this IConfiguration configuration, string applicationName, Func<LoggerConfiguration, LoggerConfiguration>? configureLogger)
         {
             var loggerConfiguration = new LoggerConfiguration()
                 //.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
@@ -26,7 +26,7 @@ namespace Codeed.Framework.AspNet.Serilog
                 .Filter.ByExcluding(Matching.FromSource("Microsoft.AspNetCore.StaticFiles"))
                 .WriteTo.Async(wt => wt.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Properties:j}{NewLine}{Exception}"));
 
-            if (configureLogger != null)
+            if (configureLogger is not null)
             {
                 loggerConfiguration = configureLogger(loggerConfiguration);
             }

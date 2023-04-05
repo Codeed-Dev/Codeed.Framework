@@ -9,6 +9,6 @@ namespace Codeed.Framework.AspNet.Context
     {
         string Name { get; }
 
-        void RegisterServices(IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder> dbContextOptionsBuilder);
+        void RegisterServices(IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder>? dbContextOptionsBuilder);
     }
 }

@@ -17,6 +17,7 @@ using Codeed.Framework.EventBus;
 using Codeed.Framework.Concurrency;
 using Codeed.Framework.Domain.Validations;
 using Codeed.Framework.AspNet.Maps;
+using System.Security.Claims;
 
 namespace Codeed.Framework.AspNet
 {
@@ -70,7 +71,7 @@ namespace Codeed.Framework.AspNet
             });
         }
 
-        public static IServiceCollection RegisterContexts(this IServiceCollection services, IConfiguration configuration, IEnumerable<Assembly> assemblies, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
+        public static IServiceCollection RegisterContexts(this IServiceCollection services, IConfiguration configuration, IEnumerable<Assembly> assemblies, Action<DbContextOptionsBuilder>? dbContextOptionsBuilder)
         {
             foreach (var assembly in assemblies)
             {
@@ -79,13 +80,16 @@ namespace Codeed.Framework.AspNet
             return services;
         }
 
-        public static IServiceCollection RegisterContexts(this IServiceCollection services, IConfiguration configuration, Assembly assembly, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
+        public static IServiceCollection RegisterContexts(this IServiceCollection services, IConfiguration configuration, Assembly assembly, Action<DbContextOptionsBuilder>? dbContextOptionsBuilder)
         {
             var contexts = assembly.GetTypes().Where(t => typeof(IContext).IsAssignableFrom(t) && !t.IsAbstract);
             foreach (var contextType in contexts)
             {
-                var context = (IContext)Activator.CreateInstance(contextType);
-                context.RegisterServices(services, configuration, dbContextOptionsBuilder);
+                var context = Activator.CreateInstance(contextType) as IContext;
+                if (context is not null)
+                {
+                    context.RegisterServices(services, configuration, dbContextOptionsBuilder);
+                }
             }
 
             return services;
@@ -131,7 +135,7 @@ namespace Codeed.Framework.AspNet
                                   .SetMaxTop(100));
 
             services.AddHttpContextAccessor();
-            services.AddTransient(s => s.GetService<IHttpContextAccessor>().HttpContext.User);
+            services.AddTransient(s => s.GetService<IHttpContextAccessor>()?.HttpContext?.User ?? new ClaimsPrincipal());
 
             return services;
         }

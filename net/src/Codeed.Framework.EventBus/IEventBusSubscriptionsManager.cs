@@ -20,7 +20,7 @@ namespace Codeed.Framework.EventBus
 
         bool HasSubscriptionsForEvent(string eventName);
 
-        Type GetEventTypeByName(string eventName);
+        Type? GetEventTypeByName(string eventName);
 
         void Clear();
 

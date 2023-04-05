@@ -16,13 +16,13 @@ namespace Codeed.Framework.Services.CRUD
             .WithoutResponse
             where TEntity : Entity, IAggregateRoot
         {
-            private readonly IRepository<TEntity> _repository;
+            protected readonly IRepository<TEntity> Repository;
             private readonly ILogger<Delete<TEntity>> _logger;
             private readonly IEnumerable<IDeleteValidation<TEntity>> _validations;
 
             protected Delete(IRepository<TEntity> repository, ILogger<Delete<TEntity>> logger, IEnumerable<IDeleteValidation<TEntity>> validations)
             {
-                _repository = repository;
+                Repository = repository;
                 _logger = logger;
                 _validations = validations;
             }
@@ -31,7 +31,7 @@ namespace Codeed.Framework.Services.CRUD
             public override async Task ExecuteAsync(Guid id, CancellationToken cancellationToken)
             {
                 var entity = await FindEntity(id, cancellationToken);
-                if (entity == null)
+                if (entity is null)
                     return;
 
                 await Validate(entity, cancellationToken);
@@ -45,7 +45,7 @@ namespace Codeed.Framework.Services.CRUD
 
                 try
                 {
-                    await _repository.UnitOfWork.Commit(cancellationToken);
+                    await Repository.UnitOfWork.Commit(cancellationToken);
                 }
                 catch (DbUpdateException ex)
                 {
@@ -56,7 +56,7 @@ namespace Codeed.Framework.Services.CRUD
 
             protected virtual Task DeleteEntity(TEntity entity, CancellationToken cancellationToken)
             {
-                _repository.Delete(entity);
+                Repository.Delete(entity);
                 return Task.CompletedTask;
             }
 
@@ -68,9 +68,9 @@ namespace Codeed.Framework.Services.CRUD
                 }
             }
 
-            protected virtual async Task<TEntity> FindEntity(Guid id, CancellationToken cancellationToken)
+            protected virtual async Task<TEntity?> FindEntity(Guid id, CancellationToken cancellationToken)
             {
-                var entity = await _repository.QueryById(id)
+                var entity = await Repository.QueryById(id)
                                               .FirstOrDefaultAsync(cancellationToken);
 
                 return entity;

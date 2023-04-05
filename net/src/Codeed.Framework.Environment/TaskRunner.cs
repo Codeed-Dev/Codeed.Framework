@@ -11,8 +11,8 @@ namespace Codeed.Framework.Environment
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<TaskRunner> _logger;
         private readonly object _lock = new object();
-        private CancellationTokenSource _cancellationTokenSource;
-        private Action<IEnvironmentTask> _onFinishRunning;
+        private CancellationTokenSource? _cancellationTokenSource;
+        private Action<IEnvironmentTask>? _onFinishRunning;
 
         public TaskRunner(IEnvironmentTask task, IServiceProvider serviceProvider, ILogger<TaskRunner> logger)
         {
@@ -25,7 +25,7 @@ namespace Codeed.Framework.Environment
 
         public void Dispose()
         {
-            if (_cancellationTokenSource != null)
+            if (_cancellationTokenSource is not null)
             {
                 _cancellationTokenSource.Dispose();
             }

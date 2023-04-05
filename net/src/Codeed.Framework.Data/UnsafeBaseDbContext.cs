@@ -16,7 +16,7 @@ namespace Codeed.Framework.Data
     {
         private readonly IEventBus _eventBus;
         private readonly ITenantService _tenantService;
-        private Transaction _currentTransaction;
+        private Transaction? _currentTransaction;
 
         protected UnsafeBaseDbContext(DbContextOptions<T> options, IEventBus eventBus, ITenantService tenantService) : base(options)
         {
@@ -55,7 +55,7 @@ namespace Codeed.Framework.Data
             return Commit(null, cancellationToken);
         }
 
-        public async Task<bool> Commit(Transaction transaction, CancellationToken cancellationToken)
+        public async Task<bool> Commit(Transaction? transaction, CancellationToken cancellationToken)
         {
             if (!IsCurrentTransaction(transaction))
             {
@@ -70,7 +70,7 @@ namespace Codeed.Framework.Data
         {
             var transaction = new Transaction(this);
 
-            if (_currentTransaction == null)
+            if (_currentTransaction is null)
             {
                 _currentTransaction = transaction;
             }
@@ -145,9 +145,9 @@ namespace Codeed.Framework.Data
             return result;
         }
 
-        private bool IsCurrentTransaction(Transaction transaction)
+        private bool IsCurrentTransaction(Transaction? transaction)
         {
-            return _currentTransaction == null ||
+            return _currentTransaction is null ||
                 _currentTransaction == transaction;
         }
     }

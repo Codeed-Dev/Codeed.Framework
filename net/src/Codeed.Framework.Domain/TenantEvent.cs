@@ -5,7 +5,7 @@ namespace Codeed.Framework.Domain
 {
     public abstract class TenantEvent : Event, ITenantEvent
     {
-        public string Tenant { get; set; }
+        public string Tenant { get; set; } = "";
 
         public TenantEvent() : base()
         {

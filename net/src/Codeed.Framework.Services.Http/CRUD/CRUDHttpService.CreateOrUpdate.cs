@@ -18,8 +18,8 @@ namespace Codeed.Framework.Services.CRUD
                     .WithResponse<TDtoResponse>
                     where TDtoResponse : IDto
                 {
-                    private readonly IRepository<TEntity> _repository;
-                    private readonly IMapper _mapper;
+                    protected readonly IRepository<TEntity> Repository;
+                    protected readonly IMapper Mapper;
                     private readonly IEnumerable<ICreateValidation<TEntity>> _createValidations;
                     private readonly IEnumerable<IUpdateValidation<TEntity>> _updateValidations;
 
@@ -29,8 +29,8 @@ namespace Codeed.Framework.Services.CRUD
                         IEnumerable<ICreateValidation<TEntity>> createValidations, 
                         IEnumerable<IUpdateValidation<TEntity>> updateValidations)
                     {
-                        _repository = repository;
-                        _mapper = mapper;
+                        Repository = repository;
+                        Mapper = mapper;
                         _createValidations = createValidations;
                         _updateValidations = updateValidations;
                     }
@@ -39,7 +39,7 @@ namespace Codeed.Framework.Services.CRUD
                     public override async Task<TDtoResponse> ExecuteAsync(TDtoRequest request, CancellationToken cancellationToken)
                     {
                         var entity = await SaveEntity(request, cancellationToken);
-                        var responseDto = _mapper.Map<TDtoResponse>(entity);
+                        var responseDto = Mapper.Map<TDtoResponse>(entity);
                         return responseDto;
                     }
 
@@ -47,14 +47,14 @@ namespace Codeed.Framework.Services.CRUD
                     [NonAction]
                     public async Task<TEntity> SaveEntity(TDtoRequest request, CancellationToken cancellationToken)
                     {
-                        if (request == null)
+                        if (request is null)
                             throw new ArgumentNullException(nameof(request));
 
                         await ValidateRequest(request, cancellationToken);
 
                         var entity = await FindEntity(request, cancellationToken);
-                        var isNew = entity == null;
-                        if (isNew)
+                        var isNew = entity is null;
+                        if (entity is null)
                         {
                             entity = await CreateEntity(request, cancellationToken);
                             await Validate(entity, _createValidations, cancellationToken);
@@ -65,10 +65,10 @@ namespace Codeed.Framework.Services.CRUD
                             await Validate(entity, _updateValidations, cancellationToken);
                         }
 
-                        Action<TEntity> modifyRepository = isNew ? _repository.Add : _repository.Update;
+                        Action<TEntity> modifyRepository = isNew ? Repository.Add : Repository.Update;
                         modifyRepository(entity);
 
-                        await _repository.UnitOfWork.Commit(cancellationToken);
+                        await Repository.UnitOfWork.Commit(cancellationToken);
                         return entity;
                     }
 
@@ -86,7 +86,7 @@ namespace Codeed.Framework.Services.CRUD
                         }
                     }
 
-                    protected abstract Task<TEntity> FindEntity(TDtoRequest request, CancellationToken cancellationToken);
+                    protected abstract Task<TEntity?> FindEntity(TDtoRequest request, CancellationToken cancellationToken);
 
                     protected abstract Task<TEntity> CreateEntity(TDtoRequest dtoRequest, CancellationToken cancellationToken);
 

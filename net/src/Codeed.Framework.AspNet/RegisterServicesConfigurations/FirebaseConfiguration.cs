@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
@@ -19,10 +15,10 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
         public static void ConfigureFirebaseAuthentication(
             this RegisterCodeedFrameworkOptions codeedOptions, 
             string firebaseProjectId, 
-            Action<RegisterCodeedFrameworkFirebaseAuthenticationOptions> configure)
+            Action<RegisterCodeedFrameworkFirebaseAuthenticationOptions>? configure)
         {
             var options = new RegisterCodeedFrameworkFirebaseAuthenticationOptions(firebaseProjectId);
-            if (configure != null)
+            if (configure is not null)
             {
                 configure(options);
             }
@@ -40,7 +36,7 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
         public string FirebaseProjectId { get; }
 
-        private Action<AuthenticationBuilder> _authenticationBuilder;
+        private Action<AuthenticationBuilder>? _authenticationBuilder;
 
         public void ConfigureCustomsAuthentications(Action<AuthenticationBuilder> authenticationBuilder)
         {
@@ -67,7 +63,7 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
                                     };
                                 });
 
-            if (_authenticationBuilder != null)
+            if (_authenticationBuilder is not null)
             {
                 _authenticationBuilder(authBuilder);
             }
