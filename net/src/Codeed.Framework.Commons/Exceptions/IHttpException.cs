@@ -4,7 +4,7 @@
     {
         string Code { get; }
 
-        object Parameters { get; }
+        object? Parameters { get; }
 
         int HttpCode { get; }
     }

@@ -40,7 +40,7 @@ namespace Codeed.Framework.Domain
 
         #region BaseBehaviours
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var compareTo = obj as Entity;
 
@@ -57,8 +57,11 @@ namespace Codeed.Framework.Domain
             return Equals(compareTo);
         }
 
-        public bool Equals(EntityWithoutTenant other)
+        public bool Equals(EntityWithoutTenant? other)
         {
+            if (other is null)
+                return false;
+
             return Id.Equals(other.Id);
         }
 

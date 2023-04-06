@@ -1,5 +1,6 @@
 ﻿using Codeed.Framework.Domain;
 using Codeed.Framework.EventBus;
+using Codeed.Framework.Tenant;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ using System.Text;
 
 namespace Codeed.Framework.EventBus.RabbitMQ
 {
-    public class EventBusRabbitMQ : IEventBus, IDisposable
+    public class EventBusRabbitMQ : BaseEventBus, IDisposable
     {
         private readonly IRabbitMQPersistentConnection _persistentConnection;
         private readonly ILogger<EventBusRabbitMQ> _logger;
@@ -55,7 +56,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             _serviceCollection = serviceCollection;
         }
 
-        private void SubsManager_OnEventRemoved(object sender, string eventName)
+        private void SubsManager_OnEventRemoved(object? sender, string eventName)
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -77,7 +78,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
         }
 
 
-        public Task Publish<TEvent>(TEvent @event) where TEvent : Event
+        public override Task Publish<TEvent>(TEvent @event)
         {
             if (!_persistentConnection.IsConnected)
             {
@@ -123,9 +124,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             return Task.CompletedTask;
         }
 
-        public void Subscribe<T, TH>()
-            where T : Event
-            where TH : IEventHandler<T>
+        public override void Subscribe<T, TH>()
         {
             var eventName = _subsManager.GetEventKey<T>();
             DoInternalSubscription(eventName);
@@ -247,11 +246,31 @@ namespace Codeed.Framework.EventBus.RabbitMQ
                     }
 
                     var eventType = _subsManager.GetEventTypeByName(eventName);
+                    if (eventType is null)
+                    {
+                        continue;
+                    }
+
                     var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+                    if (integrationEvent is null)
+                    {
+                        throw new EventBusException($"the message cannot be serialized to type {eventType.FullName}");
+                    }
+
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
+                    if (integrationEvent is ITenantEvent tenantEvent)
+                    {
+                        var tenantServiceScope = serviceProvider.GetRequiredService<ITenantService>();
+                        tenantServiceScope.SetTenant(tenantEvent.Tenant);
+                    }
+
                     await Task.Yield();
-                    await (Task)concreteType.GetMethod(nameof(IEventHandler<Event>.Handle)).Invoke(handler, new object[] { integrationEvent });
+
+                    var handleResult = concreteType.GetMethod(nameof(IEventHandler<Event>.Handle))?.Invoke(handler, new object[] { integrationEvent });
+
+                    if (handleResult is Task task)
+                        await task;
                 }
             }
         }

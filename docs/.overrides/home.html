@@ -1,0 +1,103 @@
+{% extends "main.html" %} {% block tabs %}
+<style>
+  .background-image {
+    width: 100%;
+    position: fixed;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .background-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .mdx-container {
+    flex-grow: 1;
+    display: flex;
+    margin-left: 60px;
+  }
+
+  .mdx-container-child {
+    align-self: flex-end;
+    width: 100%;
+    margin-bottom: 60px;
+  }
+
+  /* Hide main content for now */
+  .md-content {
+    display: none;
+  }
+
+  .md-main {
+    flex-grow: unset;
+  }
+
+  .md-sidebar--secondary {
+    display: none !important;
+  }
+
+  h1 {
+    color: white !important;
+    font-weight: 700 !important;
+  }
+
+  p {
+    color: white !important;
+    max-width: 500px;
+  }
+
+  .md-button--primary {
+    background-color: #dd2e57 !important;
+  }
+
+  .md-button {
+    color: white !important;
+  }
+
+  .md-typeset a:focus,
+  .md-typeset a:hover {
+    color: white !important;
+    background-color: #f14870 !important;
+    border-color: #f14870 !important;
+  }
+
+  @media screen and (min-width: 76.25em) {
+    .md-sidebar--primary {
+      display: none !important;
+    }
+  }
+</style>
+<div class="background-image">
+  <img src="assets/images/background.jpg" alt="" draggable="false" />
+</div>
+<section class="mdx-container">
+  <div class="md-grid md-typeset mdx-container-child">
+    <div class="mdx-hero">
+      <div class="mdx-hero__content">
+        <h1>Agility at the Speed of Light</h1>
+        <p>
+          This development framework was created to help development teams
+          improve their agility, allowing them to deliver projects more quickly,
+          with less risk, and with higher quality.
+        </p>
+        <a
+          href="{{ page.next_page.url | url }}"
+          title="{{ page.next_page.title | e }}"
+          class="md-button md-button--primary"
+        >
+          Getting Started
+        </a>
+        <a
+          href="https://github.com/Codeed-Dev/Codeed.Framework"
+          title="Github"
+          class="md-button"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

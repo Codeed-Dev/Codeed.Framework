@@ -15,13 +15,13 @@ namespace Codeed.Framework.AspNet
             AssemblyPattern = assemblyPattern;
         }
 
-        public string Name { get; }
+        public string Name { get; } = "";
 
-        public string AssemblyPattern { get; }
+        public string AssemblyPattern { get; } = "";
 
         internal IEnumerable<ICodeedServiceConfiguration> ServicesConfigurations => _servicesConfigurations;
 
-        internal Action<DbContextOptionsBuilder> DbContextOptionsBuilder { get; private set; }
+        internal Action<DbContextOptionsBuilder>? DbContextOptionsBuilder { get; private set; }
 
         public void ConfigureDatabase(Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
         {

@@ -15,23 +15,23 @@ namespace Codeed.Framework.Services.CRUD
                 .WithParameters<Guid>
                 .WithResponse<TDto>
             {
-                private readonly IRepository<TEntity> _repository;
-                private readonly IMapper _mapper;
+                protected readonly IRepository<TEntity> Repository;
+                protected readonly IMapper Mapper;
 
                 protected Returning(IRepository<TEntity> repository, IMapper mapper)
                 {
-                    _repository = repository;
-                    _mapper = mapper;
+                    Repository = repository;
+                    Mapper = mapper;
                 }
 
                 [HttpGet("{id}")]
                 public override async Task<TDto> ExecuteAsync(Guid id, CancellationToken cancellationToken)
                 {
-                    var query = _repository.QueryById(id);
+                    var query = Repository.QueryById(id);
                     query = ConfigureQuery(query);
 
                     var entity = await query.FirstOrDefaultAsync(cancellationToken);
-                    return _mapper.Map<TDto>(entity);
+                    return Mapper.Map<TDto>(entity);
                 }
 
                 protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)

@@ -23,10 +23,10 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
         public static void ConfigureMongoDb(
             this RegisterCodeedFrameworkOptions codeedOptions,
             IConfigurationSection section,
-            Action<RegisterMongoDbConfiguration> configure)
+            Action<RegisterMongoDbConfiguration>? configure)
         {
             var options = new RegisterMongoDbConfiguration(section);
-            if (configure != null)
+            if (configure is not null)
             {
                 configure(options);
             }

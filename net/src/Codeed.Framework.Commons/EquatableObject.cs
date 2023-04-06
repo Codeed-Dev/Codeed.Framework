@@ -8,9 +8,9 @@ namespace Codeed.Framework.Commons
     public abstract class EquatableObject<T> : IEquatable<T>
         where T : EquatableObject<T>
     {
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj == null)
+            if (obj is null)
             {
                 return false;
             }
@@ -25,8 +25,11 @@ namespace Codeed.Framework.Commons
         }
 
 
-        public virtual bool Equals(T other)
+        public virtual bool Equals(T? other)
         {
+            if (other is null)
+                return false;
+
             return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 

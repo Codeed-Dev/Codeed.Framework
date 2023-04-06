@@ -27,7 +27,7 @@ namespace Codeed.Framework.AspNet.EventBus
                 foreach (var interfaceType in eventHandler.GetInterfaces().Where(IsEventHandler))
                 {
                     var eventType = interfaceType.GetGenericArguments()[0];
-                    eventBus.GetType().GetMethod(nameof(IEventBus.Subscribe))
+                    eventBus.GetType().GetMethod(nameof(IEventBus.Subscribe))?
                                       .MakeGenericMethod(eventType, eventHandler)
                                       .Invoke(eventBus, null);
 

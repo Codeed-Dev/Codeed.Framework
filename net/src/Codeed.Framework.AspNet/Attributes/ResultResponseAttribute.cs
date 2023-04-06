@@ -21,7 +21,9 @@ namespace Codeed.Framework.AspNet.Attributes
                 context.Result = new OkObjectResult(objectResult.Value);
             }
 
+#pragma warning disable CS8604 // Possible null reference argument.
             base.OnActionExecuted(context);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
     }
 }

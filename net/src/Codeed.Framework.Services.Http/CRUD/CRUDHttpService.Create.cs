@@ -17,14 +17,14 @@ namespace Codeed.Framework.Services.CRUD
                     .WithParameters<TDtoRequest>
                     .WithResponse<TDtoResponse>
                 {
-                    private readonly IRepository<TEntity> _repository;
-                    private readonly IMapper _mapper;
+                    protected readonly IRepository<TEntity> Repository;
+                    protected readonly IMapper Mapper;
                     private readonly IEnumerable<ICreateValidation<TEntity>> _validations;
 
                     protected Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<ICreateValidation<TEntity>> validations)
                     {
-                        _repository = repository;
-                        _mapper = mapper;
+                        Repository = repository;
+                        Mapper = mapper;
                         _validations = validations;
                     }
 
@@ -39,11 +39,11 @@ namespace Codeed.Framework.Services.CRUD
                         request.Validate();
                         var entity = await CreateEntity(request, cancellationToken);
                         await Validate(entity, cancellationToken);
-                        _repository.Add(entity);
+                        Repository.Add(entity);
                         await AfterAddEntity(request, entity, cancellationToken);
 
-                        await _repository.UnitOfWork.Commit(cancellationToken);
-                        var responseDto = _mapper.Map<TDtoResponse>(entity);
+                        await Repository.UnitOfWork.Commit(cancellationToken);
+                        var responseDto = Mapper.Map<TDtoResponse>(entity);
                         return responseDto;
 
                     }

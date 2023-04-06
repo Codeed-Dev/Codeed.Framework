@@ -7,6 +7,7 @@ using Codeed.Framework.Data.Extensions;
 using System.Collections.Generic;
 using System;
 using Codeed.Framework.EventBus;
+using Codeed.Framework.Tenant;
 
 namespace Codeed.Framework.Data
 {
@@ -14,11 +15,13 @@ namespace Codeed.Framework.Data
         where T : UnsafeBaseDbContext<T>
     {
         private readonly IEventBus _eventBus;
-        private Transaction _currentTransaction;
+        private readonly ITenantService _tenantService;
+        private Transaction? _currentTransaction;
 
-        protected UnsafeBaseDbContext(DbContextOptions<T> options, IEventBus eventBus) : base(options)
+        protected UnsafeBaseDbContext(DbContextOptions<T> options, IEventBus eventBus, ITenantService tenantService) : base(options)
         {
             _eventBus = eventBus;
+            _tenantService = tenantService;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,7 +55,7 @@ namespace Codeed.Framework.Data
             return Commit(null, cancellationToken);
         }
 
-        public async Task<bool> Commit(Transaction transaction, CancellationToken cancellationToken)
+        public async Task<bool> Commit(Transaction? transaction, CancellationToken cancellationToken)
         {
             if (!IsCurrentTransaction(transaction))
             {
@@ -67,7 +70,7 @@ namespace Codeed.Framework.Data
         {
             var transaction = new Transaction(this);
 
-            if (_currentTransaction == null)
+            if (_currentTransaction is null)
             {
                 _currentTransaction = transaction;
             }
@@ -97,7 +100,9 @@ namespace Codeed.Framework.Data
                 return result;
             }
 
-            var events = Events.ToList();
+            var events = entitiesWithEvents.SelectMany(e => e.Events)
+                                           .Distinct()
+                                           .ToList();
 
             foreach (var entity in entitiesWithEvents)
             {
@@ -109,7 +114,14 @@ namespace Codeed.Framework.Data
             {
                 try
                 {
-                    await _eventBus.Publish(domainEvent).ConfigureAwait(false);
+                    if (domainEvent is ITenantEvent tenantEvent)
+                    {
+                        await _eventBus.Publish(tenantEvent, _tenantService).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        await _eventBus.Publish(domainEvent).ConfigureAwait(false);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -133,15 +145,9 @@ namespace Codeed.Framework.Data
             return result;
         }
 
-        public IEnumerable<Event> Events => ChangeTracker.Entries<EntityWithoutTenant>()
-                                                         .Select(e => e.Entity)
-                                                         .SelectMany(e => e.Events)
-                                                         .Distinct();
-
-
-        private bool IsCurrentTransaction(Transaction transaction)
+        private bool IsCurrentTransaction(Transaction? transaction)
         {
-            return _currentTransaction == null ||
+            return _currentTransaction is null ||
                 _currentTransaction == transaction;
         }
     }

@@ -18,7 +18,7 @@ namespace Codeed.Framework.AspNet.Attributes
         {
             var user = context.HttpContext.User;
 
-            if (!user.Identity.IsAuthenticated || !user.EmailIsVerified())
+            if (user.Identity is null || !user.Identity.IsAuthenticated || !user.EmailIsVerified())
             {
                 var result = new Result().Add("Unauthorized");
                 context.Result = new ObjectResult(result)

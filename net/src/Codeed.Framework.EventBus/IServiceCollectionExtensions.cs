@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Codeed.Framework.Tenant;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Codeed.Framework.EventBus
 {

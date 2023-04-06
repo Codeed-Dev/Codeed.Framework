@@ -13,7 +13,7 @@ namespace Sample.CrossCutting
     {
         public string Name => "Sample";
 
-        public void RegisterServices(IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder> dbContextOptionsBuilder)
+        public void RegisterServices(IServiceCollection services, IConfiguration configuration, Action<DbContextOptionsBuilder>? dbContextOptionsBuilder)
         {
             services.RegisterRepository<ICustomerRepository, CustomerRepository, Customer>();
             services.AddDbContext<SampleDbContext>(dbContextOptionsBuilder);

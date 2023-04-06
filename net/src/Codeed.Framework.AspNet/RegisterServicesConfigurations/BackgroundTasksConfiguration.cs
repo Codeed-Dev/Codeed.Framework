@@ -15,10 +15,10 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
         public static void ConfigureBackgroundTasks(
             this RegisterCodeedFrameworkOptions codeedOptions, 
-            Action<RegisterBackgroundTasksConfiguration> configure)
+            Action<RegisterBackgroundTasksConfiguration>? configure)
         {
             var options = new RegisterBackgroundTasksConfiguration();
-            if (configure != null)
+            if (configure is not null)
             {
                 configure(options);
             }

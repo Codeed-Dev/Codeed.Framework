@@ -25,9 +25,9 @@ namespace Codeed.Framework.Commons.Exceptions
             Parameters = parameters;
         }
 
-        public string Code { get; }
+        public string Code { get; } = "";
 
-        public object Parameters { get; }
+        public object? Parameters { get; }
 
         public abstract int HttpCode { get; }
     }

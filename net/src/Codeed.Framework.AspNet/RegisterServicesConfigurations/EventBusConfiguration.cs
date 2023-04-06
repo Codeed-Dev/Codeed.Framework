@@ -16,10 +16,10 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
         public static void ConfigureEventBus(
             this RegisterCodeedFrameworkOptions codeedOptions, 
-            Action<RegisterEventBusConfiguration> configure)
+            Action<RegisterEventBusConfiguration>? configure)
         {
             var options = new RegisterEventBusConfiguration();
-            if (configure != null)
+            if (configure is not null)
             {
                 configure(options);
             }
@@ -30,7 +30,7 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
     public class RegisterEventBusConfiguration : ICodeedServiceConfiguration
     {
-        private RabbitMQConfiguration _rabbitMQConfiguration;
+        private RabbitMQConfiguration? _rabbitMQConfiguration;
 
         public void ConfigureRabbitMQ(RabbitMQConfiguration rabbitMQConfiguration)
         {
@@ -39,7 +39,7 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
         public void RegisterServices(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            if (_rabbitMQConfiguration != null)
+            if (_rabbitMQConfiguration is not null)
             {
                 services.RegisterRabbitMqEventBus(_rabbitMQConfiguration);
             }

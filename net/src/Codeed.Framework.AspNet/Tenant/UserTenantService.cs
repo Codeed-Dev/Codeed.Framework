@@ -13,23 +13,22 @@ namespace Codeed.Framework.AspNet.Tenant
         protected UserTenantService(ClaimsPrincipal user)
         {
             _user = user;
+            Tenant = _user.GetUserId();
         }
 
-        public string Tenant => _user.GetUserId();
+        public string Tenant { get; private set; }
 
         public bool Authorize(object permission)
         {
             return GetPermissions().Contains(permission);
         }
 
-        public IEnumerable<string> GetTenants()
-        {
-            yield return _user.GetUserId();
-        }
-
         public abstract IEnumerable<object> GetPermissions();
 
-        public string GetRootUserUid() => _user.GetUserId();
 
+        public void SetTenant(string tenant)
+        {
+            Tenant = tenant;
+        }
     }
 }

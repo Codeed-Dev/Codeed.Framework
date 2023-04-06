@@ -16,10 +16,10 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
             codeedOptions.ConfigureSwagger(null);
         }
 
-        public static void ConfigureSwagger(this RegisterCodeedFrameworkOptions codeedOptions, Action<RegisterCodeedFrameworkSwaggerOptions> configure)
+        public static void ConfigureSwagger(this RegisterCodeedFrameworkOptions codeedOptions, Action<RegisterCodeedFrameworkSwaggerOptions>? configure)
         {
             var options = new RegisterCodeedFrameworkSwaggerOptions();
-            if (configure != null)
+            if (configure is not null)
             {
                 configure(options);
             }
@@ -38,15 +38,15 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
                           \r\n\r\nExample: 'Bearer 12345abcdef'";
         }
 
-        public string Title { get; set; }
+        public string Title { get; set; } = "";
 
-        public string Version { get; set; }
+        public string Version { get; set; } = "";
 
-        public string Description { get; set; }
+        public string Description { get; set; } = "";
 
-        public string TermsOfService { get; set; }
+        public string TermsOfService { get; set; } = "";
 
-        public string JwtAuthorizationDescription { get; set; }
+        public string JwtAuthorizationDescription { get; set; } = "";
 
         public void RegisterServices(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {

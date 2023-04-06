@@ -1,0 +1,107 @@
+site_name: Codeed.Framework
+site_url: https://github.com/Codeed-Dev/Codeed.Framework
+docs_dir: docs
+repo_name: Codeed-Dev/Codeed.Framework
+repo_url: https://github.com/Codeed-Dev/Codeed.Framework
+edit_uri: "edit/main/docs/"
+extra_css:
+  - stylesheets/extra.css
+theme:
+  name: material
+  custom_dir: docs/.overrides/
+  logo: assets/general/codeed-banner.svg
+  favicon: assets/general/codeed-icon.svg
+  language: en
+  font:
+    text: Roboto
+    code: Roboto Mono
+  palette: 
+    - scheme: codeed-framework
+  features: 
+    - tabs
+    - instant
+    - content.code.annotate
+    - content.tabs.link
+    - content.action.edit
+    - content.action.view
+    - navigation.tabs        # TAB Superior
+    - navigation.top         # Botão para voltar ao topo quando rolar para cima
+    - search.highlight       # faz um highlight no texto quando clicado após a pesquisa
+    - search.share           # coloca um botão para compartilhar a busca
+    - navigation.indexes     # permite a navegação para o index do menu
+    - navigation.sections   
+plugins:
+  - search       
+markdown_extensions:
+# Code blocks
+# https://squidfunk.github.io/mkdocs-material/reference/code-blocks/
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences 
+  - pymdownx.snippets
+# Admonition (note/warning/error)
+# https://squidfunk.github.io/mkdocs-material/reference/admonitions/
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
+# Tables
+# https://squidfunk.github.io/mkdocs-material/reference/data-tables/
+  - tables
+# Metadata
+# https://squidfunk.github.io/mkdocs-material/reference/meta-tags/
+  - meta
+# Adicionando botões de teclado no help
+# eg: ++ctrl+alt+del++
+# https://squidfunk.github.io/mkdocs-material/reference/formatting/#adding-keyboard-keys
+# https://facelessuser.github.io/pymdown-extensions/extensions/keys/#extendingmodifying-key-map-index
+  - pymdownx.keys
+# simbolos como:™, ©, ®, ¼
+# https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/?h=pymdownx+smartsymbols#smartsymbols
+# https://facelessuser.github.io/pymdown-extensions/extensions/smartsymbols/
+  - pymdownx.smartsymbols
+# Scrollspy da página
+  - toc:
+      title: Page Content
+      permalink: true
+# Atributos para: Adding buttons, Adding icons with colors, Image alignment, Image lazy-loading
+# https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown/#attribute-lists
+  - attr_list    
+# Definition List
+# https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown/#definition-lists
+  - def_list
+#https://squidfunk.github.io/mkdocs-material/setup/extensions/python-markdown-extensions/#tasklist  
+  - pymdownx.tasklist:
+      custom_checkbox: true  
+      clickable_checkbox: true
+extra:
+  # remove o "Made with Material for MkDocs"
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/?h=generator#generator-notice
+  generator: false
+  # Copyright
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/?h=copyright#copyright-notice
+  copyright: Copyright &copy; 2022 Codeed
+  # links do rodapé da página
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-the-footer/?h=generator#social-links
+  social:
+    - icon: fontawesome/solid/link
+      link: https://www.codeed.com.br
+  # Integração com o Google Analytics
+  # https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-analytics/?h=analytics#google-analytics
+  # analytics: 
+    # provider: google
+    # property: CHAVE
+
+nav:
+  - Home: index.md    
+  - Learn: 
+    - Getting Started:
+      - Getting Started: learn/getting_started/introduction.md
+      - Creating Project: learn/getting_started/creating_project.md
+      - Creating the Environment: learn/getting_started/environment.md
+      - Configuring Project: learn/getting_started/configuring_project.md
+    - Create your first service:
+      - Create Entity: learn/first_service/entity.md
+  - Concepts:
+    - Entity: concepts/entity.md

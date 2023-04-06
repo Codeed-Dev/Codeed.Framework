@@ -1,5 +1,6 @@
 ﻿using Codeed.Framework.Models;
 using MongoDB.Driver;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +13,12 @@ namespace Codeed.Framework.Data.MongoDb
 
         public MongoDbNoSqlRepository(IMongoDatabase mongoDatabase)
         {
-            _modelCollection = mongoDatabase.GetCollection<T>(nameof(T));
+            _modelCollection = mongoDatabase.GetCollection<T>(typeof(T).Name);
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return _modelCollection.AsQueryable();
         }
 
         public Task<T> GetAsync(string id, CancellationToken cancellationToken)

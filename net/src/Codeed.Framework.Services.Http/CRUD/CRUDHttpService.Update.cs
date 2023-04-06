@@ -20,14 +20,14 @@ namespace Codeed.Framework.Services.CRUD
                     .WithParameters<Guid, TDtoRequest>
                     .WithResponse<TDtoResponse>
                 {
-                    private readonly IRepository<TEntity> _repository;
-                    private readonly IMapper _mapper;
+                    protected readonly IRepository<TEntity> Repository;
+                    protected readonly IMapper Mapper;
                     private readonly IEnumerable<IUpdateValidation<TEntity>> _validations;
 
                     protected Returning(IRepository<TEntity> repository, IMapper mapper, IEnumerable<IUpdateValidation<TEntity>> validations)
                     {
-                        _repository = repository;
-                        _mapper = mapper;
+                        Repository = repository;
+                        Mapper = mapper;
                         _validations = validations;
                     }
 
@@ -42,17 +42,17 @@ namespace Codeed.Framework.Services.CRUD
                         request.Validate();
                         var entity = await FindEntity(id, cancellationToken);
 
-                        if (entity == null)
+                        if (entity is null)
                         {
                             throw new ServiceNotFoundException("The record was not found");
                         }
 
                         await UpdateEntity(request, entity, cancellationToken);
                         await Validate(entity, cancellationToken);
-                        _repository.Update(entity);
+                        Repository.Update(entity);
 
-                        await _repository.UnitOfWork.Commit(cancellationToken);
-                        var responseDto = _mapper.Map<TDtoResponse>(entity);
+                        await Repository.UnitOfWork.Commit(cancellationToken);
+                        var responseDto = Mapper.Map<TDtoResponse>(entity);
                         return responseDto;
 
                     }
@@ -67,10 +67,10 @@ namespace Codeed.Framework.Services.CRUD
                         }
                     }
 
-                    protected virtual async Task<TEntity> FindEntity(Guid id, CancellationToken cancellationToken)
+                    protected virtual async Task<TEntity?> FindEntity(Guid id, CancellationToken cancellationToken)
                     {
-                        var entity = await _repository.QueryById(id)
-                                                      .FirstOrDefaultAsync(cancellationToken);
+                        var entity = await Repository.QueryById(id)
+                                                     .FirstOrDefaultAsync(cancellationToken);
 
                         return entity;
                     }

@@ -19,7 +19,7 @@ namespace Codeed.Framework.Services.BackgroundTasks
             _signal.Release();
         }
 
-        public async Task<Func<IServiceScopeFactory, CancellationToken, Task>> DequeueTask(CancellationToken cancellationToken)
+        public async Task<Func<IServiceScopeFactory, CancellationToken, Task>?> DequeueTask(CancellationToken cancellationToken)
         {
             await _signal.WaitAsync(cancellationToken);
             _items.TryDequeue(out var task);

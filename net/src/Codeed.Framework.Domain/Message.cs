@@ -16,8 +16,11 @@ namespace Codeed.Framework.Domain
             MessageType = GetType().Name;
         }
 
-        public override bool Equals(Message other)
+        public override bool Equals(Message? other)
         {
+            if (other is null)
+                return false;
+
             return Equatable ? base.Equals(other) : other == this;
         }
 
