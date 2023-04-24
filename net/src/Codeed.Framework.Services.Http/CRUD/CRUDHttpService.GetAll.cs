@@ -37,15 +37,14 @@ namespace Codeed.Framework.Services.CRUD
                     return Task.FromResult(query.ProjectTo<TDto>(Mapper.ConfigurationProvider));
                 }
 
-                [ODataAttributeRouting]
-                [EnableQuery()]
                 [HttpGet("count")]
-                public virtual Task<int> Count(CancellationToken cancellationToken)
+                public virtual Task<int> Count([FromQuery] ODataQueryOptions<TDto> odata, CancellationToken cancellationToken)
                 {
                     var query = Repository.QueryAll();
                     query = ConfigureQuery(query);
+                    var odataQuery = odata.ApplyTo(query.ProjectTo<TDto>(Mapper.ConfigurationProvider)).Cast<TDto>();
 
-                    return query.CountAsync(cancellationToken);
+                    return odataQuery.CountAsync(cancellationToken);
                 }
 
                 protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)
