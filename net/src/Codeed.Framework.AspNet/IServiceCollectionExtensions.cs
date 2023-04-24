@@ -131,6 +131,7 @@ namespace Codeed.Framework.AspNet
             }).AddOData(opt => opt.Filter()
                                   .Expand()
                                   .Select()
+                                  .Count()
                                   .OrderBy()
                                   .SetMaxTop(100));
 
