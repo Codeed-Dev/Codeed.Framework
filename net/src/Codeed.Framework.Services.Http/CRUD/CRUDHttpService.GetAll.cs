@@ -5,6 +5,7 @@ using Codeed.Framework.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
+using Microsoft.EntityFrameworkCore;
 
 namespace Codeed.Framework.Services.CRUD
 {
@@ -34,6 +35,17 @@ namespace Codeed.Framework.Services.CRUD
                     query = ConfigureQuery(query);
 
                     return Task.FromResult(query.ProjectTo<TDto>(Mapper.ConfigurationProvider));
+                }
+
+                [ODataAttributeRouting]
+                [EnableQuery()]
+                [HttpGet("count")]
+                public virtual Task<int> Count(CancellationToken cancellationToken)
+                {
+                    var query = Repository.QueryAll();
+                    query = ConfigureQuery(query);
+
+                    return query.CountAsync(cancellationToken);
                 }
 
                 protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)
