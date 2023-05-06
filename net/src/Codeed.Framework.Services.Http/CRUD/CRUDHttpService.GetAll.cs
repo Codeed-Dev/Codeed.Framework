@@ -37,6 +37,7 @@ namespace Codeed.Framework.Services.CRUD
                     return Task.FromResult(query.ProjectTo<TDto>(Mapper.ConfigurationProvider));
                 }
 
+                [ApiExplorerSettings(IgnoreApi = true)]
                 [HttpGet("count")]
                 public virtual Task<int> Count([FromQuery] ODataQueryOptions<TDto> odata, CancellationToken cancellationToken)
                 {
