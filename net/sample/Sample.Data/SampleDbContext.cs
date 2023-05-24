@@ -7,7 +7,7 @@ namespace Sample.Data
 {
     public class SampleDbContext : BaseDbContext<SampleDbContext>
     {
-        public SampleDbContext(DbContextOptions<SampleDbContext> options, IEventBus eventBus, ITenantService tenantService) : base(options, eventBus, tenantService)
+        public SampleDbContext(DbContextOptions<SampleDbContext> options, IDomainEventsPublisher domainEventsPublisher, ITenantService tenantService) : base(options, domainEventsPublisher, tenantService)
         {
         }
     }

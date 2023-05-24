@@ -26,7 +26,9 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "God
     {
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"));
     });
+
     opt.ConfigureEventBus();
+    opt.ConfigureDomainEventsPublisher();
     opt.ConfigureMongoDb(builder.Configuration.GetSection("MongoDb"));
     opt.ConfigureBackgroundTasks();
 });

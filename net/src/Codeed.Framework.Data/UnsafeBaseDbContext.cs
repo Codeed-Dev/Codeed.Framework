@@ -14,13 +14,16 @@ namespace Codeed.Framework.Data
     public abstract class UnsafeBaseDbContext<T> : DbContext, IUnitOfWork
         where T : UnsafeBaseDbContext<T>
     {
-        private readonly IEventBus _eventBus;
+        private readonly IDomainEventsPublisher _domainEventsPublisher;
         private readonly ITenantService _tenantService;
         private Transaction? _currentTransaction;
 
-        protected UnsafeBaseDbContext(DbContextOptions<T> options, IEventBus eventBus, ITenantService tenantService) : base(options)
+        protected UnsafeBaseDbContext(
+            DbContextOptions<T> options,
+            IDomainEventsPublisher domainEventsPublisher,
+            ITenantService tenantService) : base(options)
         {
-            _eventBus = eventBus;
+            _domainEventsPublisher = domainEventsPublisher;
             _tenantService = tenantService;
         }
 
@@ -95,7 +98,7 @@ namespace Codeed.Framework.Data
 
             int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            if (_eventBus == null)
+            if (_domainEventsPublisher is null)
             {
                 return result;
             }
@@ -109,39 +112,7 @@ namespace Codeed.Framework.Data
                 entity.ClearDomainEvents();
             }
 
-            var publishEventErrors = new List<Exception>();
-            foreach (var domainEvent in events)
-            {
-                try
-                {
-                    if (domainEvent is ITenantEvent tenantEvent)
-                    {
-                        await _eventBus.Publish(tenantEvent, _tenantService).ConfigureAwait(false);
-                    }
-                    else
-                    {
-                        await _eventBus.Publish(domainEvent).ConfigureAwait(false);
-                    }
-                }
-                catch (Exception e)
-                {
-                    publishEventErrors.Add(e);
-                }
-            }
-
-            var firstError = publishEventErrors.FirstOrDefault();
-            if (firstError != null)
-            {
-                throw firstError;
-            }
-
-            // Caso tenha uma transaction e tenha executado eventos, então faz um novo commit após a execução dos eventos
-            // para salvar os possívels handlers
-            if (_currentTransaction != null && events.Any())
-            {
-                await SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-            }
-
+            await _domainEventsPublisher.Publish(events);
             return result;
         }
 

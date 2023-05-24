@@ -53,11 +53,10 @@ namespace Codeed.Framework.EventBus
 
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
-                    await Task.Yield();
                     var handleResult = concreteType.GetMethod("Handle")?.Invoke(handler, new object[] { @event });
-
+                    
                     if (handleResult is Task task)
-                        await task;
+                        await task.ConfigureAwait(false);
                 }
             }
         }

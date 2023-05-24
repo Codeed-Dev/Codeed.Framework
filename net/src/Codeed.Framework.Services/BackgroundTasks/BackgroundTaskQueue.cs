@@ -25,7 +25,5 @@ namespace Codeed.Framework.Services.BackgroundTasks
             _items.TryDequeue(out var task);
             return task;
         }
-
-
     }
 }

@@ -33,6 +33,7 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sam
         });
     });
 
+    
     opt.ConfigureSwagger(c =>
     {
         c.Version = "v1";
@@ -44,6 +45,7 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sam
         options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
     opt.ConfigureEventBus();
+    opt.ConfigureDomainEventsPublisher();
     opt.ConfigureMongoDb(builder.Configuration.GetSection("MongoDb"));
     opt.ConfigureBackgroundTasks();
 });
