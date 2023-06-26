@@ -64,7 +64,15 @@ namespace Codeed.Framework.AspNet
             {
                 scan.FromAssemblies(assemblies)
                     .AddClasses(classes => classes.AssignableTo(typeof(IUpdateValidation<>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime();
+
+                scan.FromAssemblies(assemblies)
                     .AddClasses(classes => classes.AssignableTo(typeof(IDeleteValidation<>)))
+                    .AsImplementedInterfaces()
+                    .WithScopedLifetime();
+
+                scan.FromAssemblies(assemblies)
                     .AddClasses(classes => classes.AssignableTo(typeof(ICreateValidation<>)))
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
