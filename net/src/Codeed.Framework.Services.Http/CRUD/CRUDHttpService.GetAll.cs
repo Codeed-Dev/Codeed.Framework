@@ -39,7 +39,7 @@ namespace Codeed.Framework.Services.CRUD
                         query = ConfigureQuery(query);
                         var ignoreQueryOptions = AllowedQueryOptions.Skip | AllowedQueryOptions.Top;
                         var baseQuery = odata.ApplyTo(query.ProjectTo<TDto>(Mapper.ConfigurationProvider), ignoreQueryOptions).Cast<TDto>();
-                        var queryDto = baseQuery.Take(odata.Top?.Value ?? 100).Skip(odata.Skip?.Value ?? 0);
+                        var queryDto = baseQuery.Skip(odata.Skip?.Value ?? 0).Take(odata.Top?.Value ?? 100);
 
                         var data = await queryDto.ToListAsync(cancellationToken) ?? Enumerable.Empty<TDto>();
 
