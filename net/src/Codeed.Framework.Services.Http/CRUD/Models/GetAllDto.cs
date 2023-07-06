@@ -3,5 +3,7 @@
     public class GetAllDto<T>
     {
         public IEnumerable<T> Data { get; set; } = Enumerable.Empty<T>();
+
+        public int Count { get; set; }
     }
 }
