@@ -32,7 +32,6 @@ namespace Codeed.Framework.Services.CRUD
                     }
 
                     [ApiExplorerSettings(IgnoreApi = true)]
-                    [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
                     [HttpGet]
                     public override async Task<TReturning> ExecuteAsync([FromQuery] ODataQueryOptions<TDto> odata, CancellationToken cancellationToken)
                     {
