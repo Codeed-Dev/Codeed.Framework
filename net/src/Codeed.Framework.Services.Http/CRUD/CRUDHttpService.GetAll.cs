@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using Codeed.Framework.Data;
 using Codeed.Framework.Domain;
+using Codeed.Framework.Models;
+using Codeed.Framework.Services.Http.CRUD.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
@@ -13,47 +15,48 @@ namespace Codeed.Framework.Services.CRUD
     {
         public static class GetAll<TEntity> where TEntity : Entity, IAggregateRoot
         {
-            public abstract class Returning<TDto> : HttpService
-                .WithoutParameters
-                .WithResponse<IQueryable<TDto>>
+            public static class Returning<TDto> 
             {
-                protected readonly IRepository<TEntity> Repository;
-                protected readonly IMapper Mapper;
-
-                protected Returning(IRepository<TEntity> repository, IMapper mapper)
+                public abstract class WithTotals<TReturning> : HttpService
+                    .WithParameters< ODataQueryOptions<TDto>>
+                    .WithResponse<TReturning>
+                    where TReturning : GetAllDto<TDto>
                 {
-                    Repository = repository;
-                    Mapper = mapper;
-                }
+                    protected readonly IRepository<TEntity> Repository;
+                    protected readonly IMapper Mapper;
 
-                [ODataAttributeRouting]
-                [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
-                [HttpGet]
-                public override Task<IQueryable<TDto>> ExecuteAsync(CancellationToken cancellationToken)
-                {
-                    var query = Repository.QueryAll();
-                    query = ConfigureQuery(query);
+                    protected WithTotals(IRepository<TEntity> repository, IMapper mapper)
+                    {
+                        Repository = repository;
+                        Mapper = mapper;
+                    }
 
-                    return Task.FromResult(query.ProjectTo<TDto>(Mapper.ConfigurationProvider));
-                }
+                    [ApiExplorerSettings(IgnoreApi = true)]
+                    [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+                    [HttpGet]
+                    public override async Task<TReturning> ExecuteAsync([FromQuery] ODataQueryOptions<TDto> odata, CancellationToken cancellationToken)
+                    {
+                        IQueryable<TEntity> query = Repository.QueryAll();
+                        query = ConfigureQuery(query);
+                        var ignoreQueryOptions = AllowedQueryOptions.Skip | AllowedQueryOptions.Top;
+                        var baseQuery = odata.ApplyTo(query.ProjectTo<TDto>(Mapper.ConfigurationProvider), ignoreQueryOptions).Cast<TDto>();
+                        var queryDto = baseQuery.Take(odata.Top?.Value ?? 100).Skip(odata.Skip?.Value ?? 0);
 
-                [ApiExplorerSettings(IgnoreApi = true)]
-                [HttpGet("count")]
-                public virtual Task<int> Count([FromQuery] ODataQueryOptions<TDto> odata, CancellationToken cancellationToken)
-                {
-                    var query = Repository.QueryAll();
-                    query = ConfigureQuery(query);
-                    var odataQuery = odata.ApplyTo(query.ProjectTo<TDto>(Mapper.ConfigurationProvider)).Cast<TDto>();
+                        var data = await queryDto.ToListAsync(cancellationToken) ?? Enumerable.Empty<TDto>();
 
-                    return odataQuery.CountAsync(cancellationToken);
-                }
+                        var totals = await BuildTotals(baseQuery, cancellationToken);
+                        totals.Data = data;
+                        return totals;
+                    }
 
-                protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)
-                {
-                    return query;
+                    protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)
+                    {
+                        return query;
+                    }
+
+                    protected abstract Task<TReturning> BuildTotals(IQueryable<TDto> baseQuery, CancellationToken cancellationToken);
                 }
             }
-
         }
     }
 }

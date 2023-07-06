@@ -1,35 +1,31 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Codeed.Framework.Data;
 using Codeed.Framework.Services;
 using Codeed.Framework.Services.Attributes;
+using Codeed.Framework.Services.CRUD;
+using Codeed.Framework.Services.Http.CRUD.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Application.Services.Customers.Models;
+using Sample.Domain;
 using Sample.Domain.Repositories;
 
 namespace Sample.Application.Services.Customers
 {
     [Route("api/customers")]
-    public class GetAllCustomers : HttpService
-        .WithoutParameters
-        .WithResponse<IQueryable<CustomerDto>>
+    public class GetAllCustomers : CRUDHttpService.GetAll<Customer>
+        .Returning<CustomerDto>
+        .WithTotals<GetAllDto<CustomerDto>>
     {
-        private readonly ICustomerRepository _customerRepository;
-        private readonly IMapper _mapper;
-
-        public GetAllCustomers(ICustomerRepository customerRepository, IMapper mapper)
+        public GetAllCustomers(IRepository<Customer> repository, IMapper mapper) : base(repository, mapper)
         {
-            _customerRepository = customerRepository;
-            _mapper = mapper;
         }
 
-        /// <summary>
-        /// Get all customers
-        /// </summary>
-        [HttpGet]
-        public override Task<IQueryable<CustomerDto>> ExecuteAsync(CancellationToken cancellationToken)
+
+        protected override Task<GetAllDto<CustomerDto>> BuildTotals(IQueryable<CustomerDto> baseQuery, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_customerRepository.QueryAll().ProjectTo<CustomerDto>(_mapper.ConfigurationProvider));
+            return null;
         }
     }
 }
