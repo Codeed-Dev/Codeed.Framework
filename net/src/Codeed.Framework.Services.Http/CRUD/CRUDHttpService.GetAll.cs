@@ -18,7 +18,7 @@ namespace Codeed.Framework.Services.CRUD
             public static class Returning<TDto> 
             {
                 public abstract class WithTotals<TReturning> : HttpService
-                    .WithParameters< ODataQueryOptions<TDto>>
+                    .WithParameters<ODataQueryOptions<TDto>>
                     .WithResponse<TReturning>
                     where TReturning : GetAllDto<TDto>
                 {

@@ -53,23 +53,32 @@ namespace Codeed.Framework.Services.CRUD
                         await ValidateRequest(request, cancellationToken);
 
                         var entity = await FindEntity(request, cancellationToken);
-                        var isNew = entity is null;
                         if (entity is null)
                         {
-                            entity = await CreateEntity(request, cancellationToken);
-                            await Validate(entity, _createValidations, cancellationToken);
+                            entity = await Create(request, entity, cancellationToken);
                         }
                         else
                         {
-                            await UpdateEntity(request, entity, cancellationToken);
-                            await Validate(entity, _updateValidations, cancellationToken);
+                            await Update(request, entity, cancellationToken);
                         }
-
-                        Action<TEntity> modifyRepository = isNew ? Repository.Add : Repository.Update;
-                        modifyRepository(entity);
 
                         await Repository.UnitOfWork.Commit(cancellationToken);
                         return entity;
+                    }
+
+                    protected virtual async Task<TEntity> Create(TDtoRequest request, TEntity? entity, CancellationToken cancellationToken)
+                    {
+                        entity = await CreateEntity(request, cancellationToken);
+                        await Validate(entity, _createValidations, cancellationToken);
+                        Repository.Add(entity);
+                        return entity;
+                    }
+
+                    protected virtual async Task Update(TDtoRequest request, TEntity entity, CancellationToken cancellationToken)
+                    {
+                        Repository.Update(entity);
+                        await UpdateEntity(request, entity, cancellationToken);
+                        await Validate(entity, _updateValidations, cancellationToken);
                     }
 
                     protected virtual Task ValidateRequest(TDtoRequest request, CancellationToken cancellationToken)

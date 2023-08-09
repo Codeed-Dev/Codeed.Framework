@@ -47,9 +47,9 @@ namespace Codeed.Framework.Services.CRUD
                             throw new ServiceNotFoundException("The record was not found");
                         }
 
+                        Repository.Update(entity);
                         await UpdateEntity(request, entity, cancellationToken);
                         await Validate(entity, cancellationToken);
-                        Repository.Update(entity);
 
                         await Repository.UnitOfWork.Commit(cancellationToken);
                         var responseDto = Mapper.Map<TDtoResponse>(entity);
