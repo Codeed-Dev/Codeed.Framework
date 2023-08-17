@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Codeed.Framework.Commons.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -104,7 +105,11 @@ namespace Codeed.Framework.Commons
 
         public void AddError(Exception exception)
         {
-            AddError(exception, null, null);
+            var code = "";
+            if (exception is BaseServiceException serviceException)
+                code = serviceException.Code;
+
+            AddError(exception, code, null);
         }
 
         public void AddError(Exception exception, string code)
