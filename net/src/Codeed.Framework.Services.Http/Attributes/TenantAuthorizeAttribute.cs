@@ -1,4 +1,5 @@
 ﻿using Codeed.Framework.Commons;
+using Codeed.Framework.Commons.Exceptions;
 using Codeed.Framework.Tenant;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -28,7 +29,8 @@ namespace Codeed.Framework.Services.Http.Attributes
         {
             if (!_tenantService.Authorize(_permission))
             {
-                var result = new Result().Add("You don't have permission");
+                var upgradePlan = new UpgradePlanException("You don't have permission");
+                var result = new Result().Add(upgradePlan);
                 context.Result = new ObjectResult(result)
                 {
                     StatusCode = 403
