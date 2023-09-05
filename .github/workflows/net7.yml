@@ -1,4 +1,4 @@
-name: Publish .NET NuGet packages
+name: Build .NET 7x NuGet packages
 
 on:
   workflow_dispatch:
