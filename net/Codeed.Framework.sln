@@ -57,11 +57,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test_sample", "test_sample"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Learn.Web", "sample\documentation_sample\Learn.Web\Learn.Web.csproj", "{0ACD5E13-1753-40E3-AF9F-1EFF4C559380}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learn.Data", "sample\documentation_sample\Learn.Data\Learn.Data.csproj", "{6A09B102-F167-4093-B0D4-BD2B7497CA84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Learn.Data", "sample\documentation_sample\Learn.Data\Learn.Data.csproj", "{6A09B102-F167-4093-B0D4-BD2B7497CA84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learn.Domain", "sample\documentation_sample\Learn.Domain\Learn.Domain.csproj", "{4F89D7C1-850E-4CE6-9949-2A6BE909392E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Learn.Domain", "sample\documentation_sample\Learn.Domain\Learn.Domain.csproj", "{4F89D7C1-850E-4CE6-9949-2A6BE909392E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learn.Application", "sample\documentation_sample\Learn.Application\Learn.Application.csproj", "{6618E09C-C48E-441D-8394-2890CA9F6DE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Learn.Application", "sample\documentation_sample\Learn.Application\Learn.Application.csproj", "{6618E09C-C48E-441D-8394-2890CA9F6DE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
