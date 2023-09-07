@@ -267,7 +267,7 @@ namespace Codeed.Framework.EventBus.RabbitMQ
 
                     await Task.Yield();
 
-                    var handleResult = concreteType.GetMethod(nameof(IEventHandler<Event>.Handle))?.Invoke(handler, new object[] { integrationEvent });
+                    var handleResult = concreteType.GetMethod(nameof(IEventHandler<Event>.Handle))?.Invoke(handler, new object[] { integrationEvent, CancellationToken.None });
 
                     if (handleResult is Task task)
                         await task;

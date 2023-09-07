@@ -53,7 +53,7 @@ namespace Codeed.Framework.EventBus
 
                     var concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
 
-                    var handleResult = concreteType.GetMethod("Handle")?.Invoke(handler, new object[] { @event });
+                    var handleResult = concreteType.GetMethod(nameof(IEventHandler<Event>.Handle))?.Invoke(handler, new object[] { @event, CancellationToken.None });
                     
                     if (handleResult is Task task)
                         await task.ConfigureAwait(false);
