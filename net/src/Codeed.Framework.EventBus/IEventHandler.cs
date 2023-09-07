@@ -5,6 +5,5 @@ namespace Codeed.Framework.EventBus
 {
     public interface IEventHandler<in TEvent> : INotificationHandler<TEvent> where TEvent : IEvent
     {
-        Task Handle(TEvent @event);
     }
 }
