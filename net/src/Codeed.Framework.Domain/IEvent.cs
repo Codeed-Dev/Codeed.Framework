@@ -1,6 +1,8 @@
-﻿namespace Codeed.Framework.Domain
+﻿using MediatR;
+
+namespace Codeed.Framework.Domain
 {
-    public interface IEvent
+    public interface IEvent : INotification
     {
         Guid Id { get; }
 
