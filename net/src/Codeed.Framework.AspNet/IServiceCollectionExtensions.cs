@@ -38,7 +38,7 @@ namespace Codeed.Framework.AspNet
                 }
 
                 services.RegisterLocker();
-                services.AddMediatR(assemblies.ToArray());
+                services.AddMediatR((config) => config.RegisterServicesFromAssemblies(assemblies.ToArray()));
                 services.RegisterServicesFromAssemblies(assemblies);
                 services.AddAutoMapper(assemblies.ToArray());
                 services.AddAutoMapper(typeof(DateTimeMaps).Assembly);
