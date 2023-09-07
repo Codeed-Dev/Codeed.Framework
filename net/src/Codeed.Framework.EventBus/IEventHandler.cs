@@ -1,8 +1,9 @@
 ﻿using Codeed.Framework.Domain;
+using MediatR;
 
 namespace Codeed.Framework.EventBus
 {
-    public interface IEventHandler<in TEvent> where TEvent : IEvent
+    public interface IEventHandler<in TEvent> : INotificationHandler<TEvent> where TEvent : IEvent
     {
         Task Handle(TEvent @event);
     }
