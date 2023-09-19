@@ -15,6 +15,9 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
         public static void ConfigureDomainEventsPublisher(this RegisterCodeedFrameworkOptions codeedOptions, Action<DomainEventsPublisherConfiguration>? configure)
         {
             var options = new DomainEventsPublisherConfiguration();
+            if (configure is not null)
+                configure(options);
+
             codeedOptions.AddServiceConfiguration(options);
         }
     }
