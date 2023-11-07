@@ -77,7 +77,6 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             }
         }
 
-
         public override Task Publish<TEvent>(TEvent @event)
         {
             if (!_persistentConnection.IsConnected)
@@ -122,6 +121,12 @@ namespace Codeed.Framework.EventBus.RabbitMQ
             }
 
             return Task.CompletedTask;
+        }
+
+        public override Task Publish<TEvent>(IEnumerable<TEvent> events)
+        {
+            var tasks = events.Select(e => Publish(e));
+            return Task.WhenAll(tasks);
         }
 
         public override void Subscribe<T, TH>()

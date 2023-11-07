@@ -8,7 +8,13 @@ namespace Codeed.Framework.EventBus
         Task Publish<TEvent>(TEvent @event)
              where TEvent : IEvent;
 
+        Task Publish<TEvent>(IEnumerable<TEvent> @events)
+             where TEvent : IEvent;
+
         Task Publish<TEvent>(TEvent @event, ITenantService tenantService)
+            where TEvent : ITenantEvent;
+
+        Task Publish<TEvent>(IEnumerable<TEvent> @events, ITenantService tenantService)
             where TEvent : ITenantEvent;
 
         void Subscribe<TEvent, TEventHandler>()

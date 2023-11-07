@@ -112,7 +112,18 @@ namespace Codeed.Framework.Data
                 entity.ClearDomainEvents();
             }
 
-            await _domainEventsPublisher.Publish(events);
+            var previousTransaction = _currentTransaction;
+            try
+            {
+                // Limpa a transaction temporariamente pois os eventos poderão ser executados no mesmo escopo de execução
+                _currentTransaction = null;
+                await _domainEventsPublisher.Publish(events);
+            }
+            finally
+            {
+                _currentTransaction = previousTransaction;
+            }
+
             return result;
         }
 

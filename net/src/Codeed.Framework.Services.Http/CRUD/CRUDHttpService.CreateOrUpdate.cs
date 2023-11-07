@@ -76,9 +76,9 @@ namespace Codeed.Framework.Services.CRUD
 
                     protected virtual async Task Update(TDtoRequest request, TEntity entity, CancellationToken cancellationToken)
                     {
-                        Repository.Update(entity);
                         await UpdateEntity(request, entity, cancellationToken);
                         await Validate(entity, _updateValidations, cancellationToken);
+                        Repository.Update(entity);
                     }
 
                     protected virtual Task ValidateRequest(TDtoRequest request, CancellationToken cancellationToken)
