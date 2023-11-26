@@ -68,12 +68,9 @@ namespace Codeed.Framework.Services.CRUD
                 }
             }
 
-            protected virtual async Task<TEntity?> FindEntity(Guid id, CancellationToken cancellationToken)
+            protected virtual Task<TEntity?> FindEntity(Guid id, CancellationToken cancellationToken)
             {
-                var entity = await Repository.QueryById(id)
-                                              .FirstOrDefaultAsync(cancellationToken);
-
-                return entity;
+                return Repository.GetById(id, cancellationToken);
             }
         }
 

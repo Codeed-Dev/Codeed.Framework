@@ -32,7 +32,7 @@ namespace Codeed.Framework.Data
 
         public virtual IQueryable<T> QueryById(Guid id)
         {
-            return DbSet.Where(a => a.Id == id);
+            return QueryAll().Where(a => a.Id == id);
         }
 
         public virtual IQueryable<T> QueryAll(ISpecification<T> spec)
@@ -44,7 +44,7 @@ namespace Codeed.Framework.Data
 
         public virtual Task<T?> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var query = DbSet.Where(a => a.Id == id);
+            var query = QueryAll().Where(a => a.Id == id);
             query = IncludeAll(query);
             return query.FirstOrDefaultAsync(cancellationToken);
         }
