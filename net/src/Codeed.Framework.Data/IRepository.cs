@@ -1,6 +1,5 @@
 ﻿using Codeed.Framework.Domain;
-using System;
-using System.Linq;
+using Codeed.Framework.Specification;
 
 namespace Codeed.Framework.Data
 {
@@ -8,9 +7,17 @@ namespace Codeed.Framework.Data
     {
         IUnitOfWork UnitOfWork { get; }
 
+        Task Reload(T entity, CancellationToken cancellationToken);
+
         IQueryable<T> QueryAll();
 
+        IQueryable<T> QueryAll(ISpecification<T> spec);
+
         IQueryable<T> QueryById(Guid id);
+
+        Task<T?> GetById(Guid id, CancellationToken cancellationToken);
+
+        IQueryable<T> IncludeAll(IQueryable<T> queryable);
 
         void Add(T entity);
 

@@ -27,16 +27,8 @@ namespace Codeed.Framework.Services.CRUD
                 [HttpGet("{id}")]
                 public override async Task<TDto> ExecuteAsync(Guid id, CancellationToken cancellationToken)
                 {
-                    var query = Repository.QueryById(id);
-                    query = ConfigureQuery(query);
-
-                    var entity = await query.FirstOrDefaultAsync(cancellationToken);
+                    var entity = await Repository.GetById(id, cancellationToken);
                     return Mapper.Map<TDto>(entity);
-                }
-
-                protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)
-                {
-                    return query;
                 }
             }
         }

@@ -9,5 +9,10 @@ namespace Sample.Domain.Repositories
         public CustomerRepository(SampleDbContext context) : base(context, context)
         {
         }
+
+        public override IQueryable<Customer> IncludeAll(IQueryable<Customer> queryable)
+        {
+            return queryable;
+        }
     }
 }

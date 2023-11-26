@@ -36,7 +36,7 @@ namespace Codeed.Framework.Services.CRUD
                     public override async Task<TReturning> ExecuteAsync([FromQuery] ODataQueryOptions<TDto> odata, CancellationToken cancellationToken)
                     {
                         IQueryable<TEntity> query = Repository.QueryAll();
-                        query = ConfigureQuery(query);
+                        query = Repository.IncludeAll(query);
                         var ignoreQueryOptions = AllowedQueryOptions.Skip | AllowedQueryOptions.Top;
                         var baseQuery = odata.ApplyTo(query.ProjectTo<TDto>(Mapper.ConfigurationProvider), ignoreQueryOptions).Cast<TDto>();
                         var queryDto = baseQuery.Skip(odata.Skip?.Value ?? 0).Take(odata.Top?.Value ?? 100);
@@ -48,8 +48,10 @@ namespace Codeed.Framework.Services.CRUD
                         return totals;
                     }
 
-                    protected virtual IQueryable<TEntity> ConfigureQuery(IQueryable<TEntity> query)
+                    protected virtual IQueryable<TEntity> BuildBaseQuery()
                     {
+                        var query = Repository.QueryAll();
+                        query = Repository.IncludeAll(query);
                         return query;
                     }
 
