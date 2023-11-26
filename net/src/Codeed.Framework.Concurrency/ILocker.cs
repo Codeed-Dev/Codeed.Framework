@@ -5,6 +5,6 @@ namespace Codeed.Framework.Concurrency
 {
     public interface ILocker
     {
-        ISemaphore CreateAndWaitSemaphore(string name, TimeSpan timeout, CancellationToken cancellationToken);
+        Task<IDisposable> AcquireLockAsync(string name, TimeSpan timeout, CancellationToken cancellationToken);
     }
 }

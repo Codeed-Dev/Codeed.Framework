@@ -2,6 +2,7 @@ using Codeed.Framework.AspNet;
 using Codeed.Framework.AspNet.EventBus;
 using Codeed.Framework.AspNet.RegisterServicesConfigurations;
 using Codeed.Framework.AspNet.Serilog;
+using Medallion.Threading.Postgres;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Sample.Web;
@@ -33,7 +34,7 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sam
         });
     });
 
-    
+
     opt.ConfigureSwagger(c =>
     {
         c.Version = "v1";
@@ -48,6 +49,7 @@ builder.Services.RegisterCodeedFrameworkDependencies(builder.Configuration, "Sam
     opt.ConfigureDomainEventsPublisher();
     opt.ConfigureMongoDb(builder.Configuration.GetSection("MongoDb"));
     opt.ConfigureBackgroundTasks();
+    opt.ConfigureLocker(opt => opt.ConfigurePostgresDistribuited(new PostgresDistributedSynchronizationProvider(builder.Configuration.GetConnectionString("DefaultConnection"))));
 });
 
 var app = builder.Build();

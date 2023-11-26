@@ -7,18 +7,17 @@ namespace Codeed.Framework.Concurrency
     public class TenantLocker : ITenantLocker
     {
         private readonly ITenantService _tenantService;
+        private readonly ILocker _locker;
 
-        public TenantLocker(ITenantService tenantService)
+        public TenantLocker(ITenantService tenantService, ILocker locker)
         {
             _tenantService = tenantService;
+            _locker = locker;
         }
 
-        public ISemaphore CreateAndWaitSemaphore(string name, TimeSpan timeout, CancellationToken cancellationToken)
+        public Task<IDisposable> AcquireLock(string name, TimeSpan timeout, CancellationToken cancellationToken)
         {
-            var semaphore = new SingleSemaphore($"{_tenantService.Tenant}-{name}");
-            semaphore.Wait(timeout, cancellationToken);
-
-            return semaphore;
+            return _locker.AcquireLockAsync($"{_tenantService.Tenant}-{name}", timeout, cancellationToken);
         }
     }
 }

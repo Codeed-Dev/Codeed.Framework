@@ -23,6 +23,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="DistributedLock.Postgres" Version="1.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\Codeed.Framework.Tenant\Codeed.Framework.Tenant.csproj" />
 	</ItemGroup>
 

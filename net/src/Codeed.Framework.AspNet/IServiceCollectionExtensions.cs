@@ -37,7 +37,6 @@ namespace Codeed.Framework.AspNet
                     serviceConfiguration.RegisterServices(services, assemblies);
                 }
 
-                services.RegisterLocker();
                 services.AddMediatR((config) => config.RegisterServicesFromAssemblies(assemblies.ToArray()));
                 services.RegisterServicesFromAssemblies(assemblies);
                 services.AddAutoMapper(assemblies.ToArray());
@@ -50,12 +49,6 @@ namespace Codeed.Framework.AspNet
             });
 
             return services;
-        }
-
-        private static void RegisterLocker(this IServiceCollection services)
-        {
-            services.AddScoped<ITenantLocker, TenantLocker>();
-            services.AddScoped<ILocker, Locker>();
         }
 
         private static void RegisterValidations(this IServiceCollection services, IEnumerable<Assembly> assemblies)
