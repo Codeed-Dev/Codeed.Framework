@@ -2,6 +2,6 @@
 {
     public interface ITenantLocker
     {
-        Task<IDisposable> AcquireLock(string name, TimeSpan timeout, CancellationToken cancellationToken);
+        Task<IDisposable> AcquireLockAsync(string name, TimeSpan timeout, CancellationToken cancellationToken);
     }
 }

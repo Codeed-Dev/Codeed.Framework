@@ -15,7 +15,7 @@ namespace Codeed.Framework.Concurrency
             _locker = locker;
         }
 
-        public Task<IDisposable> AcquireLock(string name, TimeSpan timeout, CancellationToken cancellationToken)
+        public Task<IDisposable> AcquireLockAsync(string name, TimeSpan timeout, CancellationToken cancellationToken)
         {
             return _locker.AcquireLockAsync($"{_tenantService.Tenant}-{name}", timeout, cancellationToken);
         }
