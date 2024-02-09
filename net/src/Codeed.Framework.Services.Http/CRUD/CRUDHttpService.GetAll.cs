@@ -35,8 +35,7 @@ namespace Codeed.Framework.Services.CRUD
                     [HttpGet]
                     public override async Task<TReturning> ExecuteAsync([FromQuery] ODataQueryOptions<TDto> odata, CancellationToken cancellationToken)
                     {
-                        IQueryable<TEntity> query = Repository.QueryAll();
-                        query = Repository.IncludeAll(query);
+                        IQueryable<TEntity> query = BuildBaseQuery();
                         var ignoreQueryOptions = AllowedQueryOptions.Skip | AllowedQueryOptions.Top;
                         var baseQuery = odata.ApplyTo(query.ProjectTo<TDto>(Mapper.ConfigurationProvider), ignoreQueryOptions).Cast<TDto>();
                         var queryDto = baseQuery.Skip(odata.Skip?.Value ?? 0).Take(odata.Top?.Value ?? 100);
