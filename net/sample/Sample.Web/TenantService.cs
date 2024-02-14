@@ -1,4 +1,4 @@
-﻿using Codeed.Framework.AspNet.Tenant;
+﻿using Codeed.Framework.Tenant;
 using System.Security.Claims;
 
 namespace Sample.Web

@@ -1,11 +1,7 @@
-﻿using Codeed.Framework.Environment.Extensions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Codeed.Framework.Services;
@@ -13,11 +9,10 @@ using MediatR;
 using Codeed.Framework.AspNet.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Codeed.Framework.EventBus;
-using Codeed.Framework.Concurrency;
 using Codeed.Framework.Domain.Validations;
 using Codeed.Framework.AspNet.Maps;
 using System.Security.Claims;
+using Codeed.Framework.AspNet.RegisterServicesConfigurations;
 
 namespace Codeed.Framework.AspNet
 {
@@ -26,6 +21,7 @@ namespace Codeed.Framework.AspNet
         public static IServiceCollection RegisterCodeedFrameworkDependencies(this IServiceCollection services, IConfiguration configuration, string name, string assemblyPattern, Action<RegisterCodeedFrameworkOptions> configure)
         {
             var options = new RegisterCodeedFrameworkOptions(name, assemblyPattern);
+            options.ConfigureEnvironmentServices(configuration);
             configure(options);
 
             services.GetAllProjectsAssemblies(options.AssemblyPattern, (assemblies) =>
@@ -41,7 +37,6 @@ namespace Codeed.Framework.AspNet
                 services.RegisterServicesFromAssemblies(assemblies);
                 services.AddAutoMapper(assemblies.ToArray());
                 services.AddAutoMapper(typeof(DateTimeMaps).Assembly);
-                services.RegisterEnvironment();
                 services.RegisterContexts(configuration, assemblies, options.DbContextOptionsBuilder);
                 services.RegisterValidations(assemblies);
                 services.RegisterCors();

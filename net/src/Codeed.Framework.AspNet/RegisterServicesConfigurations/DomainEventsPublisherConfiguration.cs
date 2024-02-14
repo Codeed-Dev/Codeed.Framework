@@ -6,12 +6,6 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 {
     public static class RegisterCodeedFrameworkDomainEventsPublisherConfigurationExtensions
     {
-        public static void ConfigureDomainEventsPublisher(this RegisterCodeedFrameworkOptions codeedOptions)
-        {
-            var options = new DomainEventsPublisherConfiguration();
-            codeedOptions.AddServiceConfiguration(options);
-        }
-
         public static void ConfigureDomainEventsPublisher(this RegisterCodeedFrameworkOptions codeedOptions, Action<DomainEventsPublisherConfiguration>? configure)
         {
             var options = new DomainEventsPublisherConfiguration();
@@ -20,6 +14,12 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
             codeedOptions.AddServiceConfiguration(options);
         }
+
+        public static void ConfigureDomainEventsPublisher(this RegisterCodeedFrameworkOptions codeedOptions)
+        {
+            codeedOptions.ConfigureDomainEventsPublisher(null);
+        }
+            
     }
 
     public enum IDomainEventsPublisherTypes
