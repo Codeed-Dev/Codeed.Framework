@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -53,6 +54,38 @@ namespace System
             var startIndex = Array.IndexOf(words, firstWord);
             var newWords = words.Skip(startIndex);
             return string.Join(" ", newWords);
+        }
+
+        public static string RemoveDiacritics(this string s)
+        {
+            String normalizedString = s.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (int i = 0; i < normalizedString.Length; i++)
+            {
+                Char c = normalizedString[i];
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                    stringBuilder.Append(c);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        public static string ReplaceUriDomain(this string originalUrl, string newDomain)
+        {
+            Uri originalUri = new Uri(originalUrl);
+            Uri newDomainUri = new Uri(newDomain);
+
+            UriBuilder newUriBuilder = new UriBuilder(originalUri);
+            newUriBuilder.Scheme = newDomainUri.Scheme;
+            newUriBuilder.Host = newDomainUri.Host;
+
+            if (!string.IsNullOrWhiteSpace(newDomainUri.Port.ToString()))
+            {
+                newUriBuilder.Port = newDomainUri.Port;
+            }
+
+            return newUriBuilder.Uri.ToString();
         }
     }
 }

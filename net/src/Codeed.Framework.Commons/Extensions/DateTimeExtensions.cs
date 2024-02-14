@@ -1,19 +1,22 @@
 ﻿using Codeed.Framework.Commons.Enums;
-using System;
-using System.Threading.Tasks;
 
 namespace System
 {
     public static class DateTimeExtensions
     {
-        public static DateTime FirstDayOfMonth(this DateTimeOffset datetime)
+        public static DateTimeOffset FirstDayOfMonth(this DateTimeOffset datetime)
         {
-            return new DateTime(datetime.Year, datetime.Month, 1);
+            return new DateTimeOffset(datetime.Year, datetime.Month, 1, 0, 0, 0, datetime.Offset);
+        }
+
+        public static DateTime FirstDayOfMonth(this DateTime datetime)
+        {
+            return new DateTime(datetime.Year, datetime.Month, 1, 0, 0, 0);
         }
 
         public static string ToRFC3339(this DateTimeOffset datetime)
         {
-            return datetime.ToString("o");
+            return datetime.ToString("yyyy-MM-dd'T'HH:mm:sszzz");
         }
 
         public static string ToRFC3339(this DateTimeOffset? datetime)
@@ -23,12 +26,17 @@ namespace System
                 return string.Empty;
             }
 
-            return datetime.Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssK");
+            return datetime.Value.ToRFC3339();
         }
 
         public static DateTimeOffset Round(this DateTimeOffset datetime, TimeSpan interval)
         {
             return new DateTimeOffset((datetime.Ticks + interval.Ticks / 2 - 1) / interval.Ticks * interval.Ticks, datetime.Offset);
+        }
+
+        public static DateTime Round(this DateTime datetime, TimeSpan interval)
+        {
+            return new DateTime((datetime.Ticks + interval.Ticks / 2 - 1) / interval.Ticks * interval.Ticks, datetime.Kind);
         }
 
         public static DateOnly ToDateOnly(this DateTimeOffset datetime)
@@ -44,7 +52,13 @@ namespace System
         public static DateTime StartOfWeek(this DateTime dt, DayOfWeek dayOfWeek)
         {
             var sunday = dt.StartOfWeek();
-            return sunday.AddDays((int)dayOfWeek).Date;
+            return sunday.AddDays((int)dayOfWeek);
+        }
+
+        public static DateTimeOffset StartOfWeek(this DateTimeOffset dt, DayOfWeek dayOfWeek)
+        {
+            var sunday = dt.StartOfWeek();
+            return sunday.AddDays((int)dayOfWeek);
         }
 
         public static DateTime StartOfWeek(this DateTime dt)
@@ -52,14 +66,39 @@ namespace System
             return dt.AddDays(-1 * (int)dt.DayOfWeek).Date;
         }
 
+        public static DateTimeOffset StartOfWeek(this DateTimeOffset dt)
+        {
+            return dt.AddDays(-1 * (int)dt.DayOfWeek).StartOfDay();
+        }
+
+        public static DateTime EndOfWeek(this DateTime dt)
+        {
+            return dt.StartOfWeek().AddDays(7).AddMilliseconds(-1);
+        }
+
+        public static DateTimeOffset EndOfWeek(this DateTimeOffset dt)
+        {
+            return dt.StartOfWeek().AddDays(7).AddMilliseconds(-1);
+        }
+
         public static DateTime StartOfMonth(this DateTime dt)
         {
             return new DateTime(dt.Year, dt.Month, 1);
         }
 
-        public static DateTime EndOfDay(this DateTime date)
+        public static DateTimeOffset StartOfMonth(this DateTimeOffset dt)
         {
-            return new DateTime(date.Year, date.Month, date.Day, 23, 59, 59, 999);
+            return new DateTimeOffset(dt.Year, dt.Month, 1, 0, 0, 0, dt.Offset);
+        }
+
+        public static DateTime EndOfMonth(this DateTime dt)
+        {
+            return dt.StartOfMonth().AddMonths(1).AddMilliseconds(-1);
+        }
+
+        public static DateTimeOffset EndOfMonth(this DateTimeOffset dt)
+        {
+            return dt.StartOfMonth().AddMonths(1).AddMilliseconds(-1);
         }
 
         public static DateTime StartOfDay(this DateTime date)
@@ -67,7 +106,28 @@ namespace System
             return new DateTime(date.Year, date.Month, date.Day, 0, 0, 0, 0);
         }
 
+        public static DateTimeOffset StartOfDay(this DateTimeOffset date)
+        {
+            return new DateTimeOffset(date.Year, date.Month, date.Day, 0, 0, 0, 0, date.Offset);
+        }
+
+        public static DateTime EndOfDay(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, 23, 59, 59, 999);
+        }
+
+        public static DateTimeOffset EndOfDay(this DateTimeOffset date)
+        {
+            return new DateTimeOffset(date.Year, date.Month, date.Day, 23, 59, 59, 999, date.Offset);
+        }
+
         public static bool IsBusinessDay(this DateTime date)
+        {
+            return date.DayOfWeek != DayOfWeek.Sunday &&
+                   date.DayOfWeek != DayOfWeek.Saturday;
+        }
+
+        public static bool IsBusinessDay(this DateTimeOffset date)
         {
             return date.DayOfWeek != DayOfWeek.Sunday &&
                    date.DayOfWeek != DayOfWeek.Saturday;
@@ -80,6 +140,15 @@ namespace System
         }
 
         public static DateTime NextBusinessDay(this DateTime date)
+        {
+            var businessDay = date.AddDays(
+                date.DayOfWeek == DayOfWeek.Sunday ? 1 :
+                date.DayOfWeek == DayOfWeek.Saturday ? 2 : 0);
+
+            return businessDay;
+        }
+
+        public static DateTimeOffset NextBusinessDay(this DateTimeOffset date)
         {
             var businessDay = date.AddDays(
                 date.DayOfWeek == DayOfWeek.Sunday ? 1 :
@@ -141,17 +210,38 @@ namespace System
             return (startDate, endDate);
         }
 
+        public static (DateTimeOffset, DateTimeOffset) GetYearInterval(this DateTimeOffset date)
+        {
+            var startDate = new DateTime(date.Year, 1, 1);
+            var endDate = new DateTime(date.Year, 12, 31);
+            return (startDate, endDate);
+        }
+
         public static (DateTime, DateTime) GetMonthInterval(this DateTime date)
         {
-            var startDate = new DateTime(date.Year, date.Month, 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
+            var startDate = date.StartOfMonth();
+            var endDate = startDate.AddMonths(1).AddMilliseconds(-1);
+            return (startDate, endDate);
+        }
+
+        public static (DateTimeOffset, DateTimeOffset) GetMonthInterval(this DateTimeOffset date)
+        {
+            var startDate = date.StartOfMonth();
+            var endDate = startDate.AddMonths(1).AddMilliseconds(-1);
             return (startDate, endDate);
         }
 
         public static (DateTime, DateTime) GetWeekInterval(this DateTime date)
         {
             var startDate = date.StartOfWeek();
-            var endDate = date.AddDays(6);
+            var endDate = startDate.AddDays(6).EndOfDay();
+            return (startDate, endDate);
+        }
+
+        public static (DateTimeOffset, DateTimeOffset) GetWeekInterval(this DateTimeOffset date)
+        {
+            var startDate = date.StartOfWeek();
+            var endDate = startDate.AddDays(6).EndOfDay();
             return (startDate, endDate);
         }
 
@@ -162,7 +252,31 @@ namespace System
             return (startDate, endDate);
         }
 
+        public static (DateTimeOffset, DateTimeOffset) GetDayInterval(this DateTimeOffset date)
+        {
+            var startDate = date.StartOfDay();
+            var endDate = date.EndOfDay();
+            return (startDate, endDate);
+        }
+
         public static DateTime NextDate(this DateTime dateTime, UnitOfTime unitOfTime)
+        {
+            switch (unitOfTime)
+            {
+                case UnitOfTime.Week:
+                    return dateTime.AddDays(7);
+                case UnitOfTime.Month:
+                    return dateTime.AddMonths(1);
+                case UnitOfTime.Year:
+                    return dateTime.AddYears(1);
+                case UnitOfTime.Day:
+                    return dateTime.AddDays(1);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public static DateTimeOffset NextDate(this DateTimeOffset dateTime, UnitOfTime unitOfTime)
         {
             switch (unitOfTime)
             {

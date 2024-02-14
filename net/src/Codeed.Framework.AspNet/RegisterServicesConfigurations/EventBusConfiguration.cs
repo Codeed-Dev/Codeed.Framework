@@ -39,6 +39,8 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
 
         public void RegisterServices(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
+            services.RegisterRequestReplyBroker();
+
             if (_rabbitMQConfiguration is not null)
             {
                 services.RegisterRabbitMqEventBus(_rabbitMQConfiguration);

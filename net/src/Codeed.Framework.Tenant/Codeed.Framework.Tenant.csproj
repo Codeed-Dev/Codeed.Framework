@@ -20,5 +20,8 @@
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Codeed.Framework.Commons\Codeed.Framework.Commons.csproj" />
+	</ItemGroup>
 
 </Project>
