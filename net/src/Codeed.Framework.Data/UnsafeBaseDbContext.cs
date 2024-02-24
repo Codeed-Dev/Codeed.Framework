@@ -16,7 +16,7 @@ namespace Codeed.Framework.Data
     {
         private readonly IDomainEventsPublisher _domainEventsPublisher;
         private readonly ITenantService _tenantService;
-        private Transaction? _currentTransaction;
+        protected Transaction? currentTransaction;
 
         protected UnsafeBaseDbContext(
             DbContextOptions<T> options,
@@ -73,9 +73,9 @@ namespace Codeed.Framework.Data
         {
             var transaction = new Transaction(this);
 
-            if (_currentTransaction is null)
+            if (currentTransaction is null)
             {
-                _currentTransaction = transaction;
+                currentTransaction = transaction;
             }
             
             return transaction;
@@ -85,7 +85,7 @@ namespace Codeed.Framework.Data
         {
             if (IsCurrentTransaction(transaction))
             {
-                _currentTransaction = null;
+                currentTransaction = null;
             }
         }
 
@@ -96,7 +96,8 @@ namespace Codeed.Framework.Data
                                                   .Where(e => e.Events.Any())
                                                   .ToArray();
 
-            int result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            // changed cancellationToken to None to avoid a cancellation inside Save operation
+            int result = await base.SaveChangesAsync(CancellationToken.None).ConfigureAwait(false);
 
             if (_domainEventsPublisher is null)
             {
@@ -112,16 +113,16 @@ namespace Codeed.Framework.Data
                 entity.ClearDomainEvents();
             }
 
-            var previousTransaction = _currentTransaction;
+            var previousTransaction = currentTransaction;
             try
             {
-                // Limpa a transaction temporariamente pois os eventos poderão ser executados no mesmo escopo de execução
-                _currentTransaction = null;
+                // Clean a transaction temporarily as the events may be executed in the same execution scope.
+                currentTransaction = null;
                 await _domainEventsPublisher.Publish(events);
             }
             finally
             {
-                _currentTransaction = previousTransaction;
+                currentTransaction = previousTransaction;
             }
 
             return result;
@@ -129,8 +130,8 @@ namespace Codeed.Framework.Data
 
         private bool IsCurrentTransaction(Transaction? transaction)
         {
-            return _currentTransaction is null ||
-                _currentTransaction == transaction;
+            return currentTransaction is null ||
+                currentTransaction == transaction;
         }
     }
 }
