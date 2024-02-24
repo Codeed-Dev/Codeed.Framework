@@ -39,6 +39,7 @@
 		<PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
 		<PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+		<PackageReference Include="Quartz.AspNetCore" Version="3.7.0" />
 	</ItemGroup>
 
 	<ItemGroup>
