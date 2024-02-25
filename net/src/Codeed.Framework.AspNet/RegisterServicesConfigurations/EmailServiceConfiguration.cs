@@ -1,7 +1,6 @@
 ﻿using Codeed.Framework.Email;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Scaffolding.Core.Application.Email;
 using System.Reflection;
 
 namespace Codeed.Framework.AspNet.RegisterServicesConfigurations

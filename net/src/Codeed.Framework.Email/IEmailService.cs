@@ -1,6 +1,6 @@
-using Scaffolding.Core.Application.Email.Models;
+using Codeed.Framework.Email.Models;
 
-namespace Scaffolding.Core.Application.Email
+namespace Codeed.Framework.Email
 {
     public interface IEmailService
     {

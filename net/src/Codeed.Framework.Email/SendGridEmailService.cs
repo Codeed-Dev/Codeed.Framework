@@ -1,9 +1,8 @@
-using Scaffolding.Core.Application.Email.Models;
-using Scaffolding.Core.Application.Environment;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using Scaffolding.Core.Application.Email;
 using Microsoft.Extensions.Options;
+using Codeed.Framework.Email.Configuration;
+using Codeed.Framework.Email.Models;
 
 namespace Codeed.Framework.Email
 {

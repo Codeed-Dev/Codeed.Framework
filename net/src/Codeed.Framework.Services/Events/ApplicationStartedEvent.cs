@@ -1,6 +1,6 @@
 ﻿using Codeed.Framework.Domain;
 
-namespace Scaffolding.Web
+namespace Codeed.Framework.Services.Events
 {
     internal class ApplicationStartedEvent : Event
     {

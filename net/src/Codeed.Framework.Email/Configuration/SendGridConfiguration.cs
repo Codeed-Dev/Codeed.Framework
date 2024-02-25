@@ -1,4 +1,4 @@
-namespace Scaffolding.Core.Application.Environment
+namespace Codeed.Framework.Email.Configuration
 {
     public class SendGridConfiguration
     {
