@@ -1,4 +1,4 @@
-namespace Scaffolding.Core.Application.Email.Models
+namespace Codeed.Framework.Email.Models
 {
     public class TemplateEmailConfig : EmailConfig
     {
