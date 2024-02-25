@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0</TargetFrameworks>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -23,7 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="DistributedLock.Postgres" Version="1.0.4" />
+	  <PackageReference Include="DistributedLock.Postgres" Version="1.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>

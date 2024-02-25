@@ -4,7 +4,7 @@
 
 namespace Sample.Data.Migrations
 {
-    public partial class addedtenant : Migration
+    public partial class Addedtenant : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

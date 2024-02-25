@@ -13,7 +13,7 @@ namespace Sample.Data.Migrations
 {
     [DbContext(typeof(SampleDbContext))]
     [Migration("20220624180831_added-tenant-index")]
-    partial class addedtenantindex
+    partial class Addedtenantindex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

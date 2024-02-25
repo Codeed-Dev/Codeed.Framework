@@ -28,7 +28,7 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
             var azureConfiguration = _configuration.GetSection("Azure").Get<AzureConfiguration>();
             services.Configure<AzureConfiguration>(_configuration.GetSection("Azure"));
 
-            if (!string.IsNullOrEmpty(azureConfiguration.ApplicationInsightsConnectionKey))
+            if (!string.IsNullOrEmpty(azureConfiguration?.ApplicationInsightsConnectionKey))
             {
                 services.AddApplicationInsightsTelemetry((opt) =>
                 {

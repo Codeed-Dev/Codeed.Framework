@@ -5,7 +5,7 @@ namespace Codeed.Framework.Concurrency.Tests
     public class InMemoryLockerTest
     {
         [Fact]
-        public void should_wait_for_lock_to_execute()
+        public async Task should_wait_for_lock_to_execute()
         {
             bool lockAcquired = false;
             
@@ -30,7 +30,7 @@ namespace Codeed.Framework.Concurrency.Tests
                 }
             });
 
-            Task.WaitAll(task1, task2);
+            await Task.WhenAll(task1, task2);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Sample.Data.Migrations
 {
     [DbContext(typeof(SampleDbContext))]
     [Migration("20220624172845_added-tenant")]
-    partial class addedtenant
+    partial class Addedtenant
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

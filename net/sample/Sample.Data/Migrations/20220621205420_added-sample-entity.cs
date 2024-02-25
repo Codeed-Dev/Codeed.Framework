@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Sample.Data.Migrations
 {
-    public partial class addedsampleentity : Migration
+    public partial class Addedsampleentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

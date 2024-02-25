@@ -13,7 +13,7 @@ namespace Sample.Data.Migrations
 {
     [DbContext(typeof(SampleDbContext))]
     [Migration("20220621205420_added-sample-entity")]
-    partial class addedsampleentity
+    partial class Addedsampleentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

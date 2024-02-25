@@ -21,12 +21,15 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-	</ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Codeed.Framework.AspNet\Codeed.Framework.AspNet.csproj" />
-    <ProjectReference Include="..\Codeed.Framework.Services\Codeed.Framework.Services.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Codeed.Framework.Domain\Codeed.Framework.Domain.csproj" />
+    <ProjectReference Include="..\Codeed.Framework.EventBus\Codeed.Framework.EventBus.csproj" />
   </ItemGroup>
 
 </Project>
