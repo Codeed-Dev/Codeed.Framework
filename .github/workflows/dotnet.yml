@@ -17,6 +17,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Verificar branch
+      run: |
+        if [ "${GITHUB_REF}" != "refs/heads/net8" ]; then
+          echo "Este workflow só pode ser executado na branch net8."
+          exit 1
+        fi          
+           
     - uses: actions/checkout@v3
       
     - name: Setup NuGet
@@ -25,7 +32,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2.1.0
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
       
     - name: Restore dependencies
       run: nuget restore $SOLUTION
