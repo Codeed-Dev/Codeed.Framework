@@ -1,4 +1,5 @@
 ﻿using Codeed.Framework.EventBus;
+using Codeed.Framework.Services.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
