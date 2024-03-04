@@ -20,6 +20,7 @@ namespace Codeed.Framework.AspNet.RegisterServicesConfigurations
         public void RegisterServices(IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
             services.AddScoped<ITenantService, TTenantService>();
+            services.AddScoped<ITenantScopeFactory, TenantScopeFactory>();
         }
     }
 }
