@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System;
 using Codeed.Framework.EventBus;
 using Codeed.Framework.Tenant;
+using Polly.Retry;
+using Polly;
 
 namespace Codeed.Framework.Data
 {
@@ -116,9 +118,12 @@ namespace Codeed.Framework.Data
             var previousTransaction = currentTransaction;
             try
             {
-                // Clean a transaction temporarily as the events may be executed in the same execution scope.
                 currentTransaction = null;
-                await _domainEventsPublisher.Publish(events);
+                var retryPolicy = Polly.Policy
+                            .Handle<Exception>()
+                            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromMilliseconds(500));
+
+                await retryPolicy.ExecuteAsync(async () => await _domainEventsPublisher.Publish(events));
             }
             finally
             {
