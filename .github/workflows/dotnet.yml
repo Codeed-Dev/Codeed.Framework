@@ -4,43 +4,43 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version'     
+        description: 'Version'
         required: true
-        default: '0.0.0' 
+        default: '0.0.0'
 
 jobs:
   build:
     env:
       BUILD_CONFIG: 'Release'
       SOLUTION: 'net/Codeed.Framework.sln'
-      
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-      
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.6
-    
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v2.1.0
       with:
         dotnet-version: 9.0.x
-      
+
     - name: Restore dependencies
-      run: nuget restore $SOLUTION
-        
+      run: dotnet restore $SOLUTION
+
     - name: Build
       run: dotnet build $SOLUTION --configuration $BUILD_CONFIG -p:Version=${{ github.event.inputs.version }} --no-restore
 
     - name: Run tests
       run: dotnet test $SOLUTION --configuration $BUILD_CONFIG --no-restore --no-build --verbosity normal
-      
+
+    - name: Pack
+      run: dotnet pack $SOLUTION --configuration $BUILD_CONFIG -p:PackageVersion=${{ github.event.inputs.version }} --no-build --output ./artifacts
+
     - name: Publish
-      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
-      
+      run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
     - name: Create Tag
       uses: rickstaa/action-create-tag@v1
       with:
-       tag: ${{ github.event.inputs.version }}
-       message: "Version ${{ github.event.inputs.version }}"      
+        tag: ${{ github.event.inputs.version }}
+        message: "Version ${{ github.event.inputs.version }}"
