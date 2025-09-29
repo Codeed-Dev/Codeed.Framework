@@ -36,6 +36,11 @@ jobs:
     - name: Pack
       run: dotnet pack $SOLUTION --configuration $BUILD_CONFIG -p:PackageVersion=${{ github.event.inputs.version }} --no-build --output ./artifacts
 
+    - name: Debug NuGet Key
+      run: |
+        echo "::add-mask::${{ secrets.NUGET_API_KEY }}"
+        echo "NUGET_API_KEY=${{ secrets.NUGET_API_KEY }}"
+        
     - name: Publish
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
